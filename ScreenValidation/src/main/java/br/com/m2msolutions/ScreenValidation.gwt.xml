@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='screenvalidation'>
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name="com.extjs.gxt.ui.GXT" />
+
+	<entry-point class='br.com.m2msolutions.client.ScreenValidation' />
+	<source path='client' />
+	<source path='shared' />
+
+</module>
