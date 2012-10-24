@@ -1,6 +1,7 @@
 package br.com.m2msolutions.client;
 
 import br.com.m2msolutions.shared.FieldVerifier;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,7 +38,7 @@ public class ScreenValidation implements EntryPoint {
   /**
    * This is the entry point method.
    */
-  public void onModuleLoad() {
+  public void onModuleLoad_() {
     final Button sendButton = new Button("Send");
     final TextBox nameField = new TextBox();
     nameField.setText("GWT User");
@@ -144,4 +145,11 @@ public class ScreenValidation implements EntryPoint {
     sendButton.addClickHandler(handler);
     nameField.addKeyUpHandler(handler);
   }
+	@Override
+	public void onModuleLoad() {
+		FormUser formUser = new FormUser();
+		formUser.show();
+		formUser.setSize(310, 130);
+		RootPanel.get().add(formUser);
+	}
 }
