@@ -3,6 +3,7 @@
 	<!-- Inherit the core Web Toolkit stuff. -->
 	<inherits name='com.google.gwt.user.User' />
 	<inherits name="com.extjs.gxt.ui.GXT" />
+	<inherits name="br.com.mr.dock.GwtDock" />
 
 	<entry-point class='br.com.m2msolutions.client.ScreenValidation' />
 	<source path='client' />
