@@ -1,34 +1,66 @@
-/** Add css rules here for your application. */
-
-
-/** Example rules used by the template application (remove for your app) */
-h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  text-align: center;
+body{
+font: 12px Arial,Helvetica,Sans-serif;
+}
+.widget-window {
+	background-color: #f3f7f8 !important;
+	border-color: #a2bcec !important;
+	border-style: solid;
+	border-width: 1px !important;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0px 0px 25px #888888;
+	box-shadow: 0px 0px 25px #888888;
+	font-size: 10pt;
+	font-weight: bold;
+	height: auto;
+	padding: 4px;
 }
 
-.sendButton {
-  display: block;
-  font-size: 16pt;
+.widget-window-footer {
+	color: #15428B;
+	background-color: #F3F7F8 !important;
+	font-family: tahoma, arial, verdana, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+}
+.widget-window-heading {
+	color: #15428B;
+	background-color: #F3F7F8 !important;
+	font-family: tahoma, arial, verdana, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
 }
 
-/** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-  width: 400px;
+.labeled-image {
+	color: Black;
+	cursor: pointer;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 14px !important;
+	font-style: normal !important;;
+	font-weight: bold !important;;
 }
 
-.dialogVPanel {
-  margin: 5px;
+
+.search-box {
+    background: url("../images/search-white.png") no-repeat scroll 10px 3px #FCFCFC;
+    margin-left: 2px !important;
+    margin-top: 2px !important;
+    border: 1px solid #D1D1D1;
+    border-radius: 20px 20px 20px 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+/*     color: #BEBEBE; */
+    font: bold 12px Arial,Helvetica,Sans-serif;
+    padding: 3px 0px 0px 30px;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.7s ease 0s;
+}
+.cell {
+	padding-top: 10px;
 }
 
-.serverResponseLabelError {
-  color: red;
-}
 
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
+#grid .x-grid3-cell{
+	vertical-align: middle !important;
 }
