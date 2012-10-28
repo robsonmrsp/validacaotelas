@@ -1,6 +1,5 @@
 package br.com.mr.dock.client;
 
-import br.com.m2msolutions.client.container.CriticalEventsWidget;
 import br.com.mr.dock.client.containers.Position;
 import br.com.mr.dock.client.menu.DockMenu;
 
@@ -10,11 +9,11 @@ import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.fx.Draggable;
-import com.extjs.gxt.ui.client.fx.Resizable;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
+
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.DOM;
@@ -122,7 +121,7 @@ public class DockDesktop extends LayoutContainer {
 		return topDock;
 	}
 
-	public void addWindow(CriticalEventsWidget window) {
+	public void addWindow(DockWindow window) {
 		Draggable dragger = new Draggable(window, window.getHeader());
 		dragger.setContainer(this);  
 		dragger.setUseProxy(false);		

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.m2msolutions.client.images.Images;
+import br.com.mr.dock.client.DockWindow;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.Direction;
@@ -16,6 +17,7 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -27,20 +29,18 @@ import com.extjs.gxt.ui.client.widget.layout.AbsoluteData;
 import com.extjs.gxt.ui.client.widget.layout.AbsoluteLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TextBox;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 
-public class CriticalEventsWidget extends LayoutContainer {
+public class CriticalEventsWidget extends DockWindow {
 
 	private Html heading;
 	private LayoutContainer header;
@@ -101,7 +101,7 @@ public class CriticalEventsWidget extends LayoutContainer {
 			footer.setStyleName("widget-window-footer");
 			footer.setLayout(new BorderLayout());
 			footer.add(getSearchBoxContainer(), new BorderLayoutData(LayoutRegion.CENTER));
-			footer.add(getButtonAttContainer(), new BorderLayoutData(LayoutRegion.EAST, 30.0f));
+			footer.add(getButtonAttContainer(), new BorderLayoutData(LayoutRegion.EAST, 25.0f));
 		}
 		return footer;
 	}
@@ -250,6 +250,7 @@ public class CriticalEventsWidget extends LayoutContainer {
 		if (alertIcon == null) {
 			alertIcon = new LabeledImage();
 			alertIcon.setImage(Images.INSTANCE.alert24());
+			alertIcon.setEventQtd(2);
 		}
 		return alertIcon;
 	}
@@ -258,6 +259,7 @@ public class CriticalEventsWidget extends LayoutContainer {
 		if (paneIcon == null) {
 			paneIcon = new LabeledImage();
 			paneIcon.setImage(Images.INSTANCE.pane24());
+			paneIcon.setEventQtd(4);
 
 		}
 		return paneIcon;
@@ -267,6 +269,7 @@ public class CriticalEventsWidget extends LayoutContainer {
 		if (otherIcon == null) {
 			otherIcon = new LabeledImage();
 			otherIcon.setImage(Images.INSTANCE.message24());
+			otherIcon.setEventQtd(1);
 		}
 		return otherIcon;
 	}
@@ -301,14 +304,13 @@ public class CriticalEventsWidget extends LayoutContainer {
 
 		ColumnConfig column = new ColumnConfig();
 		column.setId("imageSrc");
-		column.setWidth(30);
+		column.setWidth(35);
 		column.setRenderer(createImageCellRender());
 		configs.add(column);
 
 		ColumnConfig column2 = new ColumnConfig();
 		column2.setId("description");
 		column2.setRenderer(createDescriptionCellRender());
-		// column2.setWidth(200);
 
 		configs.add(column2);
 
