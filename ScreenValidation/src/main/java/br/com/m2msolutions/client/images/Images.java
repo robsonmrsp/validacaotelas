@@ -8,6 +8,15 @@ public interface Images extends ClientBundle {
 
 	public static final Images INSTANCE = GWT.create(Images.class);
 
+	@Source("br/com/m2msolutions/client/images/settings128.png")
+	ImageResource settings128();
+	
+	@Source("br/com/m2msolutions/client/images/form128.png")
+	ImageResource form128();
+	
+	@Source("br/com/m2msolutions/client/images/report128.png")
+	ImageResource report128();
+	
 	@Source("br/com/m2msolutions/client/images/alert-book_.png")
 	ImageResource alert128();
 	
@@ -43,5 +52,11 @@ public interface Images extends ClientBundle {
 	
 	@Source("br/com/m2msolutions/client/images/pane24.png")
 	ImageResource  pane24();
+	
+	@Source("br/com/m2msolutions/client/images/map128.png")
+	ImageResource  map128();
+	
+	@Source("br/com/m2msolutions/client/images/index128.png")
+	ImageResource  index128();
 	
 }

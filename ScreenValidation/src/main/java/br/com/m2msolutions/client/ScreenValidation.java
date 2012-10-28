@@ -17,29 +17,49 @@ public class ScreenValidation implements EntryPoint {
 
 		DockDesktop dockDesktop = new DockDesktop();
 		final CriticalEventsWidget attendance = new CriticalEventsWidget();
-		dockDesktop.getBottomDock().addItem(Images.INSTANCE.attendance128().getURL(), "Atendimento", new DockSelectionAction() {
+		dockDesktop.getBottomDock().addItem(Images.INSTANCE.settings128().getURL(), "Configurações", new DockSelectionAction() {
+			@Override
+			public void action() {
+//				attendance.show();
+			}
+		});
+		
+		dockDesktop.getBottomDock().addItem(Images.INSTANCE.form128().getURL(), "Cadastros", new DockSelectionAction() {
+			@Override
+			public void action() {
+//				attendance.show();
+			}
+		});
+		
+		dockDesktop.getBottomDock().addItem(Images.INSTANCE.report128().getURL(), "Relatórios", new DockSelectionAction() {
+			@Override
+			public void action() {
+//				attendance.show();
+			}
+		});
+		
+		dockDesktop.getBottomDock().addItem(Images.INSTANCE.attendance128().getURL(), "Eventos Criticos", new DockSelectionAction() {
 			@Override
 			public void action() {
 				attendance.show();
 			}
 		});
 		
-		// dockDesktop.getBottomDock().addItem(Images.INSTANCE.link128().getURL(),
-		// "Links");
-		// dockDesktop.getBottomDock().addItem(Images.INSTANCE.alert128().getURL(),
-		// "Eventos");
-		// dockDesktop.getBottomDock().addItem(Images.INSTANCE.rss128().getURL(),
-		// "Rss");
-		// dockDesktop.getBottomDock().addItem(Images.INSTANCE.calendar128().getURL(),
-		// "Calendario");
-		// dockDesktop.getBottomDock().addItem(Images.INSTANCE.alert128().getURL(),
-		// "Eventos");
-		// dockDesktop.getBottomDock().addItem(Images.INSTANCE.link128().getURL(),
-		// "Links");
-		// dockDesktop.getBottomDock().addItem(Images.INSTANCE.rss128().getURL(),
-		// "Rss");
-		// dockDesktop.getBottomDock().addItem(Images.INSTANCE.alert128().getURL(),
-		// "Eventos");
+		dockDesktop.getBottomDock().addItem(Images.INSTANCE.map128().getURL(), "Monitoramento", new DockSelectionAction() {
+			@Override
+			public void action() {
+//				attendance.show();
+				
+			}
+		});
+		
+		dockDesktop.getBottomDock().addItem(Images.INSTANCE.index128().getURL(), "Índices", new DockSelectionAction() {
+			@Override
+			public void action() {
+//				attendance.show();
+			}
+		});
+		
 		dockDesktop.addWindow(attendance);
 
 		rootPanel.add(dockDesktop);
