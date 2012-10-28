@@ -32,6 +32,7 @@ import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -218,10 +219,13 @@ public class CriticalEventsWidget extends LayoutContainer {
 	@Override
 	public void show() {
 		super.show();
+		
+		setPosition(300, 100);
 		if (!isAttached()) {
 			RootPanel.get().add(this);
 		}
 		el().makePositionable(true);
+		
 		this.setStyleAttribute("opacity", "0.976543");
 		this.el().dom.setAttribute("opacity", "0.976543");
 	}
