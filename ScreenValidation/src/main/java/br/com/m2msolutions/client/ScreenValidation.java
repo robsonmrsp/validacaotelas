@@ -20,46 +20,47 @@ public class ScreenValidation implements EntryPoint {
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.settings128().getURL(), "Configurações", new DockSelectionAction() {
 			@Override
 			public void action() {
-//				attendance.show();
+				// attendance.show();
 			}
 		});
-		
+
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.form128().getURL(), "Cadastros", new DockSelectionAction() {
 			@Override
 			public void action() {
-//				attendance.show();
+				// attendance.show();
 			}
 		});
-		
+
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.report128().getURL(), "Relatórios", new DockSelectionAction() {
 			@Override
 			public void action() {
-//				attendance.show();
+				// attendance.show();
 			}
 		});
-		
+
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.attendance128().getURL(), "Eventos Criticos", new DockSelectionAction() {
 			@Override
 			public void action() {
-				attendance.show();
+				if (!attendance.isVisible())
+					attendance.show();
 			}
 		});
-		
+
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.map128().getURL(), "Monitoramento", new DockSelectionAction() {
 			@Override
 			public void action() {
-//				attendance.show();
-				
+				// attendance.show();
+
 			}
 		});
-		
-		dockDesktop.getBottomDock().addItem(Images.INSTANCE.index128().getURL(), "Índices", new DockSelectionAction() {
+
+		dockDesktop.getBottomDock().addItem(Images.INSTANCE.index128().getURL(), "Indices", new DockSelectionAction() {
 			@Override
 			public void action() {
-//				attendance.show();
+				// attendance.show();
 			}
 		});
-		
+
 		dockDesktop.addWindow(attendance);
 
 		rootPanel.add(dockDesktop);

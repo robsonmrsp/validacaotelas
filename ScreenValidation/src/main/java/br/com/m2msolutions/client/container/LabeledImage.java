@@ -98,4 +98,14 @@ public class LabeledImage extends LayoutContainer {
 		return imageContainer;
 	}
 
+	public int getEventQtd() {
+		return eventQtd;
+	}
+
+	public void setEventQtd(int eventQtd) {
+		htmlQtd.setHtml("<div>"+eventQtd+"</div>");		
+		this.eventQtd = eventQtd;
+	}
+	
+
 }
