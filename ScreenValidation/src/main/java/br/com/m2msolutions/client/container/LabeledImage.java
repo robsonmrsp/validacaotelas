@@ -45,7 +45,6 @@ public class LabeledImage extends LayoutContainer {
 		setStyleName("labeled-image");
 		add(createQtdContainer());
 		add(createImageContainer());
-
 	}
 
 	private Html getHtmlQtd() {
