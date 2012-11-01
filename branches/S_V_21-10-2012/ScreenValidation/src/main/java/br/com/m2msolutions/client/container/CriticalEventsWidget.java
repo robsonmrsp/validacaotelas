@@ -57,9 +57,9 @@ public class CriticalEventsWidget extends DockWindow {
 	private GridCellRenderer<DtoEvent> imageCellRender;
 	private GridCellRenderer<DtoEvent> descriptionCellRender;
 	private LayoutContainer footer;
-	private LayoutContainer searchBoxContainer;
+	private SearchBox searchBox;
 	private LayoutContainer buttonAttContainer;
-	private TextBox searchBox;
+	
 	private LayoutContainer gridContainer;
 	private Image image_1;
 
@@ -96,11 +96,11 @@ public class CriticalEventsWidget extends DockWindow {
 		if (footer == null) {
 			footer = new LayoutContainer();
 			footer.setId("footer");
-			footer.setHeight(24);
+			footer.setHeight(25);
 			footer.setBorders(false);
 			footer.setStyleName("widget-window-footer");
 			footer.setLayout(new BorderLayout());
-			footer.add(getSearchBoxContainer(), new BorderLayoutData(LayoutRegion.CENTER));
+			footer.add(getSearchBox(), new BorderLayoutData(LayoutRegion.CENTER));
 			footer.add(getButtonAttContainer(), new BorderLayoutData(LayoutRegion.EAST, 25.0f));
 		}
 		return footer;
@@ -113,7 +113,7 @@ public class CriticalEventsWidget extends DockWindow {
 			principal.setLayout(new RowLayout(Orientation.VERTICAL));
 			principal.setBorders(false);
 			principal.add(getGridContainer(), new RowData(1, 200.0, new Margins()));
-			principal.add(getFooter(), new RowData(1, 24.0, new Margins()));
+			principal.add(getFooter(), new RowData(1, 25.0, new Margins()));
 		}
 		return principal;
 	}
@@ -350,37 +350,39 @@ public class CriticalEventsWidget extends DockWindow {
 		return listStore;
 	}
 
-	private LayoutContainer getSearchBoxContainer() {
-		if (searchBoxContainer == null) {
-			searchBoxContainer = new LayoutContainer();
-			searchBoxContainer.setId("searchBoxContainer");
-			searchBoxContainer.setBorders(false);
-			searchBoxContainer.setLayout(new RowLayout(Orientation.HORIZONTAL));
-			searchBoxContainer.add(getSearchBox());
+	private LayoutContainer getSearchBox() {
+		if (searchBox == null) {
+			searchBox = new SearchBox();
+			searchBox.setId("searchBoxContainer");
+			searchBox.setTextWhenEmpty("Buscar");
 		}
-		return searchBoxContainer;
+		return searchBox;
 	}
 
 	private LayoutContainer getButtonAttContainer() {
 		if (buttonAttContainer == null) {
 			buttonAttContainer = new LayoutContainer();
+			buttonAttContainer.setStyleName("button-att");
 			buttonAttContainer.setId("buttonAttContainer");
 			buttonAttContainer.setBorders(false);
 			buttonAttContainer.setLayout(new CenterLayout());
 			buttonAttContainer.add(getImage_1());
+			buttonAttContainer.setToolTip("Ver consulta de atendimento");
+			buttonAttContainer.setStyleAttribute("cursor", "pointer");
 		}
 		return buttonAttContainer;
 	}
 
-	private TextBox getSearchBox() {
-		if (searchBox == null) {
-			searchBox = new TextBox();
-			searchBox.getElement().setId("search");
-			searchBox.getElement().setAttribute("placeholder", "Search");
-			searchBox.setStyleName("search-box");
-		}
-		return searchBox;
-	}
+//	private TextBox getSearchBox() {
+//		if (searchBox == null) {
+//			searchBox = new TextBox();
+////			searchBox.setHeight("16px");
+//			searchBox.getElement().setId("search");
+//			searchBox.getElement().setAttribute("placeholder", "Buscar");
+//			searchBox.setStyleName("search-box");
+//		}
+//		return searchBox;
+//	}
 
 	private LayoutContainer getGridContainer() {
 		if (gridContainer == null) {

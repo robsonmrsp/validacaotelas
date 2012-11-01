@@ -39,6 +39,7 @@ public class DockDesktop extends LayoutContainer {
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
+		setStyleName("dock-desktop");
 		addListener(Events.Attach, new Listener<BaseEvent>() {
 			@Override
 			public void handleEvent(BaseEvent be) {
