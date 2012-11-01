@@ -235,5 +235,11 @@
 			<id>universidade california</id>
 			<url>http://maven.ucdavis.edu/maven2</url>
 		</repository>
+
+		<!-- Por causa do gwt-maps-api -->
+		<repository>
+			<id>gmaps</id>
+			<url>http://cloud1.cggh.org/maven2/</url>
+		</repository>
 	</repositories>
 </project>
