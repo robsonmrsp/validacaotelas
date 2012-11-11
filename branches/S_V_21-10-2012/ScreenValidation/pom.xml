@@ -20,11 +20,13 @@
 	</properties>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.google.gwt.google-apis</groupId>
 			<artifactId>gwt-maps</artifactId>
-			<version>1.1.1</version>
+			<version>1.0.4</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.extjs</groupId>
 			<artifactId>gxt</artifactId>
@@ -82,7 +84,6 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.2.0</version>
 				<dependencies>
-
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
@@ -234,12 +235,6 @@
 		<repository>
 			<id>universidade california</id>
 			<url>http://maven.ucdavis.edu/maven2</url>
-		</repository>
-
-		<!-- Por causa do gwt-maps-api -->
-		<repository>
-			<id>gmaps</id>
-			<url>http://cloud1.cggh.org/maven2/</url>
 		</repository>
 	</repositories>
 </project>
