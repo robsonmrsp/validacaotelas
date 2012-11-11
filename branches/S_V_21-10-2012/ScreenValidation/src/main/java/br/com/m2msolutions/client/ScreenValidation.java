@@ -1,11 +1,14 @@
 package br.com.m2msolutions.client;
 
-import br.com.m2msolutions.client.container.AttendanceWindow;
+import br.com.m2msolutions.client.container.ContentPanelImp;
+import br.com.m2msolutions.client.container.CopyOfAttendanceWindow;
 import br.com.m2msolutions.client.container.CriticalEventsWidget;
 import br.com.m2msolutions.client.images.Images;
 import br.com.mr.dock.client.DockDesktop;
 import br.com.mr.dock.client.menu.DockSelectionAction;
 
+import com.extjs.gxt.ui.client.fx.Draggable;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.EntryPoint;
@@ -16,24 +19,23 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class ScreenValidation implements EntryPoint {
 
-	@Override
-	public void onModuleLoad() {
-		AttendanceWindow attendanceWindow = new AttendanceWindow();
-//		AdvancedFormsExample attendanceWindow = new AdvancedFormsExample();
+	public void onModuleLoad1() {
+		CopyOfAttendanceWindow attendanceWindow = new CopyOfAttendanceWindow();
+		// AdvancedFormsExample attendanceWindow = new AdvancedFormsExample();
 		attendanceWindow.setAutoWidth(true);
-//		attendanceWindow.setSize(1015, 500);
-		
+		// attendanceWindow.setSize(1015, 500);
+
 		Window window = new Window();
 		window.setMaximizable(true);
 		window.setMinimizable(true);
 		window.setLayout(new FitLayout());
 		window.setSize(1015, 550);
-		
+
 		window.add(attendanceWindow);
 		window.show();
 	}
 
-	public void onModuleLoad_() {
+	public void onModuleLoad() {
 
 		RootPanel rootPanel = RootPanel.get();
 
@@ -88,11 +90,14 @@ public class ScreenValidation implements EntryPoint {
 		rootPanel.add(dockDesktop);
 	}
 
-	public void onModuleLoad2() {
-		FormUser formUser = new FormUser();
+	public void onModuleLoad___() {
+		ContentPanel formUser = new ContentPanelImp();
+		// formUser.getHeader().addTool(new Button("Z"));
+		// formUser.getHeader().addTool(new Button("A"));
+		// formUser.getHeader().addTool(new Button("X"));
+		Draggable d = new Draggable(formUser);
 		formUser.show();
 		formUser.setSize(310, 130);
 		RootPanel.get().add(formUser);
 	}
-
 }
