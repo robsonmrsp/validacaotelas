@@ -48,9 +48,7 @@ public class AttendanceWindow extends LayoutContainer {
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-
-		BorderLayoutData westData = new BorderLayoutData(LayoutRegion.WEST, 255.0f);
-		add(getLeftContainer(), westData);
+		add(getLeftContainer(), new BorderLayoutData(LayoutRegion.WEST, 255.0f));
 		add(getMidleContainer(), new BorderLayoutData(LayoutRegion.CENTER));
 		getRightContainer().setLayout(new RowLayout(Orientation.VERTICAL));
 		add(getRightContainer(), new BorderLayoutData(LayoutRegion.EAST));

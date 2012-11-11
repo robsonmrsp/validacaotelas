@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -59,7 +60,7 @@ public class CriticalEventsWidget extends DockWindow {
 	private LayoutContainer footer;
 	private SearchBox searchBox;
 	private LayoutContainer buttonAttContainer;
-	
+
 	private LayoutContainer gridContainer;
 	private Image image_1;
 
@@ -219,13 +220,13 @@ public class CriticalEventsWidget extends DockWindow {
 	@Override
 	public void show() {
 		super.show();
-		
+
 		setPosition(300, 100);
 		if (!isAttached()) {
 			RootPanel.get().add(this);
 		}
 		el().makePositionable(true);
-		
+
 		this.setStyleAttribute("opacity", "0.976543");
 		this.el().dom.setAttribute("opacity", "0.976543");
 	}
@@ -369,20 +370,21 @@ public class CriticalEventsWidget extends DockWindow {
 			buttonAttContainer.add(getImage_1());
 			buttonAttContainer.setToolTip("Ver consulta de atendimento");
 			buttonAttContainer.setStyleAttribute("cursor", "pointer");
+
 		}
 		return buttonAttContainer;
 	}
 
-//	private TextBox getSearchBox() {
-//		if (searchBox == null) {
-//			searchBox = new TextBox();
-////			searchBox.setHeight("16px");
-//			searchBox.getElement().setId("search");
-//			searchBox.getElement().setAttribute("placeholder", "Buscar");
-//			searchBox.setStyleName("search-box");
-//		}
-//		return searchBox;
-//	}
+	// private TextBox getSearchBox() {
+	// if (searchBox == null) {
+	// searchBox = new TextBox();
+	// // searchBox.setHeight("16px");
+	// searchBox.getElement().setId("search");
+	// searchBox.getElement().setAttribute("placeholder", "Buscar");
+	// searchBox.setStyleName("search-box");
+	// }
+	// return searchBox;
+	// }
 
 	private LayoutContainer getGridContainer() {
 		if (gridContainer == null) {
@@ -400,7 +402,28 @@ public class CriticalEventsWidget extends DockWindow {
 		if (image_1 == null) {
 			image_1 = new Image(Images.INSTANCE.attendance24());
 			image_1.setSize("24px", "24px");
+			image_1.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					queryAttendanceWindow().show();
+				}
+			});
 		}
 		return image_1;
+	}
+
+	private Window queryAttendanceWindow() {
+		CopyOfAttendanceWindow attendanceWindow = new CopyOfAttendanceWindow();
+		attendanceWindow.setAutoWidth(true);
+
+		Window window = new Window();
+		window.setMaximizable(true);
+		window.setMinimizable(true);
+		window.setLayout(new FitLayout());
+		window.setSize(1015, 550);
+
+		window.add(attendanceWindow);
+		return window;
 	}
 }

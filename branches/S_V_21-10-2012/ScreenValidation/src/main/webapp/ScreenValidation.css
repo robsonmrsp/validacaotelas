@@ -68,3 +68,12 @@ body{
 #grid .x-grid3-cell{
 	vertical-align: middle !important;
 }
+
+.new-x-panel-header {
+    color:#15428b;
+    font-weight:bold; 
+    font-size: 11px;
+    font-family: tahoma,arial,verdana,sans-serif;
+    border-color:#15428b !important;
+    background-image: url(/images/white-top-bottom.gif);
+}
