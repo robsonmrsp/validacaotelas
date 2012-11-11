@@ -1,0 +1,3 @@
+
+Deploy da aplicação supondo que a pasta ${diretorio} contem o resultado da compilação da aplicação.
+appcfg.cmd update ${diretorio} 
