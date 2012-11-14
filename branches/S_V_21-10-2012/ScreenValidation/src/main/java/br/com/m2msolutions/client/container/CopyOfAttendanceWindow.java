@@ -4,6 +4,7 @@ import br.com.m2msolutions.client.images.Images;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.core.XTemplate;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -19,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.layout.ColumnData;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.geom.LatLng;
@@ -31,7 +33,9 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
 import com.extjs.gxt.ui.client.Style.IconAlign;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
+import com.extjs.gxt.ui.client.widget.Html;
 
 public class CopyOfAttendanceWindow extends LayoutContainer {
 	private LayoutContainer leftContainer;
@@ -42,7 +46,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private TextField txtfldNewTextfield;
 	private TextField txtfldNewTextfield_1;
 	private ComboBox cmbxNewCombobox;
-	private ListView listView;
+	private ListView<DtoEvent> listView;
 	private DateField fieldDateFrom;
 	private DateField dtfldNewDatefield_1;
 	private ContentPanelImp aboutEventContainer;
@@ -57,6 +61,13 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private LayoutContainer layoutContainer_3;
 	private Button btnNewButton;
 
+	private XTemplate aboutEventTemplate;
+	private XTemplate contactTemplate;
+	private XTemplate locationTemplate;
+
+	private Html htmlVehicleLocation;
+	private Html htmlAboutEvent;
+
 	public CopyOfAttendanceWindow() {
 		initComponents();
 	}
@@ -65,8 +76,18 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		setLayout(new BorderLayout());
 		add(getLeftContainer(), new BorderLayoutData(LayoutRegion.WEST, 305.0f));
 		add(getMidleContainer(), new BorderLayoutData(LayoutRegion.CENTER));
-		getRightContainer().setLayout(new RowLayout(Orientation.VERTICAL));
 		add(getRightContainer(), new BorderLayoutData(LayoutRegion.EAST, 280.0f));
+
+		createTemplates();
+
+	}
+
+	private void createTemplates() {
+		aboutEventTemplate = XTemplate.create(createTemplateAboutEvent());
+	}
+
+	private void updateAboutEventContainer(DtoAboutEvent aboutEent) {
+		aboutEventTemplate.overwrite(htmlAboutEvent.getElement(), Util.getJsObject(aboutEent));
 	}
 
 	private LayoutContainer getLeftContainer() {
@@ -85,7 +106,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			midleContainer = new LayoutContainer();
 			midleContainer.setBorders(false);
 			midleContainer.setLayout(new RowLayout(Orientation.VERTICAL));
-			midleContainer.add(getAboutEventContainer(), new RowData(-1, 200));
+			midleContainer.add(getAboutEventContainer(), new RowData(-1, 145.0));
 			midleContainer.add(getVehicleLocationContainer(), new RowData(-1, 130.0));
 			midleContainer.add(getMapContainer(), new RowData(-1, 100.0));
 		}
@@ -96,6 +117,9 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		if (rightContainer == null) {
 			rightContainer = new LayoutContainer();
 			rightContainer.setBorders(false);
+			RowLayout rl_rightContainer = new RowLayout(Orientation.VERTICAL);
+			rl_rightContainer.setExtraStyle("border-layout");
+			rightContainer.setLayout(rl_rightContainer);
 			rightContainer.add(getContactContainer());
 			rightContainer.add(getOccurrenceRecordsContainer());
 		}
@@ -148,12 +172,33 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return cmbxNewCombobox;
 	}
 
-	private ListView getListView() {
+	private ListView<DtoEvent> getListView() {
 		if (listView == null) {
-			listView = new ListView(new ListStore());
+			listView = new ListView<DtoEvent>(createEventListStore());
+
+			listView.setTemplate(createEventTemplate());
+
 			listView.setSize("-1", "150");
 		}
 		return listView;
+	}
+
+	private String createEventTemplate() {
+		StringBuffer template = new StringBuffer();
+
+		template.append("<p>Inicio: {" + DtoEvent.START_TIME + "}</p>");
+		template.append("<p>Veículo: {" + DtoEvent.VEHICLE_CODE + "}</p>");
+		template.append("<p>Atendente: {" + DtoEvent.OPERATOR + "}</p>");
+		template.append("<p>Protocolo: {" + DtoEvent.PROTOCOL + "}</p>");
+
+		return template.toString();
+	}
+
+	private ListStore<DtoEvent> createEventListStore() {
+
+		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
+
+		return listStore;
 	}
 
 	private DateField getFieldDateFrom() {
@@ -178,6 +223,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			aboutEventContainer = new ContentPanelImp();
 			aboutEventContainer.setHeading("Sobre o Evento");
 			aboutEventContainer.setCollapsible(true);
+			aboutEventContainer.add(getHtmlAboutEvent());
 		}
 		return aboutEventContainer;
 	}
@@ -187,6 +233,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			vehicleLocationContainer = new ContentPanelImp();
 			vehicleLocationContainer.setHeading("Veículo e Localização");
 			vehicleLocationContainer.setCollapsible(true);
+			vehicleLocationContainer.add(getHtmlVehicleLocation());
 		}
 		return vehicleLocationContainer;
 	}
@@ -224,11 +271,11 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 
 	private ToolButton createEditButton() {
 		return new ToolButton(Images.INSTANCE.edit16(), new Listener<BaseEvent>() {
-		@Override
-		public void handleEvent(BaseEvent be) {
-			Window.alert("editando");
-		}
-	});
+			@Override
+			public void handleEvent(BaseEvent be) {
+				Window.alert("editando");
+			}
+		});
 	}
 
 	private ToolButton createPrinterButton() {
@@ -254,6 +301,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return mapLocation;
 
 	}
+
 	private LayoutContainer getLayoutContainer() {
 		if (layoutContainer == null) {
 			layoutContainer = new LayoutContainer();
@@ -263,16 +311,18 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		}
 		return layoutContainer;
 	}
+
 	private LayoutContainer getLayoutContainer_1() {
 		if (layoutContainer_1 == null) {
 			layoutContainer_1 = new LayoutContainer();
 			layoutContainer_1.setLayout(new ColumnLayout());
 			layoutContainer_1.add(getLayoutContainer_2(), new ColumnData(.5));
 			layoutContainer_1.add(getLayoutContainer_3(), new ColumnData(.5));
-			
+
 		}
 		return layoutContainer_1;
 	}
+
 	private LayoutContainer getLayoutContainer_2() {
 		if (layoutContainer_2 == null) {
 			layoutContainer_2 = new LayoutContainer();
@@ -280,34 +330,64 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			fl_layoutContainer_2.setLabelAlign(LabelAlign.TOP);
 			layoutContainer_2.setLayout(fl_layoutContainer_2);
 			FormData fd_txtfldNewTextfield_1 = new FormData("100%");
-			fd_txtfldNewTextfield_1.setMargins(new Margins(0, 5, 0, 5));
+			fd_txtfldNewTextfield_1.setMargins(new Margins(0, 5, 0, 0));
 			layoutContainer_2.add(getTxtfldNewTextfield_1(), fd_txtfldNewTextfield_1);
 			FormData fd_cmbxNewCombobox = new FormData("100%");
-			fd_cmbxNewCombobox.setMargins(new Margins(0, 5, 0, 5));
+			fd_cmbxNewCombobox.setMargins(new Margins(0, 5, 0, 0));
 			layoutContainer_2.add(getCmbxNewCombobox(), fd_cmbxNewCombobox);
 		}
 		return layoutContainer_2;
 	}
+
 	private LayoutContainer getLayoutContainer_3() {
 		if (layoutContainer_3 == null) {
 			layoutContainer_3 = new LayoutContainer();
 			FormLayout fl_layoutContainer_3 = new FormLayout();
 			fl_layoutContainer_3.setLabelAlign(LabelAlign.TOP);
 			layoutContainer_3.setLayout(fl_layoutContainer_3);
-//			layoutContainer_3.add(getCmbxNewCombobox(), new FormData("0"));
+			// layoutContainer_3.add(getCmbxNewCombobox(), new FormData("0"));
 			FormData fd_txtfldNewTextfield = new FormData("0");
-			fd_txtfldNewTextfield.setMargins(new Margins(0, 5, 0, 5));
+			fd_txtfldNewTextfield.setMargins(new Margins(0, 0, 0, 5));
 			layoutContainer_3.add(getTxtfldNewTextfield(), fd_txtfldNewTextfield);
 			FormData fd_btnNewButton = new FormData("100%");
-			fd_btnNewButton.setMargins(new Margins(20, 5, 0, 60));
+			fd_btnNewButton.setMargins(new Margins(20, 0, 0, 60));
 			layoutContainer_3.add(getBtnNewButton(), fd_btnNewButton);
 		}
 		return layoutContainer_3;
 	}
+
 	private Button getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new Button("New Button");
 		}
 		return btnNewButton;
+	}
+
+	private Html getHtmlVehicleLocation() {
+		if (htmlVehicleLocation == null) {
+			htmlVehicleLocation = new Html(
+					"\t<table id=\"template-vehicle-location\", class=\"vehicle-location\">\r\n\t\t<tr>\r\n\t\t\t<td style=\"width: 200px; \">Veículo: 3050</td>\r\n\t\t\t<td style=\"width: 200px; \">Endereço: BR 123</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Linha: SantaCruz</td>\r\n\t\t\t<td>Latitude: 12,345</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Empresa: SantaCruz</td>\r\n\t\t\t<td>Longitude: 22,345</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Proximo ponto: ETUFOR</td>\r\n\t\t</tr>\r\n\t</table>");
+		}
+		return htmlVehicleLocation;
+	}
+
+	private Html getHtmlAboutEvent() {
+		if (htmlAboutEvent == null) {
+			htmlAboutEvent = new Html(
+					"\t<div id=\"template-about-event\" class=\"about-event\">\r\n\t\t<br> Numero do protocolo: 12345 \r\n\t\t<br>Inicio do evento: 09/07/2012 14:30 \r\n\t\t<br>Inicio do atendimento: 09/07/2012 14:31 \r\n\t\t<br>Tempo de corrido do atendimento: 5m \r\n\t\t<br>Atendente atual: Operador 1 \r\n\t\t<br>Conclusão do atendimento: 14:35\r\n\t</div>");
+		}
+		return htmlAboutEvent;
+	}
+
+	String createTemplateAboutEvent() {
+		StringBuffer template = new StringBuffer();
+		template.append("<div id=\"template-about-event\" class=\"about-event\">");
+		template.append("<br> Numero do protocolo: {" + DtoAboutEvent.PROTOCOL + "} ");
+		template.append("<br>Inicio do atendimento: {" + DtoAboutEvent.START_TIME + "} ");
+		template.append("<br>Tempo de corrido do atendimento: {" + DtoAboutEvent.DURATION + "} ");
+		template.append("<br>Atendente atual: Operador {" + DtoAboutEvent.OPERATOR + "} ");
+		template.append("<br>Conclusão do atendimento: {" + DtoAboutEvent.CONSLUSION + "}");
+		template.append("</div>");
+		return template.toString();
 	}
 }
