@@ -416,6 +416,9 @@ public class CriticalEventsWidget extends DockWindow {
 		attendanceWindow.setAutoWidth(true);
 
 		Window window = new Window();
+		window.setBodyBorder(false);
+		window.setBorders(false);
+		
 		window.setMaximizable(true);
 		window.setMinimizable(true);
 		window.setLayout(new FitLayout());
