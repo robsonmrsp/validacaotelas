@@ -1,5 +1,24 @@
 
 Deploy da aplicação supondo que a pasta ${diretorio} contem o resultado da compilação da aplicação.
 
+
+
+Abra um CMD PROMPT apontando para a pasta da aplicação (com ou sem o open External)
+
+no PROMPT digite deployApp, como abaixo:
+
+	C:\ ${DIRETORIO_DA_SUA_APP} deployApp
+
+Será solicitado usuário e senha do google para acesso ao APPSPOT
+
+Se deu tudo certo é por que deu certo!.
+
+
+nota:
+O deploy simplesmente executa os comandos abaixo
+	mvn gwt:clean gwt:compile package
+	appcfg.cmd update target\ScreenValidation-1.0-SNAPSHOT 
+
+
 appcfg.cmd update ${diretorio} 
 
