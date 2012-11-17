@@ -12,12 +12,18 @@ public class DtoEvent extends BaseModelData {
 	public static final String IMAGE_SRC = "imageSrc";
 	public static final String DESCRIPTION = "description";
 
-	// public String startTime;
-	// public String vehicleCode;
+//	 public String vehicleCode;
+//	 public String startTime;
 	// public String operator;
 	// public String protocol;
 	// public String imageSrc;
 	// public String description;
+	public DtoEvent(String src, String vehicle, String startTime) {
+		setVehicleCode(vehicle);
+		setImageSrc(src);
+		setStartTime(startTime);
+	}
+
 	public DtoEvent(String src, String desc) {
 		setImageSrc(src);
 		setDescription(desc);
@@ -70,4 +76,36 @@ public class DtoEvent extends BaseModelData {
 	public void setDescription(String description) {
 		set(DESCRIPTION, description);
 	}
+	
+	
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getStartTime() == null) ? 0 : getStartTime().hashCode());
+		result = prime * result + ((getVehicleCode() == null) ? 0 : getVehicleCode().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DtoEvent other = (DtoEvent) obj;
+		if (getStartTime() == null) {
+			if (other.getStartTime() != null)
+				return false;
+		} else if (!getStartTime().equals(other.getStartTime()))
+			return false;
+		if (getVehicleCode() == null) {
+			if (other.getVehicleCode() != null)
+				return false;
+		} else if (!getVehicleCode().equals(other.getVehicleCode()))
+			return false;
+		return true;
+	}
+
 }
