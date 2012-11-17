@@ -17,7 +17,6 @@ import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
@@ -42,7 +41,6 @@ import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
-import com.extjs.gxt.ui.client.widget.layout.FillLayout;
 
 public class CopyOfAttendanceWindow extends LayoutContainer {
 	private ContentPanelImp queryContainer;
@@ -50,8 +48,9 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private TextField<String> textFieldProtocol;
 	private TextField<String> textFieldVehicle;
 	private ComboBox<DtoOperator> comboOperator;
-	private ListView<DtoEvent> listViewEvents;
-	private ListView<DtoRecord> listViewRecords;
+	// private ListView<DtoEvent> listViewEvents;
+	private Grid<DtoEvent> gridEvents;
+	private Grid<DtoRecord> gridRecords;
 	private DateField dateFieldTo;
 	private DateField dateFieldFrom;
 	private ContentPanelImp aboutEventContainer;
@@ -76,10 +75,13 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private LayoutContainer toFromContainer;
 	private LayoutContainer protocolContainer;
 
-	Grid<DtoEvent> grid;
-	LayoutContainer gridContainer;
+	// Grid<DtoEvent> grid;
+	// LayoutContainer gridContainer;
 	GridCellRenderer<DtoEvent> imageCellRender;
+	GridCellRenderer<DtoRecord> imageRecordCellRender;
+
 	private GridCellRenderer<DtoEvent> descriptionCellRender;
+	private GridCellRenderer<DtoRecord> descriptionRecordCellRender;
 
 	public CopyOfAttendanceWindow() {
 		initComponents();
@@ -95,9 +97,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		addListener(Events.Attach, new Listener<BaseEvent>() {
 			@Override
 			public void handleEvent(BaseEvent be) {
-				// listViewEvents.getStore().add(testeListe());
-				// listViewEvents.recalculate();
-				// listViewEvents.refresh();
+
 			}
 		});
 	}
@@ -217,19 +217,6 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return htmlContact;
 	}
 
-	private ListView<DtoEvent> getListViewEvents() {
-		if (listViewEvents == null) {
-			listViewEvents = new ListView<DtoEvent>();
-			listViewEvents.setDisplayProperty(DtoEvent.START_TIME);
-			listViewEvents.setStore(createEventListStore());
-
-			listViewEvents.setBorders(false);
-			// listViewEvents.setSize("-1", "290");
-			listViewEvents.setTemplate(AttendanceWidGetTemplates.EVENTS);
-		}
-		return listViewEvents;
-	}
-
 	private ListStore<DtoEvent> createEventListStore() {
 
 		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
@@ -249,13 +236,43 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return listStore;
 	}
 
-	private ListView<DtoRecord> getListViewRecords() {
-		if (listViewRecords == null) {
-			listViewRecords = new ListView<DtoRecord>(new ListStore<DtoRecord>());
-			listViewRecords.setTemplate(AttendanceWidGetTemplates.RECORD_MESSAGES);
-			listViewRecords.setSize("-1", "350");
+	private Grid<DtoRecord> getGridRecords() {
+		if (gridRecords == null) {
+			gridRecords = new Grid<DtoRecord>(createRecordListStory(), createRecordColumnConfig());
+			gridRecords.setSize("-1", "290");
+			gridRecords.setMinColumnWidth(150);
+			gridRecords.setAutoExpandMin(150);
+			gridRecords.setAutoExpandMax(1000);
+			gridRecords.setBorders(false);
+			gridRecords.setId("gridRecords");
+			gridRecords.setAutoWidth(true);
+			gridRecords.setColumnResize(true);
+			gridRecords.setWidth(Style.DEFAULT);
+			gridRecords.setHideHeaders(true);
+			gridRecords.setHeight(Style.DEFAULT);
+			gridRecords.setAutoExpandColumn(DtoRecord.DESCRIPTION);
 		}
-		return listViewRecords;
+		return gridRecords;
+	}
+
+	private Grid<DtoEvent> getGridEvents() {
+		if (gridEvents == null) {
+			gridEvents = new Grid<DtoEvent>(createListStory(), createColumnConfig());
+			gridEvents.setSize("-1", "290");
+			gridEvents.setMinColumnWidth(150);
+			gridEvents.setAutoExpandMin(150);
+			gridEvents.setAutoExpandMax(1000);
+			gridEvents.setBorders(false);
+			gridEvents.setId("gridEvents");
+			gridEvents.setAutoWidth(true);
+			gridEvents.setColumnResize(true);
+			gridEvents.setWidth(Style.DEFAULT);
+			gridEvents.setHideHeaders(true);
+			gridEvents.setHeight(Style.DEFAULT);
+			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
+
+		}
+		return gridEvents;
 	}
 
 	private ContentPanelImp getEventsContainer() {
@@ -265,7 +282,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			eventsContainer.setBorders(false);
 			// eventsContainer.setSize("100%", "100%");
 			eventsContainer.setLayout(new FitLayout());
-			eventsContainer.add(getGrid());
+			eventsContainer.add(getGridEvents());
 		}
 		return eventsContainer;
 	}
@@ -295,7 +312,6 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private ContentPanelImp getContactContainer() {
 		if (contactContainer == null) {
 			contactContainer = new ContentPanelImp();
-			contactContainer.setHeight("150");
 			contactContainer.setHeading("Contato");
 			contactContainer.setCollapsible(true);
 			contactContainer.add(getHtmlContact());
@@ -312,7 +328,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			occurrenceRecordsContainer.addToolButton(createPrinterButton());
 			occurrenceRecordsContainer.setCollapsible(true);
 			occurrenceRecordsContainer.setLayout(new FitLayout());
-			occurrenceRecordsContainer.add(getListViewRecords());
+			occurrenceRecordsContainer.add(getGridRecords());
 		}
 		return occurrenceRecordsContainer;
 	}
@@ -380,11 +396,17 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		if (rightContainer == null) {
 			rightContainer = new LayoutContainer();
 			rightContainer.setBorders(false);
-			RowLayout rl_rightContainer = new RowLayout(Orientation.VERTICAL);
-			rl_rightContainer.setExtraStyle("border-layout");
-			rightContainer.setLayout(rl_rightContainer);
-			rightContainer.add(getContactContainer());
-			rightContainer.add(getOccurrenceRecordsContainer());
+			rightContainer.setLayout(new BorderLayout());
+			BorderLayoutData northData = new BorderLayoutData(LayoutRegion.NORTH, 150.0f);
+			northData.setMinSize(150);
+			northData.setMaxSize(150);
+			rightContainer.add(getContactContainer(), northData);
+
+			BorderLayoutData centerData = new BorderLayoutData(LayoutRegion.CENTER, 315.0f);
+			centerData.setMinSize(315);
+			centerData.setMaxSize(550);
+
+			rightContainer.add(getOccurrenceRecordsContainer(), centerData);
 		}
 		return rightContainer;
 	}
@@ -459,41 +481,20 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return listStore;
 	}
 
-	// private LayoutContainer getGridContainer() {
-	//
-	// if (gridContainer == null) {
-	// gridContainer = new LayoutContainer();
-	// gridContainer.setBorders(true);
-	// gridContainer.setId("gridContainer");
-	// gridContainer.setLayout(new FitLayout());
-	// // gridContainer.setHeight(200);
-	// gridContainer.add(getGrid());
-	// }
-	// return gridContainer;
-	// }
+	private ListStore<DtoRecord> createRecordListStory() {
+		ListStore<DtoRecord> listStore = new ListStore<DtoRecord>();
 
-	private Grid<DtoEvent> getGrid() {
-		if (grid == null) {
-			grid = new Grid<DtoEvent>(createListStory(), createColumnConfig());
-			grid.setSize("-1", "290");
-			grid.setMinColumnWidth(150);
-			grid.setAutoExpandMin(150);
-			grid.setAutoExpandMax(1000);
-			grid.setBorders(false);
-			grid.setId("grid");
-			grid.setAutoWidth(true);
-			grid.setColumnResize(true);
-			grid.setWidth(Style.DEFAULT);
-			grid.setHideHeaders(true);
-			grid.setHeight(Style.DEFAULT);
-			grid.setAutoExpandColumn(DtoEvent.DESCRIPTION);
+		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:31", "Posso ir almoçar?"));
+		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Claro que sim?"));
+		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Tá na hora mesmo?"));
 
-		}
-		return grid;
+		return listStore;
 	}
 
 	private ListStore<DtoEvent> createListStory() {
 		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
+
 		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  (CCO BRT) - 1 min "));
 		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3050 - (CCO BRT) - 1 min "));
 		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 - (CCO BRT) - 1 min "));
@@ -514,6 +515,23 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return listStore;
 	}
 
+	private ColumnModel createRecordColumnConfig() {
+		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+
+		ColumnConfig column = new ColumnConfig();
+		column.setId(DtoRecord.IMAGE_SRC);
+		column.setWidth(35);
+		column.setRenderer(createRecordImageCellRender());
+		configs.add(column);
+
+		ColumnConfig column2 = new ColumnConfig();
+		column2.setId(DtoRecord.DESCRIPTION);
+		column2.setRenderer(createRecordDescriptionCellRender());
+		configs.add(column2);
+		ColumnModel columnModel = new ColumnModel(configs);
+		return columnModel;
+	}
+
 	private ColumnModel createColumnConfig() {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
@@ -532,6 +550,16 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		ColumnModel columnModel = new ColumnModel(configs);
 
 		return columnModel;
+	}
+
+	private GridCellRenderer<DtoRecord> createRecordImageCellRender() {
+		imageRecordCellRender = new GridCellRenderer<DtoRecord>() {
+			@Override
+			public Object render(DtoRecord model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoRecord> store, Grid<DtoRecord> grid) {
+				return "<span><img src=\"" + model.getImageSrc() + "\" alt=\"image\">  </span>";
+			}
+		};
+		return imageRecordCellRender;
 	}
 
 	private GridCellRenderer<DtoEvent> createImageCellRender() {
@@ -556,6 +584,33 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			}
 		};
 		return descriptionCellRender;
+	}
+
+	private GridCellRenderer<DtoRecord> createRecordDescriptionCellRender() {
+		descriptionRecordCellRender = new GridCellRenderer<DtoRecord>() {
+			@Override
+			public Object render(DtoRecord model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoRecord> store, Grid<DtoRecord> grid) {
+				return getRecordRendered(model);
+			}
+		};
+		return descriptionRecordCellRender;
+	}
+
+	protected Object getRecordRendered(DtoRecord model) {
+		StringBuffer rendered = new StringBuffer();
+		rendered.append("<div id=\"template-record-messages\" class=\"record-messages\">");
+		rendered.append("	<table>");
+		rendered.append("		<tr>");
+		rendered.append("			<td>");
+		rendered.append("				 <div id=\"record\" class=\"record\">");
+		rendered.append("				 	 [ " + model.getMessageDate() + " ] " + model.getMessage());
+		rendered.append("				 </div> ");
+		rendered.append("			</td>");
+		rendered.append("		</tr>");
+		rendered.append("	</table>");
+		rendered.append("</div>");
+
+		return rendered.toString();
 	}
 
 	protected String getRendered(DtoEvent model) {
