@@ -67,4 +67,10 @@ public interface Images extends ClientBundle {
 	
 	@Source("br/com/m2msolutions/client/images/editor16.png")
 	ImageResource  edit16();
+	
+	@Source("br/com/m2msolutions/client/images/vehicle.png")
+	ImageResource  vehicle16();
+	
+	@Source("br/com/m2msolutions/client/images/driver14.png")
+	ImageResource  driver14();
 }
