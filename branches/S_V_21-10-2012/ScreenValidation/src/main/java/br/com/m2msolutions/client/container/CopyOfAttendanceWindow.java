@@ -356,7 +356,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			bld_queryContainer.setMaxSize(180);
 			leftContainer.add(getQueryContainer(), bld_queryContainer);
 			BorderLayoutData bld_eventsContainer = new BorderLayoutData(LayoutRegion.CENTER, 315.0f);
-			bld_eventsContainer.setMinSize(350);
+			bld_eventsContainer.setMinSize(315);
 			bld_eventsContainer.setMaxSize(550);
 
 			leftContainer.add(getEventsContainer(), bld_eventsContainer);
