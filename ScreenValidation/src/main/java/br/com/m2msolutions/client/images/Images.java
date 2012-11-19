@@ -28,6 +28,9 @@ public interface Images extends ClientBundle {
 	
 	@Source("br/com/m2msolutions/client/images/attendance24.png")
 	ImageResource attendance24();
+	
+	@Source("br/com/m2msolutions/client/images/attendance22.png")
+	ImageResource attendance22();
 
 	@Source("br/com/m2msolutions/client/images/link.png")
 	ImageResource link128();
@@ -47,11 +50,29 @@ public interface Images extends ClientBundle {
 	@Source("br/com/m2msolutions/client/images/alert24.png")
 	ImageResource  alert24();
 	
+	@Source("br/com/m2msolutions/client/images/alert22.png")
+	ImageResource  alert22();
+
+	@Source("br/com/m2msolutions/client/images/alert16.png")
+	ImageResource  alert16();
+	
 	@Source("br/com/m2msolutions/client/images/message24.png")
 	ImageResource  message24();
 	
+	@Source("br/com/m2msolutions/client/images/message22.png")
+	ImageResource  message22();
+	
+	@Source("br/com/m2msolutions/client/images/message16.png")
+	ImageResource  message16();
+	
 	@Source("br/com/m2msolutions/client/images/pane24.png")
 	ImageResource  pane24();
+	
+	@Source("br/com/m2msolutions/client/images/pane22.png")
+	ImageResource  pane22();
+	
+	@Source("br/com/m2msolutions/client/images/pane16.png")
+	ImageResource  pane16();
 	
 	@Source("br/com/m2msolutions/client/images/map128.png")
 	ImageResource  map128();
