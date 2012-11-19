@@ -1,40 +1,66 @@
 package br.com.m2msolutions.client.container;
 
+import java.util.Date;
+
 import com.extjs.gxt.ui.client.data.BaseModelData;
 
 public class DtoEvent extends BaseModelData {
+
 	private static final long serialVersionUID = 6308342747740478807L;
 
-	public static final String START_TIME = "startTime";
+	public static final String START_DATE_TIME_AS_STRING = "startTime";
+	public static final String START_DATE_TIME = "startTime";
 	public static final String VEHICLE_CODE = "vehicleCode";
 	public static final String OPERATOR = "operator";
 	public static final String PROTOCOL = "protocol";
 	public static final String IMAGE_SRC = "imageSrc";
 	public static final String DESCRIPTION = "description";
+	public static final String CATEGORY = "category";
+	public static final String STATUS = "status";
+	public static final String TIME_IN_EVENT = "timeInEvent";
+	public static final String TIME_ATTENDANCE = "timeAttendance";
 
-//	 public String vehicleCode;
-//	 public String startTime;
-	// public String operator;
-	// public String protocol;
-	// public String imageSrc;
-	// public String description;
-	public DtoEvent(String src, String vehicle, String startTime) {
+	public DtoEvent(String src, String vehicle, Date startTime, String category, String operator, String protocol, String status, String timeInEvent, String timeAttendance) {
+		this(src, vehicle, startTime, category);
+		setOperator(operator);
+		setProtocol(protocol);
+		setStatus(status);
+		setTimeInEvent(timeInEvent);
+		setTimeAttendance(timeAttendance);
+	}
+
+	public DtoEvent(String src, String vehicle, Date startTime, String category) {
+		this(src, vehicle, startTime);
+		setCategory(category);
+	}
+
+	public DtoEvent(String src, String vehicle, Date startTime) {
+		this(src, vehicle);
+		setStartDateTime(startTime);
+	}
+
+	public DtoEvent(String src, String vehicle) {
+		setImageSrc(src);
 		setVehicleCode(vehicle);
-		setImageSrc(src);
-		setStartTime(startTime);
 	}
 
-	public DtoEvent(String src, String desc) {
-		setImageSrc(src);
-		setDescription(desc);
+	public String getStartDateTimeAsText() {
+
+		return get(START_DATE_TIME_AS_STRING);
 	}
 
-	public String getStartTime() {
-		return get(START_TIME);
+	public void setStartDateTimeAsText(String startTime) {
+		set(START_DATE_TIME_AS_STRING, startTime);
+
 	}
 
-	public void setStartTime(String startTime) {
-		set(START_TIME, startTime);
+	public Date getStartDateTime() {
+		return get(START_DATE_TIME);
+	}
+
+	public void setStartDateTime(Date startTime) {
+		setStartDateTimeAsText(UtilData.format(startTime));
+		set(START_DATE_TIME, startTime);
 	}
 
 	public String getVehicleCode() {
@@ -50,7 +76,7 @@ public class DtoEvent extends BaseModelData {
 	}
 
 	public void setOperator(String operator) {
-		get(OPERATOR, operator);
+		set(OPERATOR, operator);
 	}
 
 	public String getProtocol() {
@@ -76,12 +102,11 @@ public class DtoEvent extends BaseModelData {
 	public void setDescription(String description) {
 		set(DESCRIPTION, description);
 	}
-	
-	
+
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((getStartTime() == null) ? 0 : getStartTime().hashCode());
+		result = prime * result + ((getStartDateTime() == null) ? 0 : getStartDateTime().hashCode());
 		result = prime * result + ((getVehicleCode() == null) ? 0 : getVehicleCode().hashCode());
 		return result;
 	}
@@ -95,10 +120,10 @@ public class DtoEvent extends BaseModelData {
 		if (getClass() != obj.getClass())
 			return false;
 		DtoEvent other = (DtoEvent) obj;
-		if (getStartTime() == null) {
-			if (other.getStartTime() != null)
+		if (getStartDateTime() == null) {
+			if (other.getStartDateTime() != null)
 				return false;
-		} else if (!getStartTime().equals(other.getStartTime()))
+		} else if (!getStartDateTime().equals(other.getStartDateTime()))
 			return false;
 		if (getVehicleCode() == null) {
 			if (other.getVehicleCode() != null)
@@ -108,4 +133,56 @@ public class DtoEvent extends BaseModelData {
 		return true;
 	}
 
+	public String getCategory() {
+		return get(CATEGORY);
+	}
+
+	public void setCategory(String category) {
+		set(CATEGORY, category);
+	}
+
+	public String getStatus() {
+		return get(STATUS);
+	}
+
+	public void setStatus(String status) {
+		set(STATUS, status);
+	}
+
+	public String getTimeAttendance() {
+		return get(TIME_ATTENDANCE);
+	}
+
+	public String getTimeInEvent() {
+
+		return get(TIME_IN_EVENT);
+	}
+
+	public void setTimeInEvent(String timeInEvent) {
+		set(TIME_IN_EVENT, timeInEvent);
+	}
+
+	public void setTimeAttendance(String timeAttendance) {
+		set(TIME_ATTENDANCE, timeAttendance);
+	}
+
+	public Boolean matchCi(String regex) {
+		return getAllFiels().toLowerCase().contains(regex.toLowerCase());
+	}
+
+	public Boolean match(String regex) {
+		return getAllFiels().contains(regex);
+
+	}
+
+	private String getAllFiels() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(getVehicleCode());
+		buffer.append(getDescription());
+		buffer.append(getCategory());
+		buffer.append(getOperator());
+		buffer.append(getProtocol());
+		buffer.append(getStartDateTime());
+		return buffer.toString();
+	}
 }

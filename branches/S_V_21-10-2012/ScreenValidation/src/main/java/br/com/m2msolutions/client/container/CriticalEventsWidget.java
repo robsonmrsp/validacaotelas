@@ -51,10 +51,10 @@ public class CriticalEventsWidget extends DockWindow {
 	private LabeledImage alertIcon;
 	private LabeledImage paneIcon;
 	private LabeledImage otherIcon;
-	private Grid<DtoEvent> grid;
-
+	private Grid<DtoEvent> gridEvents;
 	private GridCellRenderer<DtoEvent> imageCellRender;
 	private GridCellRenderer<DtoEvent> descriptionCellRender;
+
 	private LayoutContainer footer;
 	private SearchBox searchBox;
 	private LayoutContainer buttonAttContainer;
@@ -248,7 +248,7 @@ public class CriticalEventsWidget extends DockWindow {
 	private LabeledImage getAlertIcon() {
 		if (alertIcon == null) {
 			alertIcon = new LabeledImage();
-			alertIcon.setImage(Images.INSTANCE.alert24());
+			alertIcon.setImage(Images.INSTANCE.alert16());
 			alertIcon.setEventQtd(2);
 		}
 		return alertIcon;
@@ -257,7 +257,7 @@ public class CriticalEventsWidget extends DockWindow {
 	private LabeledImage getPaneIcon() {
 		if (paneIcon == null) {
 			paneIcon = new LabeledImage();
-			paneIcon.setImage(Images.INSTANCE.pane24());
+			paneIcon.setImage(Images.INSTANCE.pane16());
 			paneIcon.setEventQtd(4);
 
 		}
@@ -267,26 +267,25 @@ public class CriticalEventsWidget extends DockWindow {
 	private LabeledImage getOtherIcon() {
 		if (otherIcon == null) {
 			otherIcon = new LabeledImage();
-			otherIcon.setImage(Images.INSTANCE.message24());
+			otherIcon.setImage(Images.INSTANCE.message16());
 			otherIcon.setEventQtd(1);
 		}
 		return otherIcon;
 	}
 
 	private Grid<DtoEvent> getGrid() {
-		if (grid == null) {
-			grid = new Grid<DtoEvent>(createListStory(), createColumnConfig());
-			grid.setAutoExpandMax(1000);
-			grid.setBorders(false);
-			grid.setId("grid");
-			grid.setAutoWidth(true);
-			grid.setColumnResize(true);
-			grid.setWidth(Style.DEFAULT);
-			grid.setHideHeaders(true);
-			grid.setAutoExpandColumn(DtoEvent.DESCRIPTION);
-
+		if (gridEvents == null) {
+			gridEvents = new Grid<DtoEvent>(createListStory(), createColumnConfig());
+			gridEvents.setAutoExpandMax(1000);
+			gridEvents.setBorders(false);
+			gridEvents.setId("gridEvents");
+			gridEvents.setAutoWidth(true);
+			gridEvents.setColumnResize(true);
+			gridEvents.setWidth(Style.DEFAULT);
+			gridEvents.setHideHeaders(true);
+			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
 		}
-		return grid;
+		return gridEvents;
 	}
 
 	private GridCellRenderer<DtoEvent> createImageCellRender() {
@@ -321,31 +320,25 @@ public class CriticalEventsWidget extends DockWindow {
 	private GridCellRenderer<DtoEvent> createDescriptionCellRender() {
 		descriptionCellRender = new GridCellRenderer<DtoEvent>() {
 			public String render(DtoEvent model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoEvent> store, Grid<DtoEvent> grid) {
-				return "<span style=\"padding-top: 10px;\"> " + model.getDescription() + "  </span>";
+				return createDescription(model);
 			}
 		};
 		return descriptionCellRender;
 	}
 
+	private String createDescription(DtoEvent model) {
+		if (model.getStatus().equals("IN_ATTENDANCE")) {
+			return "<span style=\"padding-top: 10px;\"> " + model.getVehicleCode() + " -  (" + model.getOperator() + ") - " + model.getTimeAttendance() + "   </span>";
+		} else {
+			return "<span style=\"padding-top: 10px;\"> " + model.getVehicleCode() + " - " + model.getTimeInEvent() + "   </span>";
+		}
+		// return "<span style=\"padding-top: 10px;\"> " +
+		// model.getVehicleCode() + "   </span>";
+	}
+
 	private ListStore<DtoEvent> createListStory() {
 		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  (CCO BRT) - 1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3050 - (CCO BRT) - 1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 - (CCO BRT) - 1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.message24().getSafeUri().asString(), "3050 - (Operador 1) 1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.message24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.message24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.message24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3850 -  9 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
+		listStore.add(UtilData.ALL_EVENTS);
 		return listStore;
 	}
 
@@ -354,8 +347,27 @@ public class CriticalEventsWidget extends DockWindow {
 			searchBox = new SearchBox();
 			searchBox.setId("searchBoxContainer");
 			searchBox.setTextWhenEmpty("Buscar");
+			searchBox.setChangeListener(new Listener<BaseEvent>() {
+				@Override
+				public void handleEvent(BaseEvent be) {
+					SearchBox sb = (SearchBox) be.getSource();
+
+					if (sb.length() > 2 || sb.length()==0) {
+						runSearch(sb.getValue());
+					}
+				}
+			});
 		}
 		return searchBox;
+	}
+
+	protected void runSearch(String regex) {
+		gridEvents.getStore().removeAll();
+		if (regex.isEmpty())
+			gridEvents.getStore().add(UtilData.ALL_EVENTS);
+		else
+			gridEvents.getStore().add(UtilData.applyEventCISearch(regex));
+
 	}
 
 	private LayoutContainer getButtonAttContainer() {
@@ -398,10 +410,9 @@ public class CriticalEventsWidget extends DockWindow {
 
 	private Image getImage_1() {
 		if (image_1 == null) {
-			image_1 = new Image(Images.INSTANCE.attendance24());
+			image_1 = new Image(Images.INSTANCE.attendance22());
 			image_1.setSize("24px", "24px");
 			image_1.addClickHandler(new ClickHandler() {
-
 				@Override
 				public void onClick(ClickEvent event) {
 					queryAttendanceWindow().show();
@@ -418,7 +429,7 @@ public class CriticalEventsWidget extends DockWindow {
 		Window window = new Window();
 		window.setBodyBorder(false);
 		window.setBorders(false);
-		
+
 		window.setMaximizable(true);
 		window.setMinimizable(true);
 		window.setLayout(new FitLayout());

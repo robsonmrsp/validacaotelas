@@ -58,7 +58,7 @@ public class LabeledImage extends LayoutContainer {
 	private Image getImage() {
 		if (image == null) {
 			image = new Image(Images.INSTANCE.interrogation18().getSafeUri());
-			image.setSize("18px", "18px");
+			image.setSize("16px", "16px");
 			image.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
