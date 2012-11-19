@@ -21,12 +21,14 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.DateField;
+import com.extjs.gxt.ui.client.widget.form.DateTimePropertyEditor;
 import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
+import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.ColumnData;
@@ -41,6 +43,7 @@ import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
+import com.extjs.gxt.ui.client.widget.layout.FitData;
 
 public class CopyOfAttendanceWindow extends LayoutContainer {
 	private ContentPanelImp queryContainer;
@@ -153,7 +156,8 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private DateField getDateFieldTo() {
 		if (dateFieldTo == null) {
 			dateFieldTo = new DateField();
-			dateFieldTo.setFieldLabel("De");
+			dateFieldTo.setFieldLabel("Até");
+			dateFieldTo.setPropertyEditor(new DateTimePropertyEditor("dd/MM/yyyy"));
 		}
 		return dateFieldTo;
 	}
@@ -162,7 +166,8 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		if (dateFieldFrom == null) {
 			dateFieldFrom = new DateField();
 			dateFieldFrom.setSize("-1", "-1");
-			dateFieldFrom.setFieldLabel("Até");
+			dateFieldFrom.setFieldLabel("De");
+			dateFieldFrom.setPropertyEditor(new DateTimePropertyEditor("dd/MM/yyyy"));
 		}
 		return dateFieldFrom;
 	}
@@ -217,39 +222,19 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return htmlContact;
 	}
 
-	private ListStore<DtoEvent> createEventListStore() {
-
-		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
-
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "120", "22/10/2012 12:01"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "121", "22/10/2012 12:02"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "122", "22/10/2012 12:04"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "123", "22/10/2012 12:05"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "124", "22/10/2012 12:02"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "125", "22/10/2012 12:14"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "126", "22/10/2012 12:06"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "127", "22/10/2012 12:07"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "128", "22/10/2012 12:08"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "129", "22/10/2012 12:09"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "133", "22/10/2012 12:10"));
-
-		return listStore;
-	}
-
 	private Grid<DtoRecord> getGridRecords() {
 		if (gridRecords == null) {
 			gridRecords = new Grid<DtoRecord>(createRecordListStory(), createRecordColumnConfig());
 			gridRecords.setSize("-1", "290");
-			gridRecords.setMinColumnWidth(150);
-			gridRecords.setAutoExpandMin(150);
-			gridRecords.setAutoExpandMax(1000);
+			gridRecords.setSelectionModel(new GridSelectionModel<DtoRecord>());
+//			gridRecords.setMinColumnWidth(150);
+//			gridRecords.setAutoExpandMax(500);
 			gridRecords.setBorders(false);
 			gridRecords.setId("gridRecords");
-			gridRecords.setAutoWidth(true);
-			gridRecords.setColumnResize(true);
 			gridRecords.setWidth(Style.DEFAULT);
+			gridRecords.setColumnLines(false);
 			gridRecords.setHideHeaders(true);
-			gridRecords.setHeight(Style.DEFAULT);
+			gridRecords.setStripeRows(true);
 			gridRecords.setAutoExpandColumn(DtoRecord.DESCRIPTION);
 		}
 		return gridRecords;
@@ -259,14 +244,13 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		if (gridEvents == null) {
 			gridEvents = new Grid<DtoEvent>(createListStory(), createColumnConfig());
 			gridEvents.setSize("-1", "290");
-			gridEvents.setMinColumnWidth(150);
-			gridEvents.setAutoExpandMin(150);
-			gridEvents.setAutoExpandMax(1000);
+//			gridEvents.setAutoExpandMax(500);
+			gridEvents.setSelectionModel(new GridSelectionModel<DtoEvent>());
 			gridEvents.setBorders(false);
+			gridEvents.setStripeRows(true);
 			gridEvents.setId("gridEvents");
-			gridEvents.setAutoWidth(true);
-			gridEvents.setColumnResize(true);
-			gridEvents.setWidth(Style.DEFAULT);
+			gridEvents.setAutoWidth(false);
+			gridEvents.setColumnResize(false);
 			gridEvents.setHideHeaders(true);
 			gridEvents.setHeight(Style.DEFAULT);
 			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
@@ -279,6 +263,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		if (eventsContainer == null) {
 			eventsContainer = new ContentPanelImp();
 			eventsContainer.setHeading("Eventos");
+			eventsContainer.setBodyBorder(false);
 			eventsContainer.setBorders(false);
 			// eventsContainer.setSize("100%", "100%");
 			eventsContainer.setLayout(new FitLayout());
@@ -293,7 +278,11 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			aboutEventContainer.setHeight("150");
 			aboutEventContainer.setHeading("Sobre o Evento");
 			aboutEventContainer.setCollapsible(true);
-			aboutEventContainer.add(getHtmlAboutEvent());
+			aboutEventContainer.setLayout(new FitLayout());
+			
+			FitData fd_htmlAboutEvent = new FitData(0);
+			fd_htmlAboutEvent.setMargins(new Margins(6, 6, 6, 6));
+			aboutEventContainer.add(getHtmlAboutEvent(), fd_htmlAboutEvent);
 		}
 		return aboutEventContainer;
 	}
@@ -314,7 +303,10 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			contactContainer = new ContentPanelImp();
 			contactContainer.setHeading("Contato");
 			contactContainer.setCollapsible(true);
-			contactContainer.add(getHtmlContact());
+			contactContainer.setLayout(new FitLayout());
+			FitData fd_htmlContact = new FitData(0);
+			fd_htmlContact.setMargins(new Margins(0, 6, 6, 6));
+			contactContainer.add(getHtmlContact(), fd_htmlContact);
 		}
 		return contactContainer;
 	}
@@ -385,7 +377,9 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			midleContainer = new LayoutContainer();
 			midleContainer.setBorders(false);
 			midleContainer.setLayout(new RowLayout(Orientation.VERTICAL));
-			midleContainer.add(getAboutEventContainer(), new RowData(-1, 150.0));
+			RowData rd_aboutEventContainer = new RowData(-1, 150.0);
+			rd_aboutEventContainer.setMargins(new Margins(0, 0, 0, 0));
+			midleContainer.add(getAboutEventContainer(), rd_aboutEventContainer);
 			midleContainer.add(getVehicleLocationContainer());
 			// midleContainer.add(getMapContainer(), new RowData(-1, 250.0));
 		}
@@ -467,17 +461,17 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 
 	ArrayList<DtoEvent> testeListe() {
 		ArrayList<DtoEvent> listStore = new ArrayList<DtoEvent>();
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "120", "22/10/2012 12:01"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "121", "22/10/2012 12:02"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "122", "22/10/2012 12:04"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "123", "22/10/2012 12:05"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "124", "22/10/2012 12:02"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "125", "22/10/2012 12:14"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "126", "22/10/2012 12:06"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "127", "22/10/2012 12:07"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "128", "22/10/2012 12:08"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "129", "22/10/2012 12:09"));
-		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "133", "22/10/2012 12:10"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "120", "22/10/2012 12:01"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "121", "22/10/2012 12:02"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "122", "22/10/2012 12:04"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "123", "22/10/2012 12:05"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "124", "22/10/2012 12:02"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "125", "22/10/2012 12:14"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "126", "22/10/2012 12:06"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "127", "22/10/2012 12:07"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "128", "22/10/2012 12:08"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "129", "22/10/2012 12:09"));
+//		listStore.add(new DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png", "133", "22/10/2012 12:10"));
 		return listStore;
 	}
 
@@ -485,33 +479,48 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		ListStore<DtoRecord> listStore = new ListStore<DtoRecord>();
 
 		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
-		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:31", "Posso ir almoçar?"));
-		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Claro que sim?"));
-		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Tá na hora mesmo?"));
+		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:31", "Posso ir almoçar?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Claro que sim?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Tá na hora mesmo?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:31", "Posso ir almoçar?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Claro que sim?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Tá na hora mesmo?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:31", "Posso ir almoçar?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Claro que sim?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Tá na hora mesmo?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:31", "Posso ir almoçar?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Claro que sim?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(), "26/10/2012 12:32", "Tá na hora mesmo?"));
 
 		return listStore;
 	}
 
 	private ListStore<DtoEvent> createListStory() {
 		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
-
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  (CCO BRT) - 1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3050 - (CCO BRT) - 1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 - (CCO BRT) - 1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.message24().getSafeUri().asString(), "3050 - (Operador 1) 1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.message24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.message24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.message24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.alert24().getSafeUri().asString(), "3850 -  9 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
-		listStore.add(new DtoEvent(Images.INSTANCE.pane24().getSafeUri().asString(), "3050 -  1 min "));
+//
+//		listStore.add(new DtoEvent(Images.INSTANCE.pane22().getSafeUri().asString(),    "120", "22/10/2012 12:01"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.alert22().getSafeUri().asString(), 	"121", "22/10/2012 12:02"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.pane22().getSafeUri().asString(), 	"122", "22/10/2012 12:04"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.message22().getSafeUri().asString(), "123", "22/10/2012 12:05"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.pane22().getSafeUri().asString(), 	"122", "22/10/2012 12:02"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.alert22().getSafeUri().asString(), 	"125", "22/10/2012 12:14"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.pane22().getSafeUri().asString(), 	"126", "22/10/2012 12:06"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.message22().getSafeUri().asString(), "127", "22/10/2012 12:07"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.pane22().getSafeUri().asString(), 	"128", "22/10/2012 12:08"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.alert22().getSafeUri().asString(), 	"129", "22/10/2012 12:09"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.pane22().getSafeUri().asString(), 	"133", "22/10/2012 12:10"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.message22().getSafeUri().asString(), "145", "22/10/2012 13:14"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.alert22().getSafeUri().asString(), 	"156", "22/10/2012 13:06"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.message22().getSafeUri().asString(), "167", "22/10/2012 13:07"));
+//    	listStore.add(new DtoEvent(Images.INSTANCE.alert22().getSafeUri().asString(), 	"178", "22/10/2012 13:08"));
+		
 		return listStore;
 	}
 
@@ -544,6 +553,8 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		ColumnConfig column2 = new ColumnConfig();
 		column2.setId("description");
 		column2.setRenderer(createDescriptionCellRender());
+		column2.setResizable(true);
+		
 
 		configs.add(column2);
 
@@ -573,13 +584,10 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return imageCellRender;
 	}
 
-	@SuppressWarnings("unused")
 	private GridCellRenderer<DtoEvent> createDescriptionCellRender() {
 		descriptionCellRender = new GridCellRenderer<DtoEvent>() {
 			@Override
 			public Object render(DtoEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoEvent> store, Grid<DtoEvent> grid) {
-				// return "<span style=\"padding-top: 10px;\"> " +
-				// model.getDescription() + "  </span>";
 				return getRendered(model);
 			}
 		};
@@ -596,9 +604,9 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return descriptionRecordCellRender;
 	}
 
-	protected Object getRecordRendered(DtoRecord model) {
+	protected String getRecordRendered(DtoRecord model) {
 		StringBuffer rendered = new StringBuffer();
-		rendered.append("<div id=\"template-record-messages\" class=\"record-messages\">");
+//		rendered.append("<div>");
 		rendered.append("	<table>");
 		rendered.append("		<tr>");
 		rendered.append("			<td>");
@@ -608,17 +616,17 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		rendered.append("			</td>");
 		rendered.append("		</tr>");
 		rendered.append("	</table>");
-		rendered.append("</div>");
+//		rendered.append("</div>");
 
 		return rendered.toString();
 	}
 
 	protected String getRendered(DtoEvent model) {
 		StringBuffer rendered = new StringBuffer();
-		rendered.append("<div id=\"template-events\" class=\"events\">");
+//		rendered.append("<div>");
 		rendered.append("	<table>");
 		rendered.append("		<tr>");
-		rendered.append("			<td> inicio: " + model.getStartTime() + " </td>");
+		rendered.append("			<td> inicio: " + model.getStartDateTime() + " </td>");
 		rendered.append("			<td> Veiculo: " + model.getVehicleCode() + "</td>");
 		rendered.append("		</tr>");
 		rendered.append("		<tr>");
@@ -626,7 +634,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		rendered.append("			<td> Protocolo: " + model.getProtocol() + "</td>");
 		rendered.append("		</tr>");
 		rendered.append("	</table>");
-		rendered.append("</div>");
+//		rendered.append("</div>");
 		return rendered.toString();
 	}
 }

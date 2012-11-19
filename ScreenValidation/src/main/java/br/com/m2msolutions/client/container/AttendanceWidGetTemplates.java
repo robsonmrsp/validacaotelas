@@ -93,7 +93,7 @@ public class AttendanceWidGetTemplates {
 		template.append("<table>");
 		template.append("<tr>");
 		template.append("<td rowspan=\"2\"><img id=\"image-11\" src=\"{" + DtoEvent.IMAGE_SRC + "}\"/> </td>");
-		template.append("<td> inicio: {" + DtoEvent.START_TIME + "} </td>");
+		template.append("<td> inicio: {" + DtoEvent.START_DATE_TIME + "} </td>");
 		template.append("<td> Veiculo: {" + DtoEvent.VEHICLE_CODE + "}</td>");
 		template.append("</tr>");
 		template.append("<tr>");

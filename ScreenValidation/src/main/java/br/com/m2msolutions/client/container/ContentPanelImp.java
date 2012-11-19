@@ -6,7 +6,6 @@ public class ContentPanelImp extends ContentPanel {
 	public ContentPanelImp() {
 		setHideCollapseTool(true);
 		setCollapsible(false);
-		
 		setBodyStyle("backgroundColor: #d6e2f6;");
 	}
 
