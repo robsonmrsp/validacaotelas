@@ -82,7 +82,6 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.2.0</version>
 				<dependencies>
-
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
@@ -106,6 +105,11 @@
 						<goals>
 							<goal>compile</goal>
 						</goals>
+						<configuration>
+							<!-- para produção a linha abaixo deverá ser alterada para OBF ver: 
+								http://mojo.codehaus.org/gwt-maven-plugin/compile-mojo.html -->
+							<style>PRETTY</style>
+						</configuration>
 					</execution>
 				</executions>
 				<!-- Plugin configuration. There are many available options, see gwt-maven-plugin 
