@@ -68,14 +68,14 @@ public class CriticalEventsWidget extends DockWindow {
 		setId("AreaInspector");
 		setStyleName("widget-window");
 		setLayout(new RowLayout(Orientation.VERTICAL));
+		add(getHeader(), new RowData(1, 22.0, new Margins()));
+		add(getPrincipal(), new RowData(Style.DEFAULT, Style.DEFAULT, new Margins()));
 		hide();
 	}
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		add(getHeader(), new RowData(1, 22.0, new Margins()));
-		add(getPrincipal(), new RowData(Style.DEFAULT, Style.DEFAULT, new Margins()));
 	}
 
 	public LayoutContainer getHeader() {
@@ -276,16 +276,31 @@ public class CriticalEventsWidget extends DockWindow {
 	private Grid<DtoEvent> getGrid() {
 		if (gridEvents == null) {
 			gridEvents = new Grid<DtoEvent>(createListStory(), createColumnConfig());
-			gridEvents.setAutoExpandMax(1000);
+			gridEvents.setAutoExpandMax(350);
 			gridEvents.setBorders(false);
 			gridEvents.setId("gridEvents");
+
 			gridEvents.setAutoWidth(true);
+			gridEvents.setWidth(335);
 			gridEvents.setColumnResize(true);
 			gridEvents.setWidth(Style.DEFAULT);
+			gridEvents.setLoadMask(true);
 			gridEvents.setHideHeaders(true);
+			gridEvents.getView().setEmptyText("Sem eventos para exibir...");
 			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
+			disableHorizontalScroll();
 		}
 		return gridEvents;
+	}
+
+	private void disableHorizontalScroll() {
+		addListener(Events.Attach, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				if (gridEvents.getView().getBody() != null)
+					gridEvents.getView().getBody().setStyleAttribute("overflowX", "hidden");
+			}
+		});
 	}
 
 	private GridCellRenderer<DtoEvent> createImageCellRender() {
@@ -352,7 +367,7 @@ public class CriticalEventsWidget extends DockWindow {
 				public void handleEvent(BaseEvent be) {
 					SearchBox sb = (SearchBox) be.getSource();
 
-					if (sb.length() > 2 || sb.length()==0) {
+					if (sb.length() > 2 || sb.length() == 0) {
 						runSearch(sb.getValue());
 					}
 				}
@@ -366,7 +381,7 @@ public class CriticalEventsWidget extends DockWindow {
 		if (regex.isEmpty())
 			gridEvents.getStore().add(UtilData.ALL_EVENTS);
 		else
-			gridEvents.getStore().add(UtilData.applyEventCISearch(regex));
+			gridEvents.getStore().add(UtilData.applyEventCISearch(regex.split(" ")));
 
 	}
 

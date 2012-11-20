@@ -8,6 +8,7 @@ import br.com.mr.dock.client.DockDesktop;
 import br.com.mr.dock.client.menu.DockSelectionAction;
 
 import com.extjs.gxt.ui.client.fx.Draggable;
+import com.extjs.gxt.ui.client.fx.Resizable;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -19,20 +20,32 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class ScreenValidation implements EntryPoint {
 
-	public void onModuleLoad1() {
-		CopyOfAttendanceWindow attendanceWindow = new CopyOfAttendanceWindow();
-		// AdvancedFormsExample attendanceWindow = new AdvancedFormsExample();
-		attendanceWindow.setAutoWidth(true);
-		// attendanceWindow.setSize(1015, 500);
+//	public void onModuleLoad() {
+//		GridExample example = new GridExample();
+//		RootPanel.get().add(example);		
+//	}
+//	public void onModuleLoad() {
+//		CopyOfAttendanceWindow attendanceWindow = new CopyOfAttendanceWindow();
+//		// AdvancedFormsExample attendanceWindow = new AdvancedFormsExample();
+//		attendanceWindow.setAutoWidth(true);
+//		// attendanceWindow.setSize(1015, 500);
+//
+//		Window window = new Window();
+//		window.setMaximizable(true);
+//		window.setMinimizable(true);
+//		window.setLayout(new FitLayout());
+//		window.setSize(1015, 550);
+//
+//		window.add(attendanceWindow);
+//		window.show();
+//	}
 
-		Window window = new Window();
-		window.setMaximizable(true);
-		window.setMinimizable(true);
-		window.setLayout(new FitLayout());
-		window.setSize(1015, 550);
+	public void onModule_Load() {
+		final CriticalEventsWidget attendance = new CriticalEventsWidget();
+//		new Resizable(attendance);
+		RootPanel.get().add(attendance);
+		attendance.show();
 
-		window.add(attendanceWindow);
-		window.show();
 	}
 
 	public void onModuleLoad() {
