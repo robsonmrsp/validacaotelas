@@ -8,7 +8,7 @@ public class DtoEvent extends BaseModelData {
 
 	private static final long serialVersionUID = 6308342747740478807L;
 
-	public static final String START_DATE_TIME_AS_STRING = "startTime";
+	public static final String START_DATE_TIME_AS_STRING = "startTimeAsString";
 	public static final String START_DATE_TIME = "startTime";
 	public static final String VEHICLE_CODE = "vehicleCode";
 	public static final String OPERATOR = "operator";
@@ -19,6 +19,44 @@ public class DtoEvent extends BaseModelData {
 	public static final String STATUS = "status";
 	public static final String TIME_IN_EVENT = "timeInEvent";
 	public static final String TIME_ATTENDANCE = "timeAttendance";
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getImageSrc() == null) ? 0 : getImageSrc().hashCode());
+		result = prime * result + ((getStartDateTime() == null) ? 0 : getStartDateTime().hashCode());
+		result = prime * result + ((getVehicleCode() == null) ? 0 : getVehicleCode().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DtoEvent other = (DtoEvent) obj;
+		if (getImageSrc() == null) {
+			if (other.getImageSrc() != null)
+				return false;
+		} else if (!getImageSrc().equals(other.getImageSrc()))
+			return false;
+		if (getStartDateTime() == null) {
+			if (other.getStartDateTime() != null)
+				return false;
+		} else if (!getStartDateTime().equals(other.getStartDateTime()))
+			return false;
+		if (getVehicleCode() == null) {
+			if (other.getVehicleCode() != null)
+				return false;
+		} else if (!getVehicleCode().equals(other.getVehicleCode()))
+			return false;
+		return true;
+	}
 
 	public DtoEvent(String src, String vehicle, Date startTime, String category, String operator, String protocol, String status, String timeInEvent, String timeAttendance) {
 		this(src, vehicle, startTime, category);
@@ -45,7 +83,6 @@ public class DtoEvent extends BaseModelData {
 	}
 
 	public String getStartDateTimeAsText() {
-
 		return get(START_DATE_TIME_AS_STRING);
 	}
 
@@ -60,6 +97,7 @@ public class DtoEvent extends BaseModelData {
 
 	public void setStartDateTime(Date startTime) {
 		setStartDateTimeAsText(UtilData.format(startTime));
+		System.out.println("DtoEvent.setStartDateTime()" + getStartDateTimeAsText());
 		set(START_DATE_TIME, startTime);
 	}
 
@@ -103,35 +141,37 @@ public class DtoEvent extends BaseModelData {
 		set(DESCRIPTION, description);
 	}
 
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getStartDateTime() == null) ? 0 : getStartDateTime().hashCode());
-		result = prime * result + ((getVehicleCode() == null) ? 0 : getVehicleCode().hashCode());
-		return result;
-	}
+	// public int hashCode() {
+	// final int prime = 31;
+	// int result = 1;
+	// result = prime * result + ((getStartDateTime() == null) ? 0 :
+	// getStartDateTime().hashCode());
+	// result = prime * result + ((getVehicleCode() == null) ? 0 :
+	// getVehicleCode().hashCode());
+	// return result;
+	// }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DtoEvent other = (DtoEvent) obj;
-		if (getStartDateTime() == null) {
-			if (other.getStartDateTime() != null)
-				return false;
-		} else if (!getStartDateTime().equals(other.getStartDateTime()))
-			return false;
-		if (getVehicleCode() == null) {
-			if (other.getVehicleCode() != null)
-				return false;
-		} else if (!getVehicleCode().equals(other.getVehicleCode()))
-			return false;
-		return true;
-	}
+	// @Override
+	// public boolean equals(Object obj) {
+	// if (this == obj)
+	// return true;
+	// if (obj == null)
+	// return false;
+	// if (getClass() != obj.getClass())
+	// return false;
+	// DtoEvent other = (DtoEvent) obj;
+	// if (getStartDateTime() == null) {
+	// if (other.getStartDateTime() != null)
+	// return false;
+	// } else if (!getStartDateTime().equals(other.getStartDateTime()))
+	// return false;
+	// if (getVehicleCode() == null) {
+	// if (other.getVehicleCode() != null)
+	// return false;
+	// } else if (!getVehicleCode().equals(other.getVehicleCode()))
+	// return false;
+	// return true;
+	// }
 
 	public String getCategory() {
 		return get(CATEGORY);
@@ -166,23 +206,46 @@ public class DtoEvent extends BaseModelData {
 		set(TIME_ATTENDANCE, timeAttendance);
 	}
 
-	public Boolean matchCi(String regex) {
-		return getAllFiels().toLowerCase().contains(regex.toLowerCase());
+	public Boolean matchCi(String... regex) {
+
+		String allFiels = getAllFiels().toLowerCase();
+		boolean ret = true;
+
+		for (int i = 0; i < regex.length; i++) {
+			ret = ret && allFiels.contains(regex[i].toLowerCase());
+		}
+
+		return ret;
 	}
 
-	public Boolean match(String regex) {
-		return getAllFiels().contains(regex);
+	public Boolean match(String... regex) {
+		String allFiels = getAllFiels();
+		System.out.println("DtoEvent.match()" + allFiels);
+		boolean ret = true;
 
+		for (int i = 0; i < regex.length; i++) {
+			ret = ret && allFiels.contains(regex[i]);
+		}
+
+		return ret;
 	}
 
 	private String getAllFiels() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(getVehicleCode());
+		buffer.append(" ");
 		buffer.append(getDescription());
+		buffer.append(" ");
 		buffer.append(getCategory());
+		buffer.append(" ");
 		buffer.append(getOperator());
+		buffer.append(" ");
 		buffer.append(getProtocol());
+		buffer.append(" ");
 		buffer.append(getStartDateTime());
+		buffer.append(" ");
+		buffer.append(getStartDateTimeAsText());
+		buffer.append(" ");
 		return buffer.toString();
 	}
 }
