@@ -1,4 +1,4 @@
-package br.com.m2msolutions.client.container;
+package br.com.m2msolutions.shared.dto;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 
@@ -7,6 +7,11 @@ public class DtoOperator extends BaseModelData {
 
 	public static final String ID = "id";
 	public static final String NAME = "name";
+
+	public DtoOperator(Long id, String name) {
+		setId(id);
+		setName(name);
+	}
 
 	public Long getId() {
 		return get(ID);

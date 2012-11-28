@@ -3,8 +3,12 @@ package br.com.m2msolutions.client.container;
 import br.com.m2msolutions.client.images.Images;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.EventType;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FxEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
@@ -22,6 +26,27 @@ public class LabeledImage extends LayoutContainer {
 	private Image image;
 	private LayoutContainer qtdContainer;
 	private LayoutContainer imageContainer;
+
+	private FxConfig config = createConfigFX();
+
+	private FxConfig createConfigFX() {
+		config = new FxConfig();
+		config.setEffectStartListener(new Listener<FxEvent>() {
+			@Override
+			public void handleEvent(FxEvent be) {
+				// disableImage = true;
+			}
+		});
+		config.setEffectCompleteListener(new Listener<FxEvent>() {
+			@Override
+			public void handleEvent(FxEvent be) {
+				setEventQtd_(++eventQtd);
+				if (rendered)
+					htmlQtd.el().fadeIn(FxConfig.NONE);
+			}
+		});
+		return config;
+	}
 
 	public void setImage(ImageResource image) {
 		setImage(image.getSafeUri());
@@ -45,6 +70,13 @@ public class LabeledImage extends LayoutContainer {
 		setStyleName("labeled-image");
 		add(createQtdContainer());
 		add(createImageContainer());
+		addListener(Events.Attach, new Listener<BaseEvent>() {
+
+			@Override
+			public void handleEvent(BaseEvent be) {
+				setEventQtd_(eventQtd);
+			}
+		});
 	}
 
 	private Html getHtmlQtd() {
@@ -101,10 +133,13 @@ public class LabeledImage extends LayoutContainer {
 		return eventQtd;
 	}
 
-	public void setEventQtd(int eventQtd) {
-		htmlQtd.setHtml("<div>"+eventQtd+"</div>");		
-		this.eventQtd = eventQtd;
+	private void setEventQtd_(int eventQtd) {
+		htmlQtd.setHtml("<div>" + eventQtd + "</div>");
 	}
-	
 
+	public void setEventQtd(int eventQtd) {
+		this.eventQtd = eventQtd;
+		if (rendered)
+			htmlQtd.el().fadeOut(config);
+	}
 }

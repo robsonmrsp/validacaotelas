@@ -3,24 +3,18 @@ package br.com.m2msolutions.client.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.m2msolutions.client.AttendanceService;
-import br.com.m2msolutions.client.AttendanceServiceAsync;
-import br.com.m2msolutions.client.SimpleGwtLogger;
 import br.com.m2msolutions.client.images.Images;
 import br.com.m2msolutions.shared.dto.DtoAboutEvent;
 import br.com.m2msolutions.shared.dto.DtoContact;
 import br.com.m2msolutions.shared.dto.DtoEvent;
-import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoOperator;
 import br.com.m2msolutions.shared.dto.DtoRecord;
-import br.com.m2msolutions.shared.dto.DtoSearchParameters;
 import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.core.XTemplate;
-import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -56,22 +50,19 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.maps.client.overlay.Icon;
 import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CopyOfAttendanceWindow extends LayoutContainer {
+public class AttendanceWindow_25_11 extends LayoutContainer {
 	private ContentPanelImp queryContainer;
 	private ContentPanelImp eventsContainer;
 	private TextField<String> textFieldProtocol;
 	private TextField<String> textFieldVehicle;
 	private ComboBox<DtoOperator> comboOperator;
+	// private ListView<DtoEvent> listViewEvents;
 	private Grid<DtoEvent> gridEvents;
 	private Grid<DtoRecord> gridRecords;
 	private DateField dateFieldTo;
@@ -106,9 +97,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private GridCellRenderer<DtoEvent> descriptionCellRender;
 	private GridCellRenderer<DtoRecord> descriptionRecordCellRender;
 
-	AttendanceServiceAsync attendanceService = GWT.create(AttendanceService.class);
-
-	public CopyOfAttendanceWindow() {
+	public AttendanceWindow_25_11() {
 		initComponents();
 	}
 
@@ -127,28 +116,19 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		aboutEventTemplate = XTemplate.create(AttendanceWidGetTemplates.ABOUT_EVENT);
 		contactTemplate = XTemplate.create(AttendanceWidGetTemplates.CONTACTS);
 		vehicleLocationTemplate = XTemplate.create(AttendanceWidGetTemplates.VEHICLE_LOCATION);
-
-		htmlAboutEvent.setHtml(aboutEventTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
-		htmlContact.setHtml(contactTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
-		htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
-
 	}
 
-	// private void updateAboutEventContainer(DtoAboutEvent about) {
-	// aboutEventTemplate.overwrite(htmlAboutEvent.getElement(),
-	// Util.getJsObject(about));
-	// }
-	//
-	// private void updateContactContainer(DtoContact contact) {
-	// contactTemplate.overwrite(htmlContact.getElement(),
-	// Util.getJsObject(contact));
-	// }
-	//
-	// private void updateVehicleLocationContainer(DtoVehicleAndLocation
-	// contact) {
-	// vehicleLocationTemplate.overwrite(htmlVehicleLocation.getElement(),
-	// Util.getJsObject(contact));
-	// }
+	private void updateAboutEventContainer(DtoAboutEvent about) {
+		aboutEventTemplate.overwrite(htmlAboutEvent.getElement(), Util.getJsObject(about));
+	}
+
+	private void updateContactContainer(DtoContact contact) {
+		contactTemplate.overwrite(htmlContact.getElement(), Util.getJsObject(contact));
+	}
+
+	private void updateVehicleLocationContainer(DtoVehicleAndLocation contact) {
+		vehicleLocationTemplate.overwrite(htmlVehicleLocation.getElement(), Util.getJsObject(contact));
+	}
 
 	private TextField<String> getTextFieldProtocol() {
 		if (textFieldProtocol == null) {
@@ -233,23 +213,9 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	}
 
 	protected void findEvents() {
-		attendanceService.findEventsByParameter(createSearchParamenter(), new AsyncCallback<ArrayList<DtoEvent>>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				SimpleGwtLogger.error("Find EventsByParameter failure", caught);
-			}
-
-			@Override
-			public void onSuccess(ArrayList<DtoEvent> events) {
-				gridEvents.getStore().removeAll();
-				gridEvents.getStore().add(events);
-			}
-		});
-	}
-
-	private DtoSearchParameters createSearchParamenter() {
-		DtoSearchParameters searchParameters = new DtoSearchParameters(getValue(dateFieldFrom), getValue(dateFieldTo), getValue(comboOperator), getValue(textFieldVehicle), getValue(textFieldVehicle));
-		return searchParameters;
+		gridEvents.getStore().removeAll();
+		ArrayList<DtoEvent> events = ClienteDataUtil.applyEventSearch(getValue(dateFieldFrom), getValue(dateFieldTo), getValue(comboOperator), getValue(textFieldVehicle), getValue(textFieldVehicle));
+		gridEvents.getStore().add(events);
 	}
 
 	private String getValue(Field field) {
@@ -262,25 +228,24 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 
 	private Html getHtmlVehicleLocation() {
 		if (htmlVehicleLocation == null) {
-			htmlVehicleLocation = new Html();
-			htmlVehicleLocation.setSize("-1", "100");
-			// "\t<table id=\"template-vehicle-location\", class=\"vehicle-location\">\r\n\t\t<tr>\r\n\t\t\t<td style=\"width: 200px; \">Veículo: 3050</td>\r\n\t\t\t<td style=\"width: 200px; \">Endereço: BR 123</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Linha: SantaCruz</td>\r\n\t\t\t<td>Latitude: 12,345</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Empresa: SantaCruz</td>\r\n\t\t\t<td>Longitude: 22,345</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Proximo ponto: ETUFOR</td>\r\n\t\t</tr>\r\n\t</table>");
+			htmlVehicleLocation = new Html(
+					"\t<table id=\"template-vehicle-location\", class=\"vehicle-location\">\r\n\t\t<tr>\r\n\t\t\t<td style=\"width: 200px; \">Veículo: 3050</td>\r\n\t\t\t<td style=\"width: 200px; \">Endereço: BR 123</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Linha: SantaCruz</td>\r\n\t\t\t<td>Latitude: 12,345</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Empresa: SantaCruz</td>\r\n\t\t\t<td>Longitude: 22,345</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Proximo ponto: ETUFOR</td>\r\n\t\t</tr>\r\n\t</table>");
 		}
 		return htmlVehicleLocation;
 	}
 
 	private Html getHtmlAboutEvent() {
 		if (htmlAboutEvent == null) {
-			htmlAboutEvent = new Html();
-			// "\t<div id=\"template-about-event\" class=\"about-event\">\r\n\t\t<br>Numero do protocolo: 12345 \r\n\t\t<br>Inicio do evento: 09/07/2012 14:30 \r\n\t\t<br>Inicio do atendimento: 09/07/2012 14:31 \r\n\t\t<br>Tempo de corrido do atendimento: 5m \r\n\t\t<br>Atendente atual: Operador 1 \r\n\t\t<br>Conclusão do atendimento: 14:35      \t\t\r\n\t</div>");
+			htmlAboutEvent = new Html(
+					"\t<div id=\"template-about-event\" class=\"about-event\">\r\n\t\t<br>Numero do protocolo: 12345 \r\n\t\t<br>Inicio do evento: 09/07/2012 14:30 \r\n\t\t<br>Inicio do atendimento: 09/07/2012 14:31 \r\n\t\t<br>Tempo de corrido do atendimento: 5m \r\n\t\t<br>Atendente atual: Operador 1 \r\n\t\t<br>Conclusão do atendimento: 14:35      \t\t\r\n\t</div>");
 		}
 		return htmlAboutEvent;
 	}
 
 	private Html getHtmlContact() {
 		if (htmlContact == null) {
-			htmlContact = new Html();
-			// "\t<div id=\"template-contact\" class=\"contact\">\r\n\t<table>\r\n\t\t<tr>\t\r\n\t\t\t<td> <img id=\"image-message\" src=\"http://cdn1.iconfinder.com/data/icons/humano2/72x72/emblems/emblem-people.png\" </td>\r\n\t\t\t<td>\r\n\t\t\t\t <div id=\"record\" class=\"record\">\t\t\t \r\n\t\t\t\t\t<br> Nome: Antonio Firmulano da Cunha Matos \r\n\t\t\t\t\t<br>Matricula:  097286358 \r\n\t\t\t\t\t<br>Telefone: 3354-7689 \r\n\t\t\t\t\t<br>Tempo de corrido do atendimento: 5m \r\n\t\t\t\t\t<br>Idade: 43 anos \r\n\t\t\t\t </div> \r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t</table>\r\n\t</div>\r\n");
+			htmlContact = new Html(
+					"\t<div id=\"template-contact\" class=\"contact\">\r\n\t<table>\r\n\t\t<tr>\t\r\n\t\t\t<td> <img id=\"image-message\" src=\"http://cdn1.iconfinder.com/data/icons/humano2/72x72/emblems/emblem-people.png\" </td>\r\n\t\t\t<td>\r\n\t\t\t\t <div id=\"record\" class=\"record\">\t\t\t \r\n\t\t\t\t\t<br> Nome: Antonio Firmulano da Cunha Matos \r\n\t\t\t\t\t<br>Matricula:  097286358 \r\n\t\t\t\t\t<br>Telefone: 3354-7689 \r\n\t\t\t\t\t<br>Tempo de corrido do atendimento: 5m \r\n\t\t\t\t\t<br>Idade: 43 anos \r\n\t\t\t\t </div> \r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t</table>\r\n\t</div>\r\n");
 		}
 		return htmlContact;
 	}
@@ -317,36 +282,22 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			gridEvents.setHideHeaders(true);
 			gridEvents.setHeight(Style.DEFAULT);
 			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
-			gridEvents.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<DtoEvent>() {
-
-				@Override
-				public void selectionChanged(SelectionChangedEvent<DtoEvent> se) {
-					DtoEvent selectedItem = se.getSelectedItem();
-					if (selectedItem != null) {
-						onSelectionEventChange(selectedItem);
-					}
-				}
-			});
 		}
 		return gridEvents;
 	}
 
-	protected void onSelectionEventChange(DtoEvent selectedItem) {
-		findExtraInfoEvent(selectedItem);
-	}
-
-	private void findExtraInfoEvent(DtoEvent selectedItem) {
-		attendanceService.findExtraInfoEvent(selectedItem, new AsyncCallback<DtoExtraInfoEvent>() {
+	private GridSelectionModel<DtoEvent> createSelectionModel() {
+		GridSelectionModel<DtoEvent> selectionModel = new GridSelectionModel<DtoEvent>();
+		selectionModel.addSelectionChangedListener(new SelectionChangedListener<DtoEvent>() {
 			@Override
-			public void onSuccess(DtoExtraInfoEvent extraInfo) {
-				applyExtraInfo(extraInfo);
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				SimpleGwtLogger.error("Find ExtraInfoEvent Failure ", caught);
+			public void selectionChanged(SelectionChangedEvent<DtoEvent> se) {
+				DtoEvent selectedItem = se.getSelectedItem();
+				if (selectedItem != null) {
+					System.out.println("CopyOfAttendanceWindow.createSelectionModel().new SelectionChangedListener() {...}.selectionChanged()" + selectedItem);
+				}
 			}
 		});
+		return selectionModel;
 	}
 
 	private void disableOrizontalScroll() {
@@ -367,6 +318,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			eventsContainer.setHeading("Eventos");
 			eventsContainer.setBodyBorder(false);
 			eventsContainer.setBorders(false);
+			// eventsContainer.setSize("100%", "100%");
 			eventsContainer.setLayout(new FitLayout());
 			eventsContainer.add(getGridEvents());
 		}
@@ -393,14 +345,8 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			vehicleLocationContainer = new ContentPanelImp();
 			vehicleLocationContainer.setHeading("Veículo e Localização");
 			vehicleLocationContainer.setCollapsible(true);
-			vehicleLocationContainer.setLayout(new BorderLayout());
-			BorderLayoutData bld_htmlVehicleLocation = new BorderLayoutData(LayoutRegion.NORTH, 100.0f);
-			bld_htmlVehicleLocation.setMinSize(100);
-			bld_htmlVehicleLocation.setMaxSize(100);
-			vehicleLocationContainer.add(getHtmlVehicleLocation(), bld_htmlVehicleLocation);
-			BorderLayoutData bld_mapContainer = new BorderLayoutData(LayoutRegion.CENTER, 270.0f);
-			bld_mapContainer.setMinSize(270);
-			vehicleLocationContainer.add(getMapContainer(), bld_mapContainer);
+			vehicleLocationContainer.add(getHtmlVehicleLocation());
+			vehicleLocationContainer.add(getMapContainer());
 		}
 		return vehicleLocationContainer;
 	}
@@ -445,14 +391,11 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	}
 
 	private Widget getMapPosition() {
-		
-		LatLng fortalCity = LatLng.newInstance(-3.736549, -38.523804);
-		mapLocation = new MapWidget();
-		
-		mapLocation.setCenter(fortalCity);
+		LatLng cawkerCity = LatLng.newInstance(39.509, -98.434);
+		mapLocation = new MapWidget(cawkerCity, 2);
 		mapLocation.checkResizeAndCenter();
 		mapLocation.setSize("100%", "100%");
-		
+		mapLocation.addOverlay(new Marker(cawkerCity));
 		return mapLocation;
 
 	}
@@ -487,9 +430,11 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		if (midleContainer == null) {
 			midleContainer = new LayoutContainer();
 			midleContainer.setBorders(false);
-			midleContainer.setLayout(new BorderLayout());
-			midleContainer.add(getAboutEventContainer(), new BorderLayoutData(LayoutRegion.NORTH, 150.0f));
-			midleContainer.add(getVehicleLocationContainer(), new BorderLayoutData(LayoutRegion.CENTER));
+			midleContainer.setLayout(new RowLayout(Orientation.VERTICAL));
+			RowData rd_aboutEventContainer = new RowData(-1, 150.0);
+			rd_aboutEventContainer.setMargins(new Margins(0, 0, 0, 0));
+			midleContainer.add(getAboutEventContainer(), rd_aboutEventContainer);
+			midleContainer.add(getVehicleLocationContainer());
 			// midleContainer.add(getMapContainer(), new RowData(-1, 250.0));
 		}
 		return midleContainer;
@@ -609,27 +554,13 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private ListStore<DtoRecord> createRecordListStory() {
 		ListStore<DtoRecord> listStore = new ListStore<DtoRecord>();
 
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
+//		listStore.add(new DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(), "26/10/2012 12:30", "Olá tudo bem?"));
 
 		// listStore.add(new
 		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
@@ -673,6 +604,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 
 	private ListStore<DtoEvent> createListStory() {
 		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
+
 		// listStore.add(UtilData.ALL_EVENTS);
 		return listStore;
 	}
@@ -698,17 +630,14 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		ColumnConfig column = new ColumnConfig();
-		column.setId("imageSrc");
+		column.setId(DtoEvent.IMAGE_SRC);
 		column.setWidth(35);
 		column.setRenderer(createImageCellRender());
 		configs.add(column);
 
 		ColumnConfig column2 = new ColumnConfig();
-		column2.setId("description");
+		column2.setId(DtoEvent.DESCRIPTION);
 		column2.setRenderer(createDescriptionCellRender());
-		// column2.ser
-
-		column2.setResizable(true);
 
 		configs.add(column2);
 
@@ -722,7 +651,6 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			@Override
 			public Object render(DtoRecord model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoRecord> store, Grid<DtoRecord> grid) {
 				return "<span><img src=\"" + model.getImageSrc() + "\" alt=\"image\">  </span>";
-
 			}
 		};
 		return imageRecordCellRender;
@@ -743,6 +671,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		descriptionCellRender = new GridCellRenderer<DtoEvent>() {
 			@Override
 			public Object render(DtoEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoEvent> store, Grid<DtoEvent> grid) {
+//				return getRendered(model);
 				return getRendered(model);
 			}
 		};
@@ -778,31 +707,10 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 
 	protected String getRendered(DtoEvent model) {
 		StringBuffer rendered = new StringBuffer();
-		// rendered.append("<div>");
+		rendered.append("<span>");
 		rendered.append("	<table>");
 		rendered.append("		<tr>");
-		rendered.append("			<td> inicio: " + model.getStartDateTimeAsText() + " </td>");
-		rendered.append("			<td> Veiculo: " + model.getVehicleCode() + "</td>");
-		rendered.append("		</tr>");
-		rendered.append("		<tr>");
-		rendered.append("			<td> Atendente: " + model.getOperator() + "</td>");
-		rendered.append("			<td> Protocolo: " + model.getProtocol() + "</td>");
-		rendered.append("		</tr>");
-		rendered.append("	</table>");
-		// rendered.append("</div>");
-		return rendered.toString();
-	}
-
-	// TODO por algum motivo ao formatarmos os textos nas celulas da tabela como
-	// abaixo o evento mouseover e click não funcionam.
-	// para testar basta trocar a chamada ao metodo getRendered por get_rendered
-	// abaixo
-	protected String get_Rendered(DtoEvent model) {
-		StringBuffer rendered = new StringBuffer();
-		rendered.append("<div>");
-		rendered.append("	<table>");
-		rendered.append("		<tr>");
-		rendered.append("			<td> <span style='color:red'> inicio</span>: <span class=\"template-content\">" + model.getStartDateTimeAsText() + " &nbsp &nbsp</span> </td>");
+		rendered.append("			<td> <span class=\"template-label\">inicio</span>: <span class=\"template-content\">" + model.getStartDateTimeAsText() + " &nbsp &nbsp</span> </td>");
 		rendered.append("			<td> <span class=\"template-label\">Veiculo</span>: <span class=\"template-content\">" + model.getVehicleCode() + "</span> </td>");
 		rendered.append("		</tr>");
 		rendered.append("		<tr>");
@@ -810,49 +718,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		rendered.append("			<td> <span class=\"template-label\">Protocolo</span>: <span class=\"template-content\">" + model.getProtocol() + "</span> </td>");
 		rendered.append("		</tr>");
 		rendered.append("	</table>");
-		rendered.append("</div>");
+		rendered.append("</span>");
 		return rendered.toString();
 	}
-
-	private void updateRecordsContainer(ArrayList<DtoRecord> records) {
-		gridRecords.getStore().removeAll();
-		gridRecords.getStore().add(records);
-	}
-
-	private void updateAboutContainer(DtoAboutEvent aboutEvent) {
-		htmlAboutEvent.setHtml(aboutEventTemplate.applyTemplate(Util.getJsObject(aboutEvent)));
-	}
-
-	private void updateContactContainer(DtoContact contact) {
-		htmlContact.setHtml(contactTemplate.applyTemplate(Util.getJsObject(contact)));
-	}
-
-	private void updateVehicleLocationContainer(DtoVehicleAndLocation vehicleAndLocation) {
-		htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(vehicleAndLocation)));
-		centerVehicleInMap(vehicleAndLocation);
-	}
-
-	private void centerVehicleInMap(DtoVehicleAndLocation vehicleAndLocation) {
-		MarkerOptions options = MarkerOptions.newInstance();
-		LatLng center = LatLng.newInstance(vehicleAndLocation.getLatitude(),vehicleAndLocation.getLongitude());
-		
-		options.setIcon(Icon.newInstance("http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/24/bus.png"));
-		options.setTitle(vehicleAndLocation.getVehicle());
-
-		Marker vehicle = new Marker(center, options);
-		mapLocation.clearOverlays();
-		mapLocation.addOverlay(vehicle);
-		mapLocation.setCenter(center);
-		mapLocation.setZoomLevel(15);
-		mapLocation.checkResizeAndCenter();
-	}
-
-	protected void applyExtraInfo(DtoExtraInfoEvent extraInfo) {
-		updateAboutContainer(extraInfo.getAbout());
-		updateVehicleLocationContainer(extraInfo.getVehicleLocation());
-		updateContactContainer(extraInfo.getContact());
-		updateRecordsContainer(extraInfo.getRecords());
-
-	}
-
 }
