@@ -1,4 +1,4 @@
-package br.com.m2msolutions.client.container;
+package br.com.m2msolutions.shared.dto;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 
@@ -6,6 +6,7 @@ public class DtoRecord extends BaseModelData {
 
 	private static final long serialVersionUID = -7604561910947438145L;
 
+	public static final String ID = "id";
 	public static final String MESSAGE_DATE = "messageDate";
 	public static final String MESSAGE = "message";
 	public static final String TYPE = "type";
@@ -13,10 +14,19 @@ public class DtoRecord extends BaseModelData {
 	public static final String IMAGE_SRC = "imageSrc";
 	public static final String DESCRIPTION = "description";
 
-	//
-	public DtoRecord(String imageSrc, String messageDate, String message) {
+	public DtoRecord() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public DtoRecord(Long id, String imageSrc, String type, String messageDate, String message) {
+		this(imageSrc, type, messageDate, message);
+		setId(id);
+	}
+
+	public DtoRecord(String imageSrc, String type, String messageDate, String message) {
 		super();
 		setImageSrc(imageSrc);
+		setType(type);
 		setMessageDate(messageDate);
 		setMessage(message);
 	}
@@ -60,11 +70,46 @@ public class DtoRecord extends BaseModelData {
 	public void setImageSrc(String imageSrc) {
 		set(IMAGE_SRC, imageSrc);
 	}
+
 	public String getDescription() {
 		return get(DESCRIPTION);
 	}
-	
+
 	public void setDescription(String description) {
 		set(DESCRIPTION, description);
 	}
+
+	public Long getId() {
+		return get(ID);
+	}
+
+	public void setId(Long id) {
+		set(ID, id);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DtoRecord other = (DtoRecord) obj;
+		if (getId() == null) {
+			if (other.getId() != null)
+				return false;
+		} else if (!getId().equals(other.getId()))
+			return false;
+		return true;
+	}
+
 }

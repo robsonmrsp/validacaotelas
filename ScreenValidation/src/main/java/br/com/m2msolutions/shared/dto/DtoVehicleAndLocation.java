@@ -1,4 +1,4 @@
-package br.com.m2msolutions.client.container;
+package br.com.m2msolutions.shared.dto;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 
@@ -9,24 +9,23 @@ public class DtoVehicleAndLocation extends BaseModelData {
 	public static final String VEHICLE = "vehicle";
 	public static final String ADDRESS = "address";
 	public static final String BUSSERVICE_NAME = "busServiceName";
-	public static final String NEXT_STOP = "nextStop";
-
-	// TODO Verificar se é necessário usar como double para poder localozá-lo no
-	// mapa
+	
 	public static final String LATITUDE = "latitude";
 	public static final String LONGITUDE = "longitude";
 
+	public static final String NEXT_STOP = "nextStop";
 	public static final String COMPANY_NAME = "companyName";
 
-	// String adress;
-	// String busServiceName;
-	// String latitude;
-	// String longitude;
-	// String nextStop;
-	//
-	public DtoVehicleAndLocation() {
-		// TODO Auto-generated constructor stub
+	public DtoVehicleAndLocation(String vehicleCode, String address, String busserviceName, String nextStop, String companyName, Double latitude, Double longitude){
+		setVehicle(vehicleCode);
+		setAddress(address);
+		setBusServiceName(busserviceName);
+		setNextStop(nextStop);
+		setCompanyName(companyName);
+		setLatitude(latitude);
+		setLongitude(longitude);
 	}
+	public DtoVehicleAndLocation() {}
 
 	public String getVehicle() {
 		return get(VEHICLE);
@@ -40,8 +39,8 @@ public class DtoVehicleAndLocation extends BaseModelData {
 		return get(ADDRESS);
 	}
 
-	public void setAddress(String adress) {
-		set(ADDRESS, adress);
+	public void setAddress(String address) {
+		set(ADDRESS, address);
 	}
 
 	public String getBusServiceName() {
@@ -52,19 +51,19 @@ public class DtoVehicleAndLocation extends BaseModelData {
 		set(BUSSERVICE_NAME, busServiceName);
 	}
 
-	public String getLatitude() {
+	public Double getLatitude() {
 		return get(LATITUDE);
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(Double latitude) {
 		set(LATITUDE, latitude);
 	}
 
-	public String getLongitude() {
+	public Double getLongitude() {
 		return get(LONGITUDE);
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(Double longitude) {
 		set(LONGITUDE, longitude);
 	}
 

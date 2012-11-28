@@ -54,6 +54,7 @@ public class ScreenValidation implements EntryPoint {
 
 		DockDesktop dockDesktop = new DockDesktop();
 		final CriticalEventsWidget attendance = new CriticalEventsWidget();
+		new Resizable(attendance);
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.settings128().getURL(), "Configurações", new DockSelectionAction() {
 			@Override
 			public void action() {
