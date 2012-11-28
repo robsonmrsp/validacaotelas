@@ -33,5 +33,14 @@
 		<servlet-name>SystemServiceServlet</servlet-name>
 		<url-pattern>/_ah/spi/*</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>AttendanceService</servlet-name>
+		<servlet-class>br.com.m2msolutions.server.AttendanceServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>AttendanceService</servlet-name>
+		<url-pattern>/screenvalidation/attendanceService</url-pattern>
+	</servlet-mapping>
 
 </web-app>
