@@ -1,5 +1,5 @@
-body{
-	font: 12px Arial,Helvetica,Sans-serif;
+body {
+	font: 12px Arial, Helvetica, Sans-serif;
 	background-color: #d6e2f6;
 }
 
@@ -26,6 +26,7 @@ body{
 	font-size: 11px;
 	font-weight: bold;
 }
+
 .widget-window-heading {
 	color: #15428B;
 	background-color: #F3F7F8 !important;
@@ -44,40 +45,65 @@ body{
 	font-weight: bold !important;;
 }
 
-
 .search-box {
-    background: url("images/search-white.png") no-repeat scroll 10px 3px #FCFCFC;
-    margin-left: 2px !important;
-    margin-top: 2px !important;
-    border: 1px solid #D1D1D1;
-    border-radius: 20px 20px 20px 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
-    color: #BBBBB; 
-    font: bold 12px Arial,Helvetica,Sans-serif;
-    padding: 3px 1px 1px 30px;
-    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-    transition: all 0.7s ease 0s;
+	background: url("images/search-white.png") no-repeat scroll 10px 3px
+		#FCFCFC;
+	margin-left: 2px !important;
+	margin-top: 2px !important;
+	border: 1px solid #D1D1D1;
+	border-radius: 20px 20px 20px 20px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+	color: #BBBBB;
+	font: bold 12px Arial, Helvetica, Sans-serif;
+	padding: 3px 1px 1px 30px;
+	text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+	transition: all 0.7s ease 0s;
 }
+
 .cell {
 	padding-top: 10px;
 }
 
-.button-att{
+.button-att {
 	top: 2px !important;
 }
 
-#gridEvents .x-grid3-cell{
+#gridEvents .x-grid3-cell {
 	vertical-align: middle !important;
 }
 
 .new-x-panel-header {
-    color:#15428b;
-    font-weight:bold; 
-    font-size: 11px;
-    font-family: tahoma,arial,verdana,sans-serif;
-    border-color:#15428b !important;
-    background-image: url(/images/white-top-bottom.gif);
+	color: #15428b;
+	font-weight: bold;
+	font-size: 11px;
+	font-family: tahoma, arial, verdana, sans-serif;
+	border-color: #15428b !important;
+	background-image: url(/images/white-top-bottom.gif);
 }
+
 .border-layout {
 	background-color: #d6e2f6;
+}
+
+.template-content { /* 	color: #35476a; */
+	color: #687287;
+	font-weight: bold;
+	font-size: 11px;
+	font-family: tahoma, arial, verdana, sans-serif;
+}
+
+.template-label {
+	color: #35476a;
+	/* 	color: #6b7b99; */
+	font-weight: bold;
+	font-size: 11px;
+	font-family: tahoma, arial, verdana, sans-serif;
+}
+
+.template-grid-event td {
+	text-align: justify;
+}
+
+.template-grid-event {
+	width: 246px;
 }
