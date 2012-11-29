@@ -2,6 +2,7 @@ package br.com.m2msolutions.client;
 
 import br.com.m2msolutions.client.container.ContentPanelImp;
 import br.com.m2msolutions.client.container.CopyOfAttendanceWindow;
+import br.com.m2msolutions.client.container.CriticalEventAttendancePanel;
 import br.com.m2msolutions.client.container.CriticalEventsWidget;
 import br.com.m2msolutions.client.images.Images;
 import br.com.mr.dock.client.DockDesktop;
@@ -87,8 +88,18 @@ public class ScreenValidation implements EntryPoint {
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.map128().getURL(), "Monitoramento", new DockSelectionAction() {
 			@Override
 			public void action() {
-				// attendance.show();
+				
+				CriticalEventAttendancePanel criticalEventAttendancePanel = new CriticalEventAttendancePanel();
+				
+				Window window = new Window();
+				window.setMaximizable(true);
+				window.setMinimizable(true);
+				window.setLayout(new FitLayout());
+				window.setSize(850, 600);
 
+				window.add(criticalEventAttendancePanel);
+				window.show();
+				
 			}
 		});
 
