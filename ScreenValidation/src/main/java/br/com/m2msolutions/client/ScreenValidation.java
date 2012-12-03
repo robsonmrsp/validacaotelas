@@ -1,8 +1,7 @@
 package br.com.m2msolutions.client;
 
 import br.com.m2msolutions.client.container.ContentPanelImp;
-import br.com.m2msolutions.client.container.CopyOfAttendanceWindow;
-import br.com.m2msolutions.client.container.CriticalEventAttendancePanel;
+import br.com.m2msolutions.client.container.CopyOfCriticalEventAttendancePanel;
 import br.com.m2msolutions.client.container.CriticalEventsWidget;
 import br.com.m2msolutions.client.images.Images;
 import br.com.mr.dock.client.DockDesktop;
@@ -89,7 +88,7 @@ public class ScreenValidation implements EntryPoint {
 			@Override
 			public void action() {
 				
-				CriticalEventAttendancePanel criticalEventAttendancePanel = new CriticalEventAttendancePanel();
+				CopyOfCriticalEventAttendancePanel criticalEventAttendancePanel = new CopyOfCriticalEventAttendancePanel();
 				
 				Window window = new Window();
 				window.setMaximizable(true);
