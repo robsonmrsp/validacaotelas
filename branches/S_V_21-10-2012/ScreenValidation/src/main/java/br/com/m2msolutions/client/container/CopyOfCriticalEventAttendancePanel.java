@@ -6,7 +6,10 @@ import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.IconAlign;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
@@ -28,13 +31,17 @@ import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.event.MapDoubleClickHandler;
+import com.google.gwt.maps.client.event.MapDragEndHandler;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
-	
+
 	private LabelField lbNumeroProtocolo;
 	private LabelField lbInicioEvento;
 	private LabelField lbInicioAtendimento;
@@ -90,17 +97,18 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 	private Button btBlueLed;
 	private Button btYallowLed;
 	private Button btRedLed;
-	
+
 	private MapWidget mapLocation;
+	MapHandler mapHandler = new MapHandler();
 
 	public CopyOfCriticalEventAttendancePanel() {
 		setBorders(true);
 		setLayout(new BorderLayout());
-		
+
 		LayoutContainer lcCenter = new LayoutContainer();
 		lcCenter.setBorders(true);
-		lcCenter.setLayout(new RowLayout(Orientation.VERTICAL));
-		
+		lcCenter.setLayout(new BorderLayout());
+
 		ContentPanelImp cpHeaderCenter = new ContentPanelImp();
 		cpHeaderCenter.setBodyBorder(false);
 		cpHeaderCenter.setHeading("Sobre o Evento:");
@@ -108,19 +116,19 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		cpHeaderCenter.add(getLbNumeroProtocolo(), new AbsoluteData(6, 6));
 		cpHeaderCenter.add(getLbInicioEvento(), new AbsoluteData(6, 22));
 		cpHeaderCenter.add(getLbInicioAtendimento(), new AbsoluteData(6, 38));
-		
+
 		LabelField lbTDecorridoAtendimento = new LabelField("Tempo decorrido do Atendimento:");
 		lbTDecorridoAtendimento.setStyleName("titulo-label");
 		lbTDecorridoAtendimento.setHeight(15);
 		cpHeaderCenter.add(lbTDecorridoAtendimento, new AbsoluteData(6, 56));
 		lbTDecorridoAtendimento.setSize("200px", "20px");
-		
+
 		LabelField lbAtendenteAtual = new LabelField("Atendente Atual:");
 		lbAtendenteAtual.setStyleName("titulo-label");
 		lbAtendenteAtual.setHeight(15);
 		cpHeaderCenter.add(lbAtendenteAtual, new AbsoluteData(6, 72));
 		lbAtendenteAtual.setSize("100px", "20px");
-		
+
 		LabelField lbConclusaoAtendimento = new LabelField("Conclus\u00E3o do Atendimento:");
 		lbConclusaoAtendimento.setStyleName("titulo-label");
 		lbConclusaoAtendimento.setHeight(15);
@@ -134,27 +142,29 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		cpHeaderCenter.add(getLbConclusaoAtendimentoValue(), new AbsoluteData(170, 90));
 		cpHeaderCenter.add(getBtnNewButton(), new AbsoluteData(280, 72));
 		cpHeaderCenter.add(getBtnResolvido(), new AbsoluteData(280, 90));
-		lcCenter.add(cpHeaderCenter, new RowData(Style.DEFAULT, -1.0, new Margins()));
+		lcCenter.add(cpHeaderCenter, new BorderLayoutData(LayoutRegion.NORTH, 150.0f));
 		cpHeaderCenter.setHeight("180");
-		
+
 		ContentPanelImp cpBottomCenter = new ContentPanelImp();
 		cpBottomCenter.setBodyBorder(false);
 		cpBottomCenter.setHeading("Ve\u00EDculo e localiza\u00E7\u00E3o:");
-		cpBottomCenter.setLayout(new RowLayout(Orientation.VERTICAL));
+		cpBottomCenter.setLayout(new BorderLayout());
 		getCpVehicleLocationDesc().setLayout(new RowLayout(Orientation.HORIZONTAL));
-		cpBottomCenter.add(getCpVehicleLocationDesc(), new RowData(1.0, Style.DEFAULT, new Margins()));
-		getCpVehicleLocationMap().setLayout(new FitLayout());
-		getCpVehicleLocationMap().add(getMapPosition());
-		cpBottomCenter.add(getCpVehicleLocationMap(), new RowData(Style.DEFAULT, 1.0, new Margins()));
-		lcCenter.add(cpBottomCenter, new RowData(Style.DEFAULT, 1.0, new Margins()));
+		cpBottomCenter.add(getCpVehicleLocationDesc(), new BorderLayoutData(LayoutRegion.NORTH, 85.0f));
+
+		BorderLayoutData bld_mapContainer = new BorderLayoutData(LayoutRegion.CENTER, 270.0f);
+		bld_mapContainer.setMinSize(270);
+
+		cpBottomCenter.add(getCpVehicleLocationMap(), bld_mapContainer);
+		lcCenter.add(cpBottomCenter, new BorderLayoutData(LayoutRegion.CENTER));
 		BorderLayoutData bld_lcCenter = new BorderLayoutData(LayoutRegion.CENTER);
 		bld_lcCenter.setMargins(new Margins(5, 2, 5, 5));
 		add(lcCenter, bld_lcCenter);
-		
+
 		LayoutContainer lcEast = new LayoutContainer();
 		lcEast.setBorders(true);
 		lcEast.setLayout(new RowLayout(Orientation.VERTICAL));
-		
+
 		ContentPanelImp cpHeaderEast = new ContentPanelImp();
 		cpHeaderEast.setBodyBorder(false);
 		cpHeaderEast.setHeading("Contato:");
@@ -171,7 +181,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		cpHeaderEast.add(getLbIdadeValue(), new AbsoluteData(143, 61));
 		lcEast.add(cpHeaderEast, new RowData(Style.DEFAULT, Style.DEFAULT, new Margins(0, 0, 0, 0)));
 		cpHeaderEast.setHeight("150");
-		
+
 		ContentPanelImp cpBottomEast = new ContentPanelImp();
 		cpBottomEast.setBodyBorder(false);
 		cpBottomEast.setHeading("Registro de Ocorrencia:");
@@ -180,10 +190,20 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		cpBottomEast.add(getCpHistoricoChat(), new RowData(Style.DEFAULT, 1.0, new Margins(5, 5, 5, 5)));
 		cpBottomEast.add(getCpEntradaChat(), new RowData(Style.DEFAULT, Style.DEFAULT, new Margins(5, 5, 5, 5)));
 		lcEast.add(cpBottomEast, new RowData(Style.DEFAULT, 1.0, new Margins()));
-		BorderLayoutData bld_lcEast = new BorderLayoutData(LayoutRegion.EAST,410f);
+		BorderLayoutData bld_lcEast = new BorderLayoutData(LayoutRegion.EAST, 410f);
 		bld_lcEast.setMargins(new Margins(5, 5, 5, 2));
 		add(lcEast, bld_lcEast);
+
+		addListener(Events.Resize, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				System.out.println("CopyOfCriticalEventAttendancePanel.CopyOfCriticalEventAttendancePanel().new Listener() {...}.handleEvent()");
+				mapLocation.checkResizeAndCenter();
+			}
+		});
+
 	}
+
 	private LabelField getLbNumeroProtocolo() {
 		if (lbNumeroProtocolo == null) {
 			lbNumeroProtocolo = new LabelField("N\u00FAmero do Protocolo:");
@@ -193,6 +213,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbNumeroProtocolo;
 	}
+
 	private LabelField getLbInicioEvento() {
 		if (lbInicioEvento == null) {
 			lbInicioEvento = new LabelField("In\u00EDcio do Evento:");
@@ -202,6 +223,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbInicioEvento;
 	}
+
 	private LabelField getLbInicioAtendimento() {
 		if (lbInicioAtendimento == null) {
 			lbInicioAtendimento = new LabelField("In\u00EDcio do Atendimento:");
@@ -211,6 +233,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbInicioAtendimento;
 	}
+
 	private LabelField getLbNumerProtocoloValue() {
 		if (lbNumerProtocoloValue == null) {
 			lbNumerProtocoloValue = new LabelField("123456");
@@ -218,6 +241,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbNumerProtocoloValue;
 	}
+
 	private LabelField getLbInicioEventoValue() {
 		if (lbInicioEventoValue == null) {
 			lbInicioEventoValue = new LabelField("09/07/2012 as 15:31");
@@ -225,6 +249,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbInicioEventoValue;
 	}
+
 	private LabelField getLblfldAs() {
 		if (lblfldAs == null) {
 			lblfldAs = new LabelField("09/07/2012 as 15:32");
@@ -232,6 +257,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lblfldAs;
 	}
+
 	private LabelField getLbTDecorridoAtendimentoValue() {
 		if (lbTDecorridoAtendimentoValue == null) {
 			lbTDecorridoAtendimentoValue = new LabelField("4min");
@@ -239,6 +265,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbTDecorridoAtendimentoValue;
 	}
+
 	private LabelField getLbAtendenteAtualValue() {
 		if (lbAtendenteAtualValue == null) {
 			lbAtendenteAtualValue = new LabelField("Joao Silva");
@@ -246,6 +273,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbAtendenteAtualValue;
 	}
+
 	private LabelField getLbConclusaoAtendimentoValue() {
 		if (lbConclusaoAtendimentoValue == null) {
 			lbConclusaoAtendimentoValue = new LabelField("");
@@ -253,6 +281,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbConclusaoAtendimentoValue;
 	}
+
 	private Button getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new Button("Transferir");
@@ -265,6 +294,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return btnNewButton;
 	}
+
 	private Button getBtnResolvido() {
 		if (btnResolvido == null) {
 			btnResolvido = new Button("Resolvido");
@@ -273,6 +303,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return btnResolvido;
 	}
+
 	private ContentPanel getCpVehicleLocationDesc() {
 		if (cpVehicleLocationDesc == null) {
 			cpVehicleLocationDesc = new ContentPanelImp();
@@ -287,18 +318,23 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cpVehicleLocationDesc;
 	}
+
 	private ContentPanel getCpVehicleLocationMap() {
 		if (cpVehicleLocationMap == null) {
 			cpVehicleLocationMap = new ContentPanelImp();
 			cpVehicleLocationMap.setBodyBorder(false);
 			cpVehicleLocationMap.setHeaderVisible(false);
 			cpVehicleLocationMap.setCollapsible(true);
+			// cpVehicleLocationMap.setLayout(new FitLayout());
+			cpVehicleLocationMap.add(getMapPosition());
 		}
 		return cpVehicleLocationMap;
 	}
+
 	private ContentPanel getCpVehicleLocationLeft() {
 		if (cpVehicleLocationLeft == null) {
 			cpVehicleLocationLeft = new ContentPanelImp();
+
 			cpVehicleLocationLeft.setBodyBorder(false);
 			cpVehicleLocationLeft.setHeaderVisible(false);
 			cpVehicleLocationLeft.setCollapsible(true);
@@ -311,6 +347,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cpVehicleLocationLeft;
 	}
+
 	private ContentPanel getCpVehicleLocationRight() {
 		if (cpVehicleLocationRight == null) {
 			cpVehicleLocationRight = new ContentPanelImp();
@@ -329,6 +366,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cpVehicleLocationRight;
 	}
+
 	private LabelField getLbVeiculo() {
 		if (lbVeiculo == null) {
 			lbVeiculo = new LabelField("Ve\u00EDculo:");
@@ -337,6 +375,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbVeiculo;
 	}
+
 	private LabelField getLbLinha() {
 		if (lbLinha == null) {
 			lbLinha = new LabelField("Linha:");
@@ -345,6 +384,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbLinha;
 	}
+
 	private LabelField getLbEmpresa() {
 		if (lbEmpresa == null) {
 			lbEmpresa = new LabelField("Empresa:");
@@ -353,6 +393,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbEmpresa;
 	}
+
 	private LabelField getLabelField_6() {
 		if (lbEndereco == null) {
 			lbEndereco = new LabelField("Endere\u00E7o:");
@@ -361,6 +402,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbEndereco;
 	}
+
 	private LabelField getLabelField_1_1() {
 		if (lbLatitude == null) {
 			lbLatitude = new LabelField("Latitude:");
@@ -369,6 +411,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbLatitude;
 	}
+
 	private LabelField getLabelField_2_1() {
 		if (lbLongitude == null) {
 			lbLongitude = new LabelField("Longitude:");
@@ -377,6 +420,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbLongitude;
 	}
+
 	private LabelField getLabelField_6_1() {
 		if (lbProximoPonto == null) {
 			lbProximoPonto = new LabelField("Pr\u00F3x. Ponto:");
@@ -385,6 +429,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbProximoPonto;
 	}
+
 	private LabelField getLabelField_3() {
 		if (lbVeiculoValue == null) {
 			lbVeiculoValue = new LabelField("3050");
@@ -392,6 +437,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbVeiculoValue;
 	}
+
 	private LabelField getLabelField_4() {
 		if (lbLinhaValue == null) {
 			lbLinhaValue = new LabelField("Santa Cruz");
@@ -399,6 +445,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbLinhaValue;
 	}
+
 	private LabelField getLabelField_5() {
 		if (lbEmpresaVeiculo == null) {
 			lbEmpresaVeiculo = new LabelField("Globo");
@@ -406,6 +453,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbEmpresaVeiculo;
 	}
+
 	private LabelField getLabelField_7() {
 		if (lbEnderecoValue == null) {
 			lbEnderecoValue = new LabelField("BR-116");
@@ -413,6 +461,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbEnderecoValue;
 	}
+
 	private LabelField getLabelField_8() {
 		if (lbLatitudeValue == null) {
 			lbLatitudeValue = new LabelField("12,56895");
@@ -420,6 +469,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbLatitudeValue;
 	}
+
 	private LabelField getLabelField_9() {
 		if (lbLongitudeValue == null) {
 			lbLongitudeValue = new LabelField("13,76345");
@@ -427,6 +477,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbLongitudeValue;
 	}
+
 	private LabelField getLabelField_10() {
 		if (lbProximoPontoValue == null) {
 			lbProximoPontoValue = new LabelField("Padaria da Esq.");
@@ -434,6 +485,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbProximoPontoValue;
 	}
+
 	private LayoutContainer getLcImgContato() {
 		if (lcImgContato == null) {
 			lcImgContato = new LayoutContainer();
@@ -443,12 +495,14 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lcImgContato;
 	}
+
 	private Image getImgContato() {
 		if (imgContato == null) {
 			imgContato = new Image("");
 		}
 		return imgContato;
 	}
+
 	private LabelField getLbNome() {
 		if (lbNome == null) {
 			lbNome = new LabelField("Nome :");
@@ -456,6 +510,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbNome;
 	}
+
 	private LabelField getLbMatricula() {
 		if (lbMatricula == null) {
 			lbMatricula = new LabelField("Matr\u00EDcula :");
@@ -463,6 +518,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbMatricula;
 	}
+
 	private LabelField getLbTelefone() {
 		if (lbTelefone == null) {
 			lbTelefone = new LabelField("Telefone :");
@@ -470,6 +526,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbTelefone;
 	}
+
 	private LabelField getLblfldIdade() {
 		if (lblfldIdade == null) {
 			lblfldIdade = new LabelField("Idade :");
@@ -477,6 +534,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lblfldIdade;
 	}
+
 	private LabelField getLbNomeValue() {
 		if (lbNomeValue == null) {
 			lbNomeValue = new LabelField("Francisco Jos\u00E9 da Silva");
@@ -484,6 +542,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbNomeValue;
 	}
+
 	private LabelField getLbMatriculaValue() {
 		if (lbMatriculaValue == null) {
 			lbMatriculaValue = new LabelField("123456");
@@ -491,18 +550,21 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return lbMatriculaValue;
 	}
+
 	private LabelField getLbTelefoneValue() {
 		if (lbTelefoneValue == null) {
 			lbTelefoneValue = new LabelField("(85) 8888 8888");
 		}
 		return lbTelefoneValue;
 	}
+
 	private LabelField getLbIdadeValue() {
 		if (lbIdadeValue == null) {
 			lbIdadeValue = new LabelField("35 anos");
 		}
 		return lbIdadeValue;
 	}
+
 	private ContentPanel getCpHistoricoChat() {
 		if (cpHistoricoChat == null) {
 			cpHistoricoChat = new ContentPanel();
@@ -513,6 +575,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cpHistoricoChat;
 	}
+
 	private ContentPanel getCpEntradaChat() {
 		if (cpEntradaChat == null) {
 			cpEntradaChat = new ContentPanelImp();
@@ -528,12 +591,14 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cpEntradaChat;
 	}
+
 	private ListView getListView() {
 		if (listView == null) {
 			listView = new ListView(new ListStore());
 		}
 		return listView;
 	}
+
 	private ContentPanel getCpChatEntradaLeft() {
 		if (cpChatEntradaLeft == null) {
 			cpChatEntradaLeft = new ContentPanelImp();
@@ -546,6 +611,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cpChatEntradaLeft;
 	}
+
 	private ContentPanel getCpChatEntraRigth() {
 		if (cpChatEntraRigth == null) {
 			cpChatEntraRigth = new ContentPanelImp();
@@ -558,6 +624,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cpChatEntraRigth;
 	}
+
 	private ContentPanel getCpEntradaChatTop() {
 		if (cpEntradaChatTop == null) {
 			cpEntradaChatTop = new ContentPanelImp();
@@ -570,6 +637,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cpEntradaChatTop;
 	}
+
 	private ContentPanel getCpEntradaChatBottom() {
 		if (cpEntradaChatBottom == null) {
 			cpEntradaChatBottom = new ContentPanelImp();
@@ -580,6 +648,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cpEntradaChatBottom;
 	}
+
 	private TextArea getTaEntradaChat() {
 		if (taEntradaChat == null) {
 			taEntradaChat = new TextArea();
@@ -587,6 +656,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return taEntradaChat;
 	}
+
 	private Button getBtRegistrar() {
 		if (btRegistrar == null) {
 			btRegistrar = new Button("Registrar");
@@ -598,6 +668,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return btRegistrar;
 	}
+
 	private CheckBox getCbParaOVeculo() {
 		if (cbParaOVeculo == null) {
 			cbParaOVeculo = new CheckBox();
@@ -606,6 +677,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return cbParaOVeculo;
 	}
+
 	private ToolBar getToolBar() {
 		if (toolBar == null) {
 			toolBar = new ToolBar();
@@ -618,12 +690,14 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return toolBar;
 	}
+
 	private LabelToolItem getLbPainelLeds() {
 		if (lbPainelLeds == null) {
 			lbPainelLeds = new LabelToolItem("Painel de Leds :");
 		}
 		return lbPainelLeds;
 	}
+
 	private Button getBtGreenLed() {
 		if (btGreenLed == null) {
 			btGreenLed = new Button("");
@@ -633,6 +707,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return btGreenLed;
 	}
+
 	private Button getBtBlueLed() {
 		if (btBlueLed == null) {
 			btBlueLed = new Button("");
@@ -642,6 +717,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return btBlueLed;
 	}
+
 	private Button getBtYallowLed() {
 		if (btYallowLed == null) {
 			btYallowLed = new Button("");
@@ -651,6 +727,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return btYallowLed;
 	}
+
 	private Button getBtRedLed() {
 		if (btRedLed == null) {
 			btRedLed = new Button("");
@@ -660,19 +737,39 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 		return btRedLed;
 	}
-	
+
 	private Widget getMapPosition() {
 
 		LatLng fortalCity = LatLng.newInstance(-3.736549, -38.523804);
 		mapLocation = new MapWidget();
 
 		mapLocation.setCenter(fortalCity);
-		mapLocation.checkResizeAndCenter();
 		mapLocation.setSize("100%", "100%");
+		mapLocation.addOverlay(new Marker(fortalCity));
+		mapLocation.setZoomLevel(14);
+		mapLocation.checkResizeAndCenter();
+		mapLocation.addMapDoubleClickHandler(mapHandler);
+		mapLocation.addMapDragEndHandler(mapHandler);
+		mapLocation.addMapClickHandler(mapHandler);
 
 		return mapLocation;
-
 	}
 
-}
+	class MapHandler implements MapDragEndHandler, MapDoubleClickHandler, MapClickHandler {
 
+		@Override
+		public void onClick(MapClickEvent event) {
+			event.getSender().checkResizeAndCenter();
+		}
+
+		@Override
+		public void onDoubleClick(MapDoubleClickEvent event) {
+			event.getSender().checkResizeAndCenter();
+		}
+
+		@Override
+		public void onDragEnd(MapDragEndEvent event) {
+			event.getSender().checkResizeAndCenter();
+		}
+	}
+}

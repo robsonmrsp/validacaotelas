@@ -58,6 +58,9 @@ import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.event.MapDoubleClickHandler;
+import com.google.gwt.maps.client.event.MapDragEndHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Icon;
 import com.google.gwt.maps.client.overlay.Marker;
@@ -97,6 +100,8 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private LayoutContainer rightContainer;
 	private LayoutContainer toFromContainer;
 	private LayoutContainer protocolContainer;
+	
+	MapHandler mapHandler = new MapHandler();
 
 	// Grid<DtoEvent> grid;
 	// LayoutContainer gridContainer;
@@ -453,6 +458,11 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		mapLocation.checkResizeAndCenter();
 		mapLocation.setSize("100%", "100%");
 		
+		mapLocation.addMapClickHandler(mapHandler);
+		mapLocation.addMapDoubleClickHandler(mapHandler);
+		mapLocation.addMapDragEndHandler(mapHandler);
+		
+		
 		return mapLocation;
 
 	}
@@ -490,7 +500,6 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			midleContainer.setLayout(new BorderLayout());
 			midleContainer.add(getAboutEventContainer(), new BorderLayoutData(LayoutRegion.NORTH, 150.0f));
 			midleContainer.add(getVehicleLocationContainer(), new BorderLayoutData(LayoutRegion.CENTER));
-			// midleContainer.add(getMapContainer(), new RowData(-1, 250.0));
 		}
 		return midleContainer;
 	}
@@ -834,8 +843,8 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 
 	private void centerVehicleInMap(DtoVehicleAndLocation vehicleAndLocation) {
 		MarkerOptions options = MarkerOptions.newInstance();
-		LatLng center = LatLng.newInstance(vehicleAndLocation.getLatitude(),vehicleAndLocation.getLongitude());
-		
+		LatLng center = LatLng.newInstance(vehicleAndLocation.getLatitude(), vehicleAndLocation.getLongitude());
+
 		options.setIcon(Icon.newInstance("http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/24/bus.png"));
 		options.setTitle(vehicleAndLocation.getVehicle());
 
@@ -855,4 +864,21 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 
 	}
 
+	class MapHandler implements MapDragEndHandler, MapDoubleClickHandler, MapClickHandler {
+
+		@Override
+		public void onClick(MapClickEvent event) {
+			event.getSender().checkResizeAndCenter();
+		}
+
+		@Override
+		public void onDoubleClick(MapDoubleClickEvent event) {
+			event.getSender().checkResizeAndCenter();
+		}
+
+		@Override
+		public void onDragEnd(MapDragEndEvent event) {
+			event.getSender().checkResizeAndCenter();
+		}
+	}
 }
