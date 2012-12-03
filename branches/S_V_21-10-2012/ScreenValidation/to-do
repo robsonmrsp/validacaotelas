@@ -1,6 +1,26 @@
-** Criar uma aplicação com nome prototipacaotelas para ser usado em comum pelos desenvolvedores.
+OK ** Criar uma aplicação com nome prototipacaotelas para ser usado em comum pelos desenvolvedores.
 
-** Usar o usuário prototipacaotelas(senha prototipacao12#) para subir a aplicação.
+OK ** Usar o usuário prototipacaotelas(senha prototipacao12#) para subir a aplicação.
 
-** Mudar o nome da aplicação que temos configurado para "prototipacaotelas"
+OK ** Mudar o nome da aplicação que temos configurado para "prototipacaotelas"
 
+OK ** Alterar o layout da tela de modo a permitir que o mapa localizado no centro cresça e ocupe TODA o espaço vazio. 
+
+
+** Pensar nos problemas 
+** As imagens que devem vir para preenchimento dos campos dos grids são populadas no server. O problema é que no server 
+não podemos usar as classes/interfaces de Imagens, pois estas chamam o metodo GWT.create(...) que somente pode ser invocado do client.
+	Possiveis soluções:
+	** Criar um mapa que associa uma constante a uma imagem., como as imagens constituem um conjunto FINITO e pequeno acredito que isso seja viavel.
+	** Guardar as imagens no banco de dados, pois as mesmas serão definidas/criadas pelo usuário.
+	** Já pensar em um servidor de conteudo estático.
+	 
+
+
+**************************************
+Efeitos que devem ser aplicados aos componetes
+	-- primeiro componente deve ser o LabeledImage.
+	-- O componente labeledImage deve ser alterado de modo a crescer tal qual o numero de eventos vai almentando.9, 99. 999, 9999, etc
+	 
+Bugs Aparentes dos componentes	 
+Melhorar o visual da tela de consulta atendimento.
