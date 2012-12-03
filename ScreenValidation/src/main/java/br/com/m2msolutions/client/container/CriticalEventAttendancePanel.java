@@ -27,8 +27,11 @@ import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Widget;
 
 public class CriticalEventAttendancePanel extends LayoutContainer {
 	
@@ -87,6 +90,8 @@ public class CriticalEventAttendancePanel extends LayoutContainer {
 	private Button btBlueLed;
 	private Button btYallowLed;
 	private Button btRedLed;
+	
+	private MapWidget mapLocation;
 
 	public CriticalEventAttendancePanel() {
 		setBorders(true);
@@ -139,6 +144,7 @@ public class CriticalEventAttendancePanel extends LayoutContainer {
 		getCpVehicleLocationDesc().setLayout(new RowLayout(Orientation.HORIZONTAL));
 		cpBottomCenter.add(getCpVehicleLocationDesc(), new RowData(1.0, Style.DEFAULT, new Margins()));
 		getCpVehicleLocationMap().setLayout(new FitLayout());
+		getCpVehicleLocationMap().add(getMapPosition());
 		cpBottomCenter.add(getCpVehicleLocationMap(), new RowData(Style.DEFAULT, 1.0, new Margins()));
 		lcCenter.add(cpBottomCenter, new RowData(Style.DEFAULT, 1.0, new Margins()));
 		BorderLayoutData bld_lcCenter = new BorderLayoutData(LayoutRegion.CENTER);
@@ -653,5 +659,18 @@ public class CriticalEventAttendancePanel extends LayoutContainer {
 			btRedLed.setIcon(AbstractImagePrototype.create(Images.INSTANCE.hardRed30()));
 		}
 		return btRedLed;
+	}
+	
+	private Widget getMapPosition() {
+
+		LatLng fortalCity = LatLng.newInstance(-3.736549, -38.523804);
+		mapLocation = new MapWidget();
+
+		mapLocation.setCenter(fortalCity);
+		mapLocation.checkResizeAndCenter();
+		mapLocation.setSize("100%", "100%");
+
+		return mapLocation;
+
 	}
 }

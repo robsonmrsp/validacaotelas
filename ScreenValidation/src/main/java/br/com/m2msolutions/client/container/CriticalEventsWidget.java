@@ -14,6 +14,7 @@ import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FxEvent;
+import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -305,6 +306,21 @@ public class CriticalEventsWidget extends DockWindow {
 			gridEvents.setHideHeaders(true);
 //			gridEvents.setHeight(Style.DEFAULT);
 			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
+			
+			gridEvents.addListener(Events.OnDoubleClick, new Listener<GridEvent>() {
+				public void handleEvent(final GridEvent ge) {
+					CopyOfCriticalEventAttendancePanel criticalEventAttendancePanel = new CopyOfCriticalEventAttendancePanel();
+					
+					Window window = new Window();
+					window.setMaximizable(true);
+					window.setMinimizable(true);
+					window.setLayout(new FitLayout());
+					window.setSize(850, 600);
+
+					window.add(criticalEventAttendancePanel);
+					window.show();
+				}
+			});
 			
 		}
 		return gridEvents;
