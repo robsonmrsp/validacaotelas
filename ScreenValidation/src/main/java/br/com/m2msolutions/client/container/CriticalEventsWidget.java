@@ -307,8 +307,8 @@ public class CriticalEventsWidget extends DockWindow {
 //			gridEvents.setHeight(Style.DEFAULT);
 			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
 			
-			gridEvents.addListener(Events.OnDoubleClick, new Listener<GridEvent>() {
-				public void handleEvent(final GridEvent ge) {
+			gridEvents.addListener(Events.OnDoubleClick, new Listener<GridEvent<DtoEvent>>() {
+				public void handleEvent(final GridEvent<DtoEvent> ge) {
 					CopyOfCriticalEventAttendancePanel criticalEventAttendancePanel = new CopyOfCriticalEventAttendancePanel();
 					
 					Window window = new Window();
