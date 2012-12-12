@@ -12,6 +12,7 @@ import br.com.m2msolutions.shared.dto.DtoEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoRecord;
 import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
+import br.com.mr.dock.client.containers.Position;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.Direction;
@@ -96,6 +97,8 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 	private Html htmlAboutEvent;
 	private Html htmlContact;
 	private DtoEvent event;
+	private SlidePanel panel = new SlidePanel();
+
 	AttendanceServiceAsync attendanceService = GWT.create(AttendanceService.class);
 
 	public CopyOfCriticalEventAttendancePanel() {
@@ -149,26 +152,27 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		return centerContainer;
 	}
 
-	SlidePanel panel = new SlidePanel();
-	
 	private Widget getOccurrenceRecordsContainer() {
 		if (occurrenceRecordsContainer == null) {
 			occurrenceRecordsContainer = new ContentPanelImp();
 			occurrenceRecordsContainer.setBodyStyle("backgroundColor: #d6e2f6;");
 			occurrenceRecordsContainer.setBodyBorder(false);
 			occurrenceRecordsContainer.setHeading("Registro de Ocorrencia:");
-			
+
+			ToolButton toolButton = new ToolButton(Images.INSTANCE.edit16());
+
+			panel.anchorAt(occurrenceRecordsContainer, Position.LEFT);
 			occurrenceRecordsContainer.addToolButton(new ToolButton(Images.INSTANCE.edit16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
-					RootPanel.get().add(panel);
-					panel.setPosition(30, 50 );
-					panel.show();
-//					panel.el().slideIn(Direction.LEFT, FxConfig.NONE);
-//					expandButton.setUrl(getExpandImageUrl());
+					if (panel.isVisible()) {
+						panel.hide();
+					} else {
+						panel.show();
+					}
 				}
 			}));
-			
+
 			occurrenceRecordsContainer.setLayout(new RowLayout(Orientation.VERTICAL));
 			occurrenceRecordsContainer.add(getCpHistoricoChat(), new RowData(Style.DEFAULT, 1.0, new Margins(5, 5, 5, 5)));
 			occurrenceRecordsContainer.add(getCpEntradaChat(), new RowData(Style.DEFAULT, Style.DEFAULT, new Margins(5, 5, 5, 5)));

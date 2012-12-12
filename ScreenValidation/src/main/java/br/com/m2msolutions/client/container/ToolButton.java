@@ -22,6 +22,10 @@ public class ToolButton extends LayoutContainer {
 			addClickListener(listener);
 	}
 
+	public ToolButton(ImageResource imageResource) {
+		this(imageResource, null);
+	}
+
 	public void setImage(ImageResource resource) {
 		image.setResource(resource);
 	}
