@@ -6,7 +6,8 @@ public class ContentPanelImp extends ContentPanel {
 	public ContentPanelImp() {
 		setHideCollapseTool(true);
 		setCollapsible(false);
-		setBodyStyle("backgroundColor: #d6e2f6;");
+//		setBodyStyle("backgroundColor: #d6e2f6;");
+		setBodyStyle("backgroundColor: #f7f7f7;");
 	}
 
 	public void addToolButton(ToolButton toolButton) {

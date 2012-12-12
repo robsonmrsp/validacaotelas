@@ -115,7 +115,8 @@ public class CriticalEventsWidget extends DockWindow {
 			principal.setId("principal");
 			principal.setLayout(new RowLayout(Orientation.VERTICAL));
 			principal.setBorders(false);
-//			principal.add(getGridContainer(), new RowData(-1, 200.0, new Margins()));
+			// principal.add(getGridContainer(), new RowData(-1, 200.0, new
+			// Margins()));
 			principal.add(getGrid());
 			principal.add(getFooter(), new RowData(1, 25.0, new Margins()));
 		}
@@ -281,20 +282,20 @@ public class CriticalEventsWidget extends DockWindow {
 	private Grid<DtoEvent> getGrid() {
 		if (gridEvents == null) {
 			gridEvents = new Grid<DtoEvent>(createListStory(), createColumnConfig());
-//			gridEvents.setAutoExpandMax(500);
-//			gridEvents.setWidth(400);
-//			
-//			gridEvents.setBorders(false);
-//			gridEvents.setId("gridEvents");
-//
-//			gridEvents.setAutoWidth(true);
-////			gridEvents.setWidth(335);
-//			gridEvents.setColumnResize(true);
-////			gridEvents.setWidth(Style.DEFAULT);
-//			gridEvents.setLoadMask(true);
-//			gridEvents.setHideHeaders(true);
-//			gridEvents.getView().setEmptyText("Sem eventos para exibir...");
-//			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
+			// gridEvents.setAutoExpandMax(500);
+			// gridEvents.setWidth(400);
+			//
+			// gridEvents.setBorders(false);
+			// gridEvents.setId("gridEvents");
+			//
+			// gridEvents.setAutoWidth(true);
+			// // gridEvents.setWidth(335);
+			// gridEvents.setColumnResize(true);
+			// // gridEvents.setWidth(Style.DEFAULT);
+			// gridEvents.setLoadMask(true);
+			// gridEvents.setHideHeaders(true);
+			// gridEvents.getView().setEmptyText("Sem eventos para exibir...");
+			// gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
 			gridEvents.setSize(360, 190);
 			// gridEvents.setAutoExpandMax(500);
 			gridEvents.setSelectionModel(new GridSelectionModel<DtoEvent>());
@@ -304,26 +305,15 @@ public class CriticalEventsWidget extends DockWindow {
 			gridEvents.setAutoWidth(false);
 			gridEvents.setColumnResize(false);
 			gridEvents.setHideHeaders(true);
-//			gridEvents.setHeight(Style.DEFAULT);
+			// gridEvents.setHeight(Style.DEFAULT);
 			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
-			
-			gridEvents.addListener(Events.OnDoubleClick, new Listener<GridEvent<DtoEvent>>() {
-				public void handleEvent(final GridEvent<DtoEvent> ge) {
-					CopyOfCriticalEventAttendancePanel criticalEventAttendancePanel = new CopyOfCriticalEventAttendancePanel();
-					
-					Window window = new Window();
-					window.setMaximizable(true);
-					window.setMinimizable(true);
-					window.setLayout(new FitLayout());
-					window.setSize(850, 600);
-
-					window.add(criticalEventAttendancePanel);
-					window.show();
-				}
-			});
-			
 		}
+		
 		return gridEvents;
+	}
+
+	public void addActionOnDobleClick(Listener<GridEvent<DtoEvent>> listener) {
+		gridEvents.addListener(Events.OnDoubleClick, listener);
 	}
 
 	private void disableHorizontalScroll() {
@@ -355,7 +345,7 @@ public class CriticalEventsWidget extends DockWindow {
 		configs.add(column);
 
 		ColumnConfig column2 = new ColumnConfig();
-//		column2.setWidth(400);
+		// column2.setWidth(400);
 		column2.setId(DtoEvent.DESCRIPTION);
 		column2.setRenderer(createDescriptionCellRender());
 
@@ -486,4 +476,5 @@ public class CriticalEventsWidget extends DockWindow {
 		window.add(attendanceWindow);
 		return window;
 	}
+
 }

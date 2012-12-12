@@ -1,89 +1,72 @@
 package br.com.m2msolutions.client.container;
 
+import java.util.ArrayList;
+
+import br.com.m2msolutions.client.AttendanceService;
+import br.com.m2msolutions.client.AttendanceServiceAsync;
+import br.com.m2msolutions.client.SimpleGwtLogger;
 import br.com.m2msolutions.client.images.Images;
+import br.com.m2msolutions.shared.dto.DtoAboutEvent;
+import br.com.m2msolutions.shared.dto.DtoContact;
+import br.com.m2msolutions.shared.dto.DtoEvent;
+import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
+import br.com.m2msolutions.shared.dto.DtoRecord;
+import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
 
 import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.Style.Direction;
 import com.extjs.gxt.ui.client.Style.IconAlign;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.core.XTemplate;
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
-import com.extjs.gxt.ui.client.widget.form.LabelField;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.layout.AbsoluteData;
 import com.extjs.gxt.ui.client.widget.layout.AbsoluteLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
+import com.extjs.gxt.ui.client.widget.layout.FitData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.event.MapDoubleClickHandler;
 import com.google.gwt.maps.client.event.MapDragEndHandler;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Icon;
 import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.maps.client.overlay.MarkerOptions;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
-
-	private LabelField lbNumeroProtocolo;
-	private LabelField lbInicioEvento;
-	private LabelField lbInicioAtendimento;
-	private LabelField lbNumerProtocoloValue;
-	private LabelField lbInicioEventoValue;
-	private LabelField lblfldAs;
-	private LabelField lbTDecorridoAtendimentoValue;
-	private LabelField lbAtendenteAtualValue;
-	private LabelField lbConclusaoAtendimentoValue;
 	private Button btnNewButton;
 	private Button btnResolvido;
-	private ContentPanelImp cpVehicleLocationDesc;
-	private ContentPanelImp cpVehicleLocationMap;
-	private ContentPanelImp cpVehicleLocationLeft;
-	private ContentPanelImp cpVehicleLocationRight;
-	private LabelField lbVeiculo;
-	private LabelField lbLinha;
-	private LabelField lbEmpresa;
-	private LabelField lbEndereco;
-	private LabelField lbLatitude;
-	private LabelField lbLongitude;
-	private LabelField lbProximoPonto;
-	private LabelField lbVeiculoValue;
-	private LabelField lbLinhaValue;
-	private LabelField lbEmpresaVeiculo;
-	private LabelField lbEnderecoValue;
-	private LabelField lbLatitudeValue;
-	private LabelField lbLongitudeValue;
-	private LabelField lbProximoPontoValue;
-	private LayoutContainer lcImgContato;
-	private Image imgContato;
-	private LabelField lbNome;
-	private LabelField lbMatricula;
-	private LabelField lbTelefone;
-	private LabelField lblfldIdade;
-	private LabelField lbNomeValue;
-	private LabelField lbMatriculaValue;
-	private LabelField lbTelefoneValue;
-	private LabelField lbIdadeValue;
 	private ContentPanel cpHistoricoChat;
 	private ContentPanelImp cpEntradaChat;
-	private ListView listView;
+	private ListView<DtoRecord> listView;
 	private ContentPanelImp cpChatEntradaLeft;
 	private ContentPanelImp cpChatEntraRigth;
 	private ContentPanelImp cpEntradaChatTop;
@@ -100,195 +83,226 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 
 	private MapWidget mapLocation;
 	MapHandler mapHandler = new MapHandler();
+	private ContentPanelImp aboutEventContainer;
+	private ContentPanelImp vehicleLocationContainer;
+	private ContentPanelImp contactContainer;
+	private ContentPanelImp occurrenceRecordsContainer;
+
+	private XTemplate aboutEventTemplate;
+	private XTemplate contactTemplate;
+	private XTemplate vehicleLocationTemplate;
+
+	private Html htmlVehicleLocation;
+	private Html htmlAboutEvent;
+	private Html htmlContact;
+	private DtoEvent event;
+	AttendanceServiceAsync attendanceService = GWT.create(AttendanceService.class);
 
 	public CopyOfCriticalEventAttendancePanel() {
+		initComponents();
+	}
+
+	private void initComponents() {
 		setBorders(true);
 		setLayout(new BorderLayout());
 
-		LayoutContainer lcCenter = new LayoutContainer();
-		lcCenter.setBorders(true);
-		lcCenter.setLayout(new BorderLayout());
+		BorderLayoutData centerLayoutData = new BorderLayoutData(LayoutRegion.CENTER);
+		centerLayoutData.setMargins(new Margins(5, 2, 5, 5));
 
-		ContentPanelImp cpHeaderCenter = new ContentPanelImp();
-		cpHeaderCenter.setBodyBorder(false);
-		cpHeaderCenter.setHeading("Sobre o Evento:");
-		cpHeaderCenter.setLayout(new AbsoluteLayout());
-		cpHeaderCenter.add(getLbNumeroProtocolo(), new AbsoluteData(6, 6));
-		cpHeaderCenter.add(getLbInicioEvento(), new AbsoluteData(6, 22));
-		cpHeaderCenter.add(getLbInicioAtendimento(), new AbsoluteData(6, 38));
+		BorderLayoutData eastLayoutData = new BorderLayoutData(LayoutRegion.EAST, 410f);
+		eastLayoutData.setMargins(new Margins(5, 5, 5, 2));
 
-		LabelField lbTDecorridoAtendimento = new LabelField("Tempo decorrido do Atendimento:");
-		lbTDecorridoAtendimento.setStyleName("titulo-label");
-		lbTDecorridoAtendimento.setHeight(15);
-		cpHeaderCenter.add(lbTDecorridoAtendimento, new AbsoluteData(6, 56));
-		lbTDecorridoAtendimento.setSize("200px", "20px");
-
-		LabelField lbAtendenteAtual = new LabelField("Atendente Atual:");
-		lbAtendenteAtual.setStyleName("titulo-label");
-		lbAtendenteAtual.setHeight(15);
-		cpHeaderCenter.add(lbAtendenteAtual, new AbsoluteData(6, 72));
-		lbAtendenteAtual.setSize("100px", "20px");
-
-		LabelField lbConclusaoAtendimento = new LabelField("Conclus\u00E3o do Atendimento:");
-		lbConclusaoAtendimento.setStyleName("titulo-label");
-		lbConclusaoAtendimento.setHeight(15);
-		cpHeaderCenter.add(lbConclusaoAtendimento, new AbsoluteData(6, 90));
-		lbConclusaoAtendimento.setSize("160px", "20px");
-		cpHeaderCenter.add(getLbNumerProtocoloValue(), new AbsoluteData(138, 6));
-		cpHeaderCenter.add(getLbInicioEventoValue(), new AbsoluteData(110, 22));
-		cpHeaderCenter.add(getLblfldAs(), new AbsoluteData(142, 38));
-		cpHeaderCenter.add(getLbTDecorridoAtendimentoValue(), new AbsoluteData(206, 56));
-		cpHeaderCenter.add(getLbAtendenteAtualValue(), new AbsoluteData(110, 72));
-		cpHeaderCenter.add(getLbConclusaoAtendimentoValue(), new AbsoluteData(170, 90));
-		cpHeaderCenter.add(getBtnNewButton(), new AbsoluteData(280, 72));
-		cpHeaderCenter.add(getBtnResolvido(), new AbsoluteData(280, 90));
-		lcCenter.add(cpHeaderCenter, new BorderLayoutData(LayoutRegion.NORTH, 150.0f));
-		cpHeaderCenter.setHeight("180");
-
-		ContentPanelImp cpBottomCenter = new ContentPanelImp();
-		cpBottomCenter.setBodyBorder(false);
-		cpBottomCenter.setHeading("Ve\u00EDculo e localiza\u00E7\u00E3o:");
-		cpBottomCenter.setLayout(new BorderLayout());
-		getCpVehicleLocationDesc().setLayout(new RowLayout(Orientation.HORIZONTAL));
-		cpBottomCenter.add(getCpVehicleLocationDesc(), new BorderLayoutData(LayoutRegion.NORTH, 85.0f));
-
-		BorderLayoutData bld_mapContainer = new BorderLayoutData(LayoutRegion.CENTER, 270.0f);
-		bld_mapContainer.setMinSize(270);
-
-		cpBottomCenter.add(getCpVehicleLocationMap(), bld_mapContainer);
-		lcCenter.add(cpBottomCenter, new BorderLayoutData(LayoutRegion.CENTER));
-		BorderLayoutData bld_lcCenter = new BorderLayoutData(LayoutRegion.CENTER);
-		bld_lcCenter.setMargins(new Margins(5, 2, 5, 5));
-		add(lcCenter, bld_lcCenter);
-
-		LayoutContainer lcEast = new LayoutContainer();
-		lcEast.setBorders(true);
-		lcEast.setLayout(new RowLayout(Orientation.VERTICAL));
-
-		ContentPanelImp cpHeaderEast = new ContentPanelImp();
-		cpHeaderEast.setBodyBorder(false);
-		cpHeaderEast.setHeading("Contato:");
-		cpHeaderEast.setLayout(new AbsoluteLayout());
-		getLcImgContato().setLayout(new CenterLayout());
-		cpHeaderEast.add(getLcImgContato(), new AbsoluteData(6, 6));
-		cpHeaderEast.add(getLbNome(), new AbsoluteData(97, 6));
-		cpHeaderEast.add(getLbMatricula(), new AbsoluteData(97, 23));
-		cpHeaderEast.add(getLbTelefone(), new AbsoluteData(97, 42));
-		cpHeaderEast.add(getLblfldIdade(), new AbsoluteData(97, 61));
-		cpHeaderEast.add(getLbNomeValue(), new AbsoluteData(146, 6));
-		cpHeaderEast.add(getLbMatriculaValue(), new AbsoluteData(156, 23));
-		cpHeaderEast.add(getLbTelefoneValue(), new AbsoluteData(161, 42));
-		cpHeaderEast.add(getLbIdadeValue(), new AbsoluteData(143, 61));
-		lcEast.add(cpHeaderEast, new RowData(Style.DEFAULT, Style.DEFAULT, new Margins(0, 0, 0, 0)));
-		cpHeaderEast.setHeight("150");
-
-		ContentPanelImp cpBottomEast = new ContentPanelImp();
-		cpBottomEast.setBodyBorder(false);
-		cpBottomEast.setHeading("Registro de Ocorrencia:");
-		cpBottomEast.setLayout(new RowLayout(Orientation.VERTICAL));
-		getCpHistoricoChat().setLayout(new FitLayout());
-		cpBottomEast.add(getCpHistoricoChat(), new RowData(Style.DEFAULT, 1.0, new Margins(5, 5, 5, 5)));
-		cpBottomEast.add(getCpEntradaChat(), new RowData(Style.DEFAULT, Style.DEFAULT, new Margins(5, 5, 5, 5)));
-		lcEast.add(cpBottomEast, new RowData(Style.DEFAULT, 1.0, new Margins()));
-		BorderLayoutData bld_lcEast = new BorderLayoutData(LayoutRegion.EAST, 410f);
-		bld_lcEast.setMargins(new Margins(5, 5, 5, 2));
-		add(lcEast, bld_lcEast);
-
+		add(getCenterContainer(), centerLayoutData);
+		add(getEastContainer(), eastLayoutData);
+		addListener(Events.Attach, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				if (event != null)
+					findExtraInfoEvent(event);
+			}
+		});
 		addListener(Events.Resize, new Listener<BaseEvent>() {
 			@Override
 			public void handleEvent(BaseEvent be) {
-				System.out.println("CopyOfCriticalEventAttendancePanel.CopyOfCriticalEventAttendancePanel().new Listener() {...}.handleEvent()");
 				mapLocation.checkResizeAndCenter();
 			}
 		});
 
+		createTemplates();
 	}
 
-	private LabelField getLbNumeroProtocolo() {
-		if (lbNumeroProtocolo == null) {
-			lbNumeroProtocolo = new LabelField("N\u00FAmero do Protocolo:");
-			lbNumeroProtocolo.setStyleName("titulo-label");
-			lbNumeroProtocolo.setHeight(15);
-			lbNumeroProtocolo.setSize("130px", "20px");
-		}
-		return lbNumeroProtocolo;
+	private Widget getEastContainer() {
+		LayoutContainer eastContainer = new LayoutContainer();
+		eastContainer.setBorders(true);
+		eastContainer.setLayout(new RowLayout(Orientation.VERTICAL));
+		eastContainer.add(getContactContainer(), new RowData(Style.DEFAULT, Style.DEFAULT, new Margins(0, 0, 0, 0)));
+		eastContainer.add(getOccurrenceRecordsContainer(), new RowData(Style.DEFAULT, 1.0, new Margins()));
+		return eastContainer;
 	}
 
-	private LabelField getLbInicioEvento() {
-		if (lbInicioEvento == null) {
-			lbInicioEvento = new LabelField("In\u00EDcio do Evento:");
-			lbInicioEvento.setStyleName("titulo-label");
-			lbInicioEvento.setHeight(15);
-			lbInicioEvento.setSize("100px", "20px");
-		}
-		return lbInicioEvento;
+	private Widget getCenterContainer() {
+		LayoutContainer centerContainer = new LayoutContainer();
+		centerContainer.setBorders(true);
+		centerContainer.setLayout(new BorderLayout());
+		centerContainer.add(getAboutEventContainer(), new BorderLayoutData(LayoutRegion.NORTH, 150.0f));
+		centerContainer.add(getVehicleLocationContainer(), new BorderLayoutData(LayoutRegion.CENTER));
+		return centerContainer;
 	}
 
-	private LabelField getLbInicioAtendimento() {
-		if (lbInicioAtendimento == null) {
-			lbInicioAtendimento = new LabelField("In\u00EDcio do Atendimento:");
-			lbInicioAtendimento.setStyleName("titulo-label");
-			lbInicioAtendimento.setHeight(15);
-			lbInicioAtendimento.setSize("130px", "20px");
+	SlidePanel panel = new SlidePanel();
+	
+	private Widget getOccurrenceRecordsContainer() {
+		if (occurrenceRecordsContainer == null) {
+			occurrenceRecordsContainer = new ContentPanelImp();
+			occurrenceRecordsContainer.setBodyStyle("backgroundColor: #d6e2f6;");
+			occurrenceRecordsContainer.setBodyBorder(false);
+			occurrenceRecordsContainer.setHeading("Registro de Ocorrencia:");
+			
+			occurrenceRecordsContainer.addToolButton(new ToolButton(Images.INSTANCE.edit16(), new Listener<BaseEvent>() {
+				@Override
+				public void handleEvent(BaseEvent be) {
+					RootPanel.get().add(panel);
+					panel.setPosition(30, 50 );
+					panel.show();
+//					panel.el().slideIn(Direction.LEFT, FxConfig.NONE);
+//					expandButton.setUrl(getExpandImageUrl());
+				}
+			}));
+			
+			occurrenceRecordsContainer.setLayout(new RowLayout(Orientation.VERTICAL));
+			occurrenceRecordsContainer.add(getCpHistoricoChat(), new RowData(Style.DEFAULT, 1.0, new Margins(5, 5, 5, 5)));
+			occurrenceRecordsContainer.add(getCpEntradaChat(), new RowData(Style.DEFAULT, Style.DEFAULT, new Margins(5, 5, 5, 5)));
 		}
-		return lbInicioAtendimento;
+		return occurrenceRecordsContainer;
 	}
 
-	private LabelField getLbNumerProtocoloValue() {
-		if (lbNumerProtocoloValue == null) {
-			lbNumerProtocoloValue = new LabelField("123456");
-			lbNumerProtocoloValue.setWidth("100px");
+	private Widget getContactContainer() {
+		if (contactContainer == null) {
+			contactContainer = new ContentPanelImp();
+			contactContainer.setBodyBorder(false);
+			contactContainer.addToolButton(new ToolButton(Images.INSTANCE.edit16(), new Listener<BaseEvent>() {
+				@Override
+				public void handleEvent(BaseEvent be) {
+					Window.alert("Editando contato...");
+				}
+			}));
+			contactContainer.setHeading("Contato:");
+			contactContainer.setLayout(new FitLayout());
+			FitData fd_htmlContact = new FitData(0);
+			fd_htmlContact.setMargins(new Margins(0, 6, 6, 6));
+			contactContainer.add(getHtmlContact(), fd_htmlContact);
+			contactContainer.setHeight("150");
 		}
-		return lbNumerProtocoloValue;
+		return contactContainer;
 	}
 
-	private LabelField getLbInicioEventoValue() {
-		if (lbInicioEventoValue == null) {
-			lbInicioEventoValue = new LabelField("09/07/2012 as 15:31");
-			lbInicioEventoValue.setWidth("150px");
+	private Widget getVehicleLocationContainer() {
+		if (vehicleLocationContainer == null) {
+			vehicleLocationContainer = new ContentPanelImp();
+			vehicleLocationContainer.setBodyBorder(false);
+			vehicleLocationContainer.setHeading("Ve\u00EDculo e localiza\u00E7\u00E3o:");
+			vehicleLocationContainer.setLayout(new BorderLayout());
+			BorderLayoutData bld_htmlVehicleLocation = new BorderLayoutData(LayoutRegion.NORTH, 100.0f);
+			bld_htmlVehicleLocation.setMinSize(100);
+			bld_htmlVehicleLocation.setMaxSize(100);
+
+			vehicleLocationContainer.add(getHtmlVehicleLocation(), bld_htmlVehicleLocation);
+			vehicleLocationContainer.add(getMapContainer(), new BorderLayoutData(LayoutRegion.CENTER));
+
 		}
-		return lbInicioEventoValue;
+		return vehicleLocationContainer;
 	}
 
-	private LabelField getLblfldAs() {
-		if (lblfldAs == null) {
-			lblfldAs = new LabelField("09/07/2012 as 15:32");
-			lblfldAs.setSize("150px", "");
-		}
-		return lblfldAs;
+	private LayoutContainer getMapContainer() {
+		LayoutContainer mapContainer = new LayoutContainer();
+
+		mapContainer.setHeight("400");
+		mapContainer.add(getMapPosition());
+		mapContainer.setBorders(true);
+
+		return mapContainer;
 	}
 
-	private LabelField getLbTDecorridoAtendimentoValue() {
-		if (lbTDecorridoAtendimentoValue == null) {
-			lbTDecorridoAtendimentoValue = new LabelField("4min");
-			lbTDecorridoAtendimentoValue.setSize("85px", "20px");
-		}
-		return lbTDecorridoAtendimentoValue;
+	private Widget getMapPosition() {
+
+		LatLng fortalCity = LatLng.newInstance(-3.736549, -38.523804);
+		mapLocation = new MapWidget();
+
+		mapLocation.setCenter(fortalCity);
+		mapLocation.checkResizeAndCenter();
+		mapLocation.setSize("100%", "100%");
+
+		mapLocation.addMapClickHandler(mapHandler);
+		mapLocation.addMapDoubleClickHandler(mapHandler);
+		mapLocation.addMapDragEndHandler(mapHandler);
+
+		return mapLocation;
+
 	}
 
-	private LabelField getLbAtendenteAtualValue() {
-		if (lbAtendenteAtualValue == null) {
-			lbAtendenteAtualValue = new LabelField("Joao Silva");
-			lbAtendenteAtualValue.setSize("180px", "20px");
+	private Widget getAboutEventContainer() {
+		if (aboutEventContainer == null) {
+			aboutEventContainer = new ContentPanelImp();
+			aboutEventContainer.setBodyBorder(false);
+			aboutEventContainer.setHeading("Sobre o Evento:");
+			aboutEventContainer.setLayout(new FitLayout());
+			aboutEventContainer.add(getHtmlAboutEvent());
+			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.transferir16(), new Listener<BaseEvent>() {
+				@Override
+				public void handleEvent(BaseEvent be) {
+					Window.alert("transferindo atendimento...");
+				}
+			}));
+			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.resolvido16(), new Listener<BaseEvent>() {
+				@Override
+				public void handleEvent(BaseEvent be) {
+					Window.alert("Atendimento resolvido/encerrado...");
+				}
+			}));
+			aboutEventContainer.setHeight("180");
 		}
-		return lbAtendenteAtualValue;
+		return aboutEventContainer;
 	}
 
-	private LabelField getLbConclusaoAtendimentoValue() {
-		if (lbConclusaoAtendimentoValue == null) {
-			lbConclusaoAtendimentoValue = new LabelField("");
-			lbConclusaoAtendimentoValue.setSize("121px", "20px");
+	private Html getHtmlVehicleLocation() {
+		if (htmlVehicleLocation == null) {
+			htmlVehicleLocation = new Html();
+			htmlVehicleLocation.setSize("-1", "100");
+			// "\t<table id=\"template-vehicle-location\", class=\"vehicle-location\">\r\n\t\t<tr>\r\n\t\t\t<td style=\"width: 200px; \">Veículo: 3050</td>\r\n\t\t\t<td style=\"width: 200px; \">Endereço: BR 123</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Linha: SantaCruz</td>\r\n\t\t\t<td>Latitude: 12,345</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Empresa: SantaCruz</td>\r\n\t\t\t<td>Longitude: 22,345</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Proximo ponto: ETUFOR</td>\r\n\t\t</tr>\r\n\t</table>");
 		}
-		return lbConclusaoAtendimentoValue;
+		return htmlVehicleLocation;
+	}
+
+	private void createTemplates() {
+		aboutEventTemplate = XTemplate.create(AttendanceWidGetTemplates.ABOUT_EVENT);
+		contactTemplate = XTemplate.create(AttendanceWidGetTemplates.CONTACTS);
+		vehicleLocationTemplate = XTemplate.create(AttendanceWidGetTemplates.VEHICLE_LOCATION);
+
+		htmlAboutEvent.setHtml(aboutEventTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
+		htmlContact.setHtml(contactTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
+		htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
+
+	}
+
+	private Html getHtmlAboutEvent() {
+		if (htmlAboutEvent == null) {
+			htmlAboutEvent = new Html();
+			// "\t<div id=\"template-about-event\" class=\"about-event\">\r\n\t\t<br>Numero do protocolo: 12345 \r\n\t\t<br>Inicio do evento: 09/07/2012 14:30 \r\n\t\t<br>Inicio do atendimento: 09/07/2012 14:31 \r\n\t\t<br>Tempo de corrido do atendimento: 5m \r\n\t\t<br>Atendente atual: Operador 1 \r\n\t\t<br>Conclusão do atendimento: 14:35      \t\t\r\n\t</div>");
+		}
+		return htmlAboutEvent;
+	}
+
+	private Html getHtmlContact() {
+		if (htmlContact == null) {
+			htmlContact = new Html();
+			// "\t<div id=\"template-contact\" class=\"contact\">\r\n\t<table>\r\n\t\t<tr>\t\r\n\t\t\t<td> <img id=\"image-message\" src=\"http://cdn1.iconfinder.com/data/icons/humano2/72x72/emblems/emblem-people.png\" </td>\r\n\t\t\t<td>\r\n\t\t\t\t <div id=\"record\" class=\"record\">\t\t\t \r\n\t\t\t\t\t<br> Nome: Antonio Firmulano da Cunha Matos \r\n\t\t\t\t\t<br>Matricula:  097286358 \r\n\t\t\t\t\t<br>Telefone: 3354-7689 \r\n\t\t\t\t\t<br>Tempo de corrido do atendimento: 5m \r\n\t\t\t\t\t<br>Idade: 43 anos \r\n\t\t\t\t </div> \r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t</table>\r\n\t</div>\r\n");
+		}
+		return htmlContact;
 	}
 
 	private Button getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new Button("Transferir");
-			btnNewButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
-				public void componentSelected(ButtonEvent ce) {
-				}
-			});
 			btnNewButton.setSize("75px", "19px");
 			btnNewButton.setIcon(AbstractImagePrototype.create(Images.INSTANCE.transferir16()));
 		}
@@ -304,270 +318,10 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		return btnResolvido;
 	}
 
-	private ContentPanel getCpVehicleLocationDesc() {
-		if (cpVehicleLocationDesc == null) {
-			cpVehicleLocationDesc = new ContentPanelImp();
-			cpVehicleLocationDesc.setBodyBorder(false);
-			cpVehicleLocationDesc.setHeight("100");
-			cpVehicleLocationDesc.setHeaderVisible(false);
-			cpVehicleLocationDesc.setCollapsible(true);
-			getCpVehicleLocationLeft().setLayout(new AbsoluteLayout());
-			cpVehicleLocationDesc.add(getCpVehicleLocationLeft(), new RowData(0.5, 1.0, new Margins()));
-			getCpVehicleLocationRight().setLayout(new AbsoluteLayout());
-			cpVehicleLocationDesc.add(getCpVehicleLocationRight(), new RowData(0.5, 1.0, new Margins()));
-		}
-		return cpVehicleLocationDesc;
-	}
-
-	private ContentPanel getCpVehicleLocationMap() {
-		if (cpVehicleLocationMap == null) {
-			cpVehicleLocationMap = new ContentPanelImp();
-			cpVehicleLocationMap.setBodyBorder(false);
-			cpVehicleLocationMap.setHeaderVisible(false);
-			cpVehicleLocationMap.setCollapsible(true);
-			// cpVehicleLocationMap.setLayout(new FitLayout());
-			cpVehicleLocationMap.add(getMapPosition());
-		}
-		return cpVehicleLocationMap;
-	}
-
-	private ContentPanel getCpVehicleLocationLeft() {
-		if (cpVehicleLocationLeft == null) {
-			cpVehicleLocationLeft = new ContentPanelImp();
-
-			cpVehicleLocationLeft.setBodyBorder(false);
-			cpVehicleLocationLeft.setHeaderVisible(false);
-			cpVehicleLocationLeft.setCollapsible(true);
-			cpVehicleLocationLeft.add(getLbVeiculo(), new AbsoluteData(6, 6));
-			cpVehicleLocationLeft.add(getLbLinha(), new AbsoluteData(6, 24));
-			cpVehicleLocationLeft.add(getLbEmpresa(), new AbsoluteData(6, 43));
-			cpVehicleLocationLeft.add(getLabelField_3(), new AbsoluteData(60, 6));
-			cpVehicleLocationLeft.add(getLabelField_4(), new AbsoluteData(50, 24));
-			cpVehicleLocationLeft.add(getLabelField_5(), new AbsoluteData(70, 43));
-		}
-		return cpVehicleLocationLeft;
-	}
-
-	private ContentPanel getCpVehicleLocationRight() {
-		if (cpVehicleLocationRight == null) {
-			cpVehicleLocationRight = new ContentPanelImp();
-			cpVehicleLocationRight.setBodyBorder(false);
-			cpVehicleLocationRight.setHeaderVisible(false);
-			cpVehicleLocationRight.setHeading("New ContentPanel");
-			cpVehicleLocationRight.setCollapsible(true);
-			cpVehicleLocationRight.add(getLabelField_6(), new AbsoluteData(6, 6));
-			cpVehicleLocationRight.add(getLabelField_1_1(), new AbsoluteData(6, 24));
-			cpVehicleLocationRight.add(getLabelField_2_1(), new AbsoluteData(6, 43));
-			cpVehicleLocationRight.add(getLabelField_6_1(), new AbsoluteData(6, 63));
-			cpVehicleLocationRight.add(getLabelField_7(), new AbsoluteData(71, 6));
-			cpVehicleLocationRight.add(getLabelField_8(), new AbsoluteData(62, 24));
-			cpVehicleLocationRight.add(getLabelField_9(), new AbsoluteData(73, 43));
-			cpVehicleLocationRight.add(getLabelField_10(), new AbsoluteData(80, 63));
-		}
-		return cpVehicleLocationRight;
-	}
-
-	private LabelField getLbVeiculo() {
-		if (lbVeiculo == null) {
-			lbVeiculo = new LabelField("Ve\u00EDculo:");
-			lbVeiculo.setStyleName("titulo-label");
-			lbVeiculo.setSize("45px", "20px");
-		}
-		return lbVeiculo;
-	}
-
-	private LabelField getLbLinha() {
-		if (lbLinha == null) {
-			lbLinha = new LabelField("Linha:");
-			lbLinha.setStyleName("titulo-label");
-			lbLinha.setSize("40px", "20px");
-		}
-		return lbLinha;
-	}
-
-	private LabelField getLbEmpresa() {
-		if (lbEmpresa == null) {
-			lbEmpresa = new LabelField("Empresa:");
-			lbEmpresa.setStyleName("titulo-label");
-			lbEmpresa.setSize("53px", "20px");
-		}
-		return lbEmpresa;
-	}
-
-	private LabelField getLabelField_6() {
-		if (lbEndereco == null) {
-			lbEndereco = new LabelField("Endere\u00E7o:");
-			lbEndereco.setStyleName("titulo-label");
-			lbEndereco.setSize("58px", "20px");
-		}
-		return lbEndereco;
-	}
-
-	private LabelField getLabelField_1_1() {
-		if (lbLatitude == null) {
-			lbLatitude = new LabelField("Latitude:");
-			lbLatitude.setStyleName("titulo-label");
-			lbLatitude.setSize("50px", "20px");
-		}
-		return lbLatitude;
-	}
-
-	private LabelField getLabelField_2_1() {
-		if (lbLongitude == null) {
-			lbLongitude = new LabelField("Longitude:");
-			lbLongitude.setStyleName("titulo-label");
-			lbLongitude.setSize("60px", "20px");
-		}
-		return lbLongitude;
-	}
-
-	private LabelField getLabelField_6_1() {
-		if (lbProximoPonto == null) {
-			lbProximoPonto = new LabelField("Pr\u00F3x. Ponto:");
-			lbProximoPonto.setStyleName("titulo-label");
-			lbProximoPonto.setSize("75px", "20px");
-		}
-		return lbProximoPonto;
-	}
-
-	private LabelField getLabelField_3() {
-		if (lbVeiculoValue == null) {
-			lbVeiculoValue = new LabelField("3050");
-			lbVeiculoValue.setWidth("125px");
-		}
-		return lbVeiculoValue;
-	}
-
-	private LabelField getLabelField_4() {
-		if (lbLinhaValue == null) {
-			lbLinhaValue = new LabelField("Santa Cruz");
-			lbLinhaValue.setSize("250px", "20px");
-		}
-		return lbLinhaValue;
-	}
-
-	private LabelField getLabelField_5() {
-		if (lbEmpresaVeiculo == null) {
-			lbEmpresaVeiculo = new LabelField("Globo");
-			lbEmpresaVeiculo.setWidth("200");
-		}
-		return lbEmpresaVeiculo;
-	}
-
-	private LabelField getLabelField_7() {
-		if (lbEnderecoValue == null) {
-			lbEnderecoValue = new LabelField("BR-116");
-			lbEnderecoValue.setWidth("250px");
-		}
-		return lbEnderecoValue;
-	}
-
-	private LabelField getLabelField_8() {
-		if (lbLatitudeValue == null) {
-			lbLatitudeValue = new LabelField("12,56895");
-			lbLatitudeValue.setWidth("120px");
-		}
-		return lbLatitudeValue;
-	}
-
-	private LabelField getLabelField_9() {
-		if (lbLongitudeValue == null) {
-			lbLongitudeValue = new LabelField("13,76345");
-			lbLongitudeValue.setWidth("90px");
-		}
-		return lbLongitudeValue;
-	}
-
-	private LabelField getLabelField_10() {
-		if (lbProximoPontoValue == null) {
-			lbProximoPontoValue = new LabelField("Padaria da Esq.");
-			lbProximoPontoValue.setWidth("250px");
-		}
-		return lbProximoPontoValue;
-	}
-
-	private LayoutContainer getLcImgContato() {
-		if (lcImgContato == null) {
-			lcImgContato = new LayoutContainer();
-			lcImgContato.setSize("85px", "103px");
-			lcImgContato.setBorders(true);
-			lcImgContato.add(getImgContato());
-		}
-		return lcImgContato;
-	}
-
-	private Image getImgContato() {
-		if (imgContato == null) {
-			imgContato = new Image("");
-		}
-		return imgContato;
-	}
-
-	private LabelField getLbNome() {
-		if (lbNome == null) {
-			lbNome = new LabelField("Nome :");
-			lbNome.setStyleName("titulo-label");
-		}
-		return lbNome;
-	}
-
-	private LabelField getLbMatricula() {
-		if (lbMatricula == null) {
-			lbMatricula = new LabelField("Matr\u00EDcula :");
-			lbMatricula.setStyleName("titulo-label");
-		}
-		return lbMatricula;
-	}
-
-	private LabelField getLbTelefone() {
-		if (lbTelefone == null) {
-			lbTelefone = new LabelField("Telefone :");
-			lbTelefone.setStyleName("titulo-label");
-		}
-		return lbTelefone;
-	}
-
-	private LabelField getLblfldIdade() {
-		if (lblfldIdade == null) {
-			lblfldIdade = new LabelField("Idade :");
-			lblfldIdade.setStyleName("titulo-label");
-		}
-		return lblfldIdade;
-	}
-
-	private LabelField getLbNomeValue() {
-		if (lbNomeValue == null) {
-			lbNomeValue = new LabelField("Francisco Jos\u00E9 da Silva");
-			lbNomeValue.setWidth("250px");
-		}
-		return lbNomeValue;
-	}
-
-	private LabelField getLbMatriculaValue() {
-		if (lbMatriculaValue == null) {
-			lbMatriculaValue = new LabelField("123456");
-			lbMatriculaValue.setWidth("150px");
-		}
-		return lbMatriculaValue;
-	}
-
-	private LabelField getLbTelefoneValue() {
-		if (lbTelefoneValue == null) {
-			lbTelefoneValue = new LabelField("(85) 8888 8888");
-		}
-		return lbTelefoneValue;
-	}
-
-	private LabelField getLbIdadeValue() {
-		if (lbIdadeValue == null) {
-			lbIdadeValue = new LabelField("35 anos");
-		}
-		return lbIdadeValue;
-	}
-
 	private ContentPanel getCpHistoricoChat() {
 		if (cpHistoricoChat == null) {
 			cpHistoricoChat = new ContentPanel();
+			cpHistoricoChat.setLayout(new FitLayout());
 			cpHistoricoChat.setBodyBorder(false);
 			cpHistoricoChat.setHeaderVisible(false);
 			cpHistoricoChat.setCollapsible(true);
@@ -592,9 +346,9 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		return cpEntradaChat;
 	}
 
-	private ListView getListView() {
+	private ListView<DtoRecord> getListView() {
 		if (listView == null) {
-			listView = new ListView(new ListStore());
+			listView = new ListView<DtoRecord>(new ListStore<DtoRecord>());
 		}
 		return listView;
 	}
@@ -615,6 +369,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 	private ContentPanel getCpChatEntraRigth() {
 		if (cpChatEntraRigth == null) {
 			cpChatEntraRigth = new ContentPanelImp();
+			cpChatEntraRigth.setBodyStyle("backgroundColor: #d6e2f6;");
 			cpChatEntraRigth.setBodyBorder(false);
 			cpChatEntraRigth.setHeaderVisible(false);
 			cpChatEntraRigth.setWidth("120px");
@@ -738,22 +493,22 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		return btRedLed;
 	}
 
-	private Widget getMapPosition() {
-
-		LatLng fortalCity = LatLng.newInstance(-3.736549, -38.523804);
-		mapLocation = new MapWidget();
-
-		mapLocation.setCenter(fortalCity);
-		mapLocation.setSize("100%", "100%");
-		mapLocation.addOverlay(new Marker(fortalCity));
-		mapLocation.setZoomLevel(14);
-		mapLocation.checkResizeAndCenter();
-		mapLocation.addMapDoubleClickHandler(mapHandler);
-		mapLocation.addMapDragEndHandler(mapHandler);
-		mapLocation.addMapClickHandler(mapHandler);
-
-		return mapLocation;
-	}
+	// private Widget getMapPosition() {
+	//
+	// LatLng fortalCity = LatLng.newInstance(-3.736549, -38.523804);
+	// mapLocation = new MapWidget();
+	//
+	// mapLocation.setCenter(fortalCity);
+	// mapLocation.setSize("100%", "100%");
+	// mapLocation.addOverlay(new Marker(fortalCity));
+	// mapLocation.setZoomLevel(14);
+	// mapLocation.checkResizeAndCenter();
+	// mapLocation.addMapDoubleClickHandler(mapHandler);
+	// mapLocation.addMapDragEndHandler(mapHandler);
+	// mapLocation.addMapClickHandler(mapHandler);
+	//
+	// return mapLocation;
+	// }
 
 	class MapHandler implements MapDragEndHandler, MapDoubleClickHandler, MapClickHandler {
 
@@ -772,4 +527,63 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 			event.getSender().checkResizeAndCenter();
 		}
 	}
+
+	public void setEvent(DtoEvent dtoEvent) {
+		this.event = dtoEvent;
+	}
+
+	private void findExtraInfoEvent(DtoEvent selectedItem) {
+		attendanceService.findExtraInfoEvent(selectedItem, new AsyncCallback<DtoExtraInfoEvent>() {
+			@Override
+			public void onSuccess(DtoExtraInfoEvent extraInfo) {
+				applyExtraInfo(extraInfo);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				SimpleGwtLogger.error("Find ExtraInfoEvent Failure ", caught);
+			}
+		});
+	}
+
+	protected void applyExtraInfo(DtoExtraInfoEvent extraInfo) {
+		updateAboutContainer(extraInfo.getAbout());
+		updateVehicleLocationContainer(extraInfo.getVehicleLocation());
+		updateContactContainer(extraInfo.getContact());
+		updateRecordsContainer(extraInfo.getRecords());
+	}
+
+	private void updateRecordsContainer(ArrayList<DtoRecord> records) {
+		listView.getStore().removeAll();
+		listView.getStore().add(records);
+	}
+
+	private void updateAboutContainer(DtoAboutEvent aboutEvent) {
+		htmlAboutEvent.setHtml(aboutEventTemplate.applyTemplate(Util.getJsObject(aboutEvent)));
+	}
+
+	private void updateContactContainer(DtoContact contact) {
+		htmlContact.setHtml(contactTemplate.applyTemplate(Util.getJsObject(contact)));
+	}
+
+	private void updateVehicleLocationContainer(DtoVehicleAndLocation vehicleAndLocation) {
+		htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(vehicleAndLocation)));
+		centerVehicleInMap(vehicleAndLocation);
+	}
+
+	private void centerVehicleInMap(DtoVehicleAndLocation vehicleAndLocation) {
+		MarkerOptions options = MarkerOptions.newInstance();
+		LatLng center = LatLng.newInstance(vehicleAndLocation.getLatitude(), vehicleAndLocation.getLongitude());
+
+		options.setIcon(Icon.newInstance("http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/24/bus.png"));
+		options.setTitle(vehicleAndLocation.getVehicle());
+
+		Marker vehicle = new Marker(center, options);
+		mapLocation.clearOverlays();
+		mapLocation.addOverlay(vehicle);
+		mapLocation.setCenter(center);
+		mapLocation.setZoomLevel(15);
+		mapLocation.checkResizeAndCenter();
+	}
+
 }
