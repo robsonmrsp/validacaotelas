@@ -18,7 +18,8 @@ public class ToolButton extends LayoutContainer {
 		super();
 		initComponents();
 		setImage(resource);
-		addClickListener(listener);
+		if (listener != null)
+			addClickListener(listener);
 	}
 
 	public void setImage(ImageResource resource) {

@@ -69,7 +69,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CopyOfAttendanceWindow extends LayoutContainer {
+public class QueryAttendanceWindow extends LayoutContainer {
 	private ContentPanelImp queryContainer;
 	private ContentPanelImp eventsContainer;
 	private TextField<String> textFieldProtocol;
@@ -113,24 +113,15 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 
 	AttendanceServiceAsync attendanceService = GWT.create(AttendanceService.class);
 
-	public CopyOfAttendanceWindow() {
+	public QueryAttendanceWindow() {
 		initComponents();
 	}
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		
-		BorderLayoutData leftLayoutData = new BorderLayoutData(LayoutRegion.WEST, 305.0f);
-		leftLayoutData.setMargins(new Margins(5, 2, 5, 5));
-		add(getLeftContainer(), leftLayoutData);
-		
-		BorderLayoutData midleLayoutData = new BorderLayoutData(LayoutRegion.CENTER);
-		midleLayoutData.setMargins(new Margins(5, 2, 5, 2));
-		add(getMidleContainer(), midleLayoutData);
-		
-		BorderLayoutData rightLayoutData = new BorderLayoutData(LayoutRegion.EAST, 280.0f);
-		rightLayoutData.setMargins(new Margins(5, 5, 5, 2));
-		add(getRightContainer(), rightLayoutData);
+		add(getLeftContainer(), new BorderLayoutData(LayoutRegion.WEST, 305.0f));
+		add(getMidleContainer(), new BorderLayoutData(LayoutRegion.CENTER));
+		add(getRightContainer(), new BorderLayoutData(LayoutRegion.EAST, 280.0f));
 
 		createTemplates();
 
@@ -418,11 +409,10 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		}
 		return vehicleLocationContainer;
 	}
-	
+
 	private ContentPanelImp getContactContainer() {
 		if (contactContainer == null) {
 			contactContainer = new ContentPanelImp();
-			
 			contactContainer.setHeading("Contato");
 			contactContainer.setCollapsible(true);
 			contactContainer.setLayout(new FitLayout());
@@ -437,6 +427,8 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		if (occurrenceRecordsContainer == null) {
 			occurrenceRecordsContainer = new ContentPanelImp();
 			occurrenceRecordsContainer.setHeading("Registro de ocorrência");
+			// occurrenceRecordsContainer.addToolButton(createPrinterButton());
+			// occurrenceRecordsContainer.addToolButton(createEditButton());
 			occurrenceRecordsContainer.addToolButton(createPrinterButton());
 			occurrenceRecordsContainer.setCollapsible(true);
 			occurrenceRecordsContainer.setLayout(new FitLayout());
