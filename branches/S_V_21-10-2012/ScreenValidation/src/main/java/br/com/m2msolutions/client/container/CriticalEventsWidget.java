@@ -3,8 +3,13 @@ package br.com.m2msolutions.client.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.m2msolutions.client.CriticalEventMessage;
+import br.com.m2msolutions.client.CriticalEventsService;
+import br.com.m2msolutions.client.CriticalEventsServiceAsync;
+import br.com.m2msolutions.client.DtoCriticalEventsInfo;
+import br.com.m2msolutions.client.SimpleGwtLogger;
 import br.com.m2msolutions.client.images.Images;
-import br.com.m2msolutions.shared.dto.DtoEvent;
+import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.mr.dock.client.DockWindow;
 
 import com.extjs.gxt.ui.client.Style;
@@ -39,11 +44,18 @@ import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import de.novanic.eventservice.client.event.Event;
+import de.novanic.eventservice.client.event.RemoteEventService;
+import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
+import de.novanic.eventservice.client.event.listener.RemoteEventListener;
+
 public class CriticalEventsWidget extends DockWindow {
 
+	// TODO Verificar se será filtrado SOMENTE os que estão no grid
 	private Html heading;
 	private LayoutContainer header;
 	private LayoutContainer principal;
@@ -54,9 +66,9 @@ public class CriticalEventsWidget extends DockWindow {
 	private LabeledImage alertIcon;
 	private LabeledImage paneIcon;
 	private LabeledImage otherIcon;
-	private Grid<DtoEvent> gridEvents;
-	private GridCellRenderer<DtoEvent> imageCellRender;
-	private GridCellRenderer<DtoEvent> descriptionCellRender;
+	private Grid<DtoCriticalEvent> gridEvents;
+	private GridCellRenderer<DtoCriticalEvent> imageCellRender;
+	private GridCellRenderer<DtoCriticalEvent> descriptionCellRender;
 
 	private LayoutContainer footer;
 	private SearchBox searchBox;
@@ -64,6 +76,8 @@ public class CriticalEventsWidget extends DockWindow {
 
 	private LayoutContainer gridContainer;
 	private Image image_1;
+
+	CriticalEventsServiceAsync criticalEventsService = CriticalEventsService.Util.getInstance();
 
 	public CriticalEventsWidget() {
 		super();
@@ -80,6 +94,39 @@ public class CriticalEventsWidget extends DockWindow {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
+		getCriticalEventsInfo();
+	}
+
+	private void getCriticalEventsInfo() {
+		criticalEventsService.getCriticalEventsInfo(new AsyncCallback<DtoCriticalEventsInfo>() {
+			@Override
+			public void onSuccess(DtoCriticalEventsInfo criticalEventsInfo) {
+				gridEvents.getStore().add(criticalEventsInfo.getEvents());
+				initDataPush();
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				SimpleGwtLogger.error("Get CriticalEventsInfo: " + caught.getMessage());
+			}
+		});
+	}
+
+//	TODO ficará dento do onReceive do sistema de atores remotos
+	protected void initDataPush() {
+		
+		RemoteEventService criticalEventsRemoteEventService = RemoteEventServiceFactory.getInstance().getRemoteEventService();
+		criticalEventsRemoteEventService.addListener(CriticalEventMessage.SERVER_MESSAGE_DOMAIN, new RemoteEventListener() {
+			public void apply(Event anEvent) {
+				if (anEvent instanceof CriticalEventMessage) {
+					CriticalEventMessage eventMessage = (CriticalEventMessage) anEvent;
+					DtoCriticalEvent criticalEvent = eventMessage.getCriticalEvent();
+					// TODO criar um local/metodo que centralize a atualização do grid;
+					gridEvents.getStore().add(criticalEvent);
+				}
+			}
+		});
+
 	}
 
 	public LayoutContainer getHeader() {
@@ -279,9 +326,9 @@ public class CriticalEventsWidget extends DockWindow {
 		return otherIcon;
 	}
 
-	private Grid<DtoEvent> getGrid() {
+	private Grid<DtoCriticalEvent> getGrid() {
 		if (gridEvents == null) {
-			gridEvents = new Grid<DtoEvent>(createListStory(), createColumnConfig());
+			gridEvents = new Grid<DtoCriticalEvent>(createListStory(), createColumnConfig());
 			// gridEvents.setAutoExpandMax(500);
 			// gridEvents.setWidth(400);
 			//
@@ -298,7 +345,7 @@ public class CriticalEventsWidget extends DockWindow {
 			// gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
 			gridEvents.setSize(360, 190);
 			// gridEvents.setAutoExpandMax(500);
-			gridEvents.setSelectionModel(new GridSelectionModel<DtoEvent>());
+			gridEvents.setSelectionModel(new GridSelectionModel<DtoCriticalEvent>());
 			gridEvents.setBorders(false);
 			gridEvents.setStripeRows(true);
 			gridEvents.setId("gridEvents");
@@ -306,13 +353,13 @@ public class CriticalEventsWidget extends DockWindow {
 			gridEvents.setColumnResize(false);
 			gridEvents.setHideHeaders(true);
 			// gridEvents.setHeight(Style.DEFAULT);
-			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
+			gridEvents.setAutoExpandColumn(DtoCriticalEvent.DESCRIPTION);
 		}
-		
+
 		return gridEvents;
 	}
 
-	public void addActionOnDobleClick(Listener<GridEvent<DtoEvent>> listener) {
+	public void addActionOnDobleClick(Listener<GridEvent<DtoCriticalEvent>> listener) {
 		gridEvents.addListener(Events.OnDoubleClick, listener);
 	}
 
@@ -326,9 +373,9 @@ public class CriticalEventsWidget extends DockWindow {
 		});
 	}
 
-	private GridCellRenderer<DtoEvent> createImageCellRender() {
-		imageCellRender = new GridCellRenderer<DtoEvent>() {
-			public String render(DtoEvent model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoEvent> store, Grid<DtoEvent> grid) {
+	private GridCellRenderer<DtoCriticalEvent> createImageCellRender() {
+		imageCellRender = new GridCellRenderer<DtoCriticalEvent>() {
+			public String render(DtoCriticalEvent model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoCriticalEvent> store, Grid<DtoCriticalEvent> grid) {
 				return "<span><img src=\"" + model.getImageSrc() + "\" alt=\"image\">  </span>";
 			}
 		};
@@ -339,14 +386,14 @@ public class CriticalEventsWidget extends DockWindow {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		ColumnConfig column = new ColumnConfig();
-		column.setId(DtoEvent.IMAGE_SRC);
+		column.setId(DtoCriticalEvent.IMAGE_SRC);
 		column.setWidth(35);
 		column.setRenderer(createImageCellRender());
 		configs.add(column);
 
 		ColumnConfig column2 = new ColumnConfig();
 		// column2.setWidth(400);
-		column2.setId(DtoEvent.DESCRIPTION);
+		column2.setId(DtoCriticalEvent.DESCRIPTION);
 		column2.setRenderer(createDescriptionCellRender());
 
 		configs.add(column2);
@@ -356,16 +403,16 @@ public class CriticalEventsWidget extends DockWindow {
 		return columnModel;
 	}
 
-	private GridCellRenderer<DtoEvent> createDescriptionCellRender() {
-		descriptionCellRender = new GridCellRenderer<DtoEvent>() {
-			public String render(DtoEvent model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoEvent> store, Grid<DtoEvent> grid) {
+	private GridCellRenderer<DtoCriticalEvent> createDescriptionCellRender() {
+		descriptionCellRender = new GridCellRenderer<DtoCriticalEvent>() {
+			public String render(DtoCriticalEvent model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoCriticalEvent> store, Grid<DtoCriticalEvent> grid) {
 				return createDescription(model);
 			}
 		};
 		return descriptionCellRender;
 	}
 
-	private String createDescription(DtoEvent model) {
+	private String createDescription(DtoCriticalEvent model) {
 		if (model.getStatus().equals("IN_ATTENDANCE")) {
 			return "<span style=\"padding-top: 10px;\"> " + model.getVehicleCode() + " -  (" + model.getOperator() + ") - " + model.getTimeAttendance() + "   </span>";
 		} else {
@@ -375,8 +422,8 @@ public class CriticalEventsWidget extends DockWindow {
 		// model.getVehicleCode() + "   </span>";
 	}
 
-	private ListStore<DtoEvent> createListStory() {
-		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
+	private ListStore<DtoCriticalEvent> createListStory() {
+		ListStore<DtoCriticalEvent> listStore = new ListStore<DtoCriticalEvent>();
 		listStore.add(ClienteDataUtil.ALL_EVENTS);
 		return listStore;
 	}

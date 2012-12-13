@@ -4,12 +4,16 @@ import br.com.mr.dock.client.containers.Position;
 
 import com.extjs.gxt.ui.client.Style.Direction;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class SlidePanel extends ContentPanelImp {
 	private Component anchor;
@@ -18,6 +22,7 @@ public class SlidePanel extends ContentPanelImp {
 	private LayoutContainer messagesContainer;
 	private LayoutContainer editContainer;
 	private SearchBox searchBox;
+
 	public SlidePanel() {
 		initComponents();
 	}
@@ -36,6 +41,7 @@ public class SlidePanel extends ContentPanelImp {
 	public void hide() {
 		el().slideOut(Direction.LEFT, FxConfig.NONE);
 	}
+
 	public void show() {
 		super.show();
 
@@ -49,10 +55,35 @@ public class SlidePanel extends ContentPanelImp {
 		this.el().dom.setAttribute("opacity", "0.976543");
 		el().slideIn(Direction.RIGHT, FxConfig.NONE);
 	}
-	
-	
-	public void anchorAt(ContentPanelImp anchor, Position position) {
+
+	public void anchorAt(final ContentPanelImp anchor, Position position) {
 		this.anchor = anchor;
+		anchor.addListener(Events.Minimize, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+			}
+		});
+
+		anchor.addListener(Events.Close, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+
+			}
+		});
+		anchor.addListener(Events.Resize, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+
+			}
+		});
+		anchor.addListener(Events.Move, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				if (isVisible()) {
+					setPosition(14 + anchor.getAbsoluteLeft() + anchor.getOffsetWidth(), anchor.getAbsoluteTop());
+				}
+			}
+		});
 		this.position = position;
 	}
 
@@ -64,6 +95,7 @@ public class SlidePanel extends ContentPanelImp {
 		}
 		return headerContainer;
 	}
+
 	private LayoutContainer getMessagesContainer() {
 		if (messagesContainer == null) {
 			messagesContainer = new LayoutContainer();
@@ -71,6 +103,7 @@ public class SlidePanel extends ContentPanelImp {
 		}
 		return messagesContainer;
 	}
+
 	private LayoutContainer getEditContainer() {
 		if (editContainer == null) {
 			editContainer = new LayoutContainer();
@@ -78,11 +111,16 @@ public class SlidePanel extends ContentPanelImp {
 		}
 		return editContainer;
 	}
+
 	private SearchBox getSearchBox() {
 		if (searchBox == null) {
 			searchBox = new SearchBox();
 			searchBox.setSize("200", "24");
 		}
 		return searchBox;
+	}
+
+	public void setWindowAnchor(Widget parent) {
+		
 	}
 }

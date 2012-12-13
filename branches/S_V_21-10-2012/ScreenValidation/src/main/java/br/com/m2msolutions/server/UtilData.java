@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import br.com.m2msolutions.shared.dto.DtoAboutEvent;
 import br.com.m2msolutions.shared.dto.DtoContact;
-import br.com.m2msolutions.shared.dto.DtoEvent;
+import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoRecord;
 import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
@@ -15,27 +15,27 @@ import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
 public class UtilData {
 
 	static SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy hh:mm");
-	public static final ArrayList<DtoEvent> ALL_EVENTS = new ArrayList<DtoEvent>();
+	public static final ArrayList<DtoCriticalEvent> ALL_EVENTS = new ArrayList<DtoCriticalEvent>();
 
 	public static HashMap<Long, DtoExtraInfoEvent> EXTRA_INFO = new HashMap<Long, DtoExtraInfoEvent>();
 
 	static {
-		DtoEvent eventOne = new DtoEvent(1l, "", "113498", new Date(), "PANE", "CCO - 022", "280901", "IN_ATTENDANCE", "2 mim", "1 mim");
+		DtoCriticalEvent eventOne = new DtoCriticalEvent(1l, "", "113498", new Date(), "PANE", "CCO - 022", "280901", "IN_ATTENDANCE", "2 mim", "1 mim");
 		eventOne.setStartDateTimeAsText(format(new Date()));
 		ALL_EVENTS.add(eventOne);
-		DtoEvent eventTwo = new DtoEvent(2L, "", "172723", new Date(), "MESSAGE", "CCO - 002", "20020902", "IN_ATTENDANCE", "2 mim", "1 mim");
+		DtoCriticalEvent eventTwo = new DtoCriticalEvent(2L, "", "172723", new Date(), "MESSAGE", "CCO - 002", "20020902", "IN_ATTENDANCE", "2 mim", "1 mim");
 		eventTwo.setStartDateTimeAsText(format(new Date()));
 		ALL_EVENTS.add(eventTwo);
-		DtoEvent eventTree = new DtoEvent(3L, "", "129763", new Date(), "ALERT", "CCO - 003", "280904", "IN_ATTENDANCE", "2 mim", "1 mim");
+		DtoCriticalEvent eventTree = new DtoCriticalEvent(3L, "", "129763", new Date(), "ALERT", "CCO - 003", "280904", "IN_ATTENDANCE", "2 mim", "1 mim");
 		eventTree.setStartDateTimeAsText(format(new Date()));
 		ALL_EVENTS.add(eventTree);
 
 		populateExtraInfo();
 	}
 
-	public static ArrayList<DtoEvent> applyEventCISearch(String... regex) {
-		ArrayList<DtoEvent> ret = new ArrayList<DtoEvent>();
-		for (DtoEvent dtoEvent : ALL_EVENTS) {
+	public static ArrayList<DtoCriticalEvent> applyEventCISearch(String... regex) {
+		ArrayList<DtoCriticalEvent> ret = new ArrayList<DtoCriticalEvent>();
+		for (DtoCriticalEvent dtoEvent : ALL_EVENTS) {
 			if (dtoEvent.matchCi(regex)) {
 				ret.add(dtoEvent);
 			}
@@ -94,9 +94,9 @@ public class UtilData {
 
 	}
 
-	public static ArrayList<DtoEvent> applyEventSearch(String... regex) {
-		ArrayList<DtoEvent> ret = new ArrayList<DtoEvent>();
-		for (DtoEvent dtoEvent : ALL_EVENTS) {
+	public static ArrayList<DtoCriticalEvent> applyEventSearch(String... regex) {
+		ArrayList<DtoCriticalEvent> ret = new ArrayList<DtoCriticalEvent>();
+		for (DtoCriticalEvent dtoEvent : ALL_EVENTS) {
 			if (dtoEvent.match(regex)) {
 				ret.add(dtoEvent);
 			}

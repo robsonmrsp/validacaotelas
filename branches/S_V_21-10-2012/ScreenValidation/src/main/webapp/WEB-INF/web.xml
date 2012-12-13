@@ -34,13 +34,37 @@
 		<url-pattern>/_ah/spi/*</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>AttendanceService</servlet-name>
-		<servlet-class>br.com.m2msolutions.server.AttendanceServiceImpl</servlet-class>
+		<servlet-name>InquiryAttendanceService</servlet-name>
+		<servlet-class>br.com.m2msolutions.server.InquiryAttendanceServiceImpl</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>AttendanceService</servlet-name>
+		<servlet-name>InquiryAttendanceService</servlet-name>
 		<url-pattern>/screenvalidation/attendanceService</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CriticalEventsService</servlet-name>
+		<servlet-class>br.com.m2msolutions.server.CriticalEventsServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CriticalEventsService</servlet-name>
+		<url-pattern>/br.com.m2msolutions.ScreenValidationJUnit/CriticalEventsService</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CriticalEventsService</servlet-name>
+		<servlet-class>br.com.m2msolutions.server.CriticalEventsServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CriticalEventsService</servlet-name>
+		<url-pattern>/br.com.m2msolutions.ScreenValidationJUnit/CriticalEventsService</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CriticalEventsService</servlet-name>
+		<servlet-class>br.com.m2msolutions.server.CriticalEventsServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CriticalEventsService</servlet-name>
+		<url-pattern>/br.com.m2msolutions.ScreenValidationJUnit/CriticalEventsService</url-pattern>
 	</servlet-mapping>
 
 </web-app>

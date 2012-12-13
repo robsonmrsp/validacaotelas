@@ -5,14 +5,13 @@ import br.com.m2msolutions.client.container.CopyOfCriticalEventAttendancePanel;
 import br.com.m2msolutions.client.container.CriticalEventsWidget;
 import br.com.m2msolutions.client.container.QueryAttendanceWindow;
 import br.com.m2msolutions.client.images.Images;
-import br.com.m2msolutions.shared.dto.DtoEvent;
+import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.mr.dock.client.DockDesktop;
 import br.com.mr.dock.client.menu.DockSelectionAction;
 
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.fx.Draggable;
-import com.extjs.gxt.ui.client.fx.Resizable;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -24,26 +23,6 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class ScreenValidation implements EntryPoint {
 
-	// public void onModuleLoad() {
-	// GridExample example = new GridExample();
-	// RootPanel.get().add(example);
-	// }
-	// public void onModuleLoad() {
-	// CopyOfAttendanceWindow attendanceWindow = new CopyOfAttendanceWindow();
-	// // AdvancedFormsExample attendanceWindow = new AdvancedFormsExample();
-	// attendanceWindow.setAutoWidth(true);
-	// // attendanceWindow.setSize(1015, 500);
-	//
-	// Window window = new Window();
-	// window.setMaximizable(true);
-	// window.setMinimizable(true);
-	// window.setLayout(new FitLayout());
-	// window.setSize(1015, 550);
-	//
-	// window.add(attendanceWindow);
-	// window.show();
-	// }
-
 	public void onModule_Load() {
 		final CriticalEventsWidget attendance = new CriticalEventsWidget();
 		RootPanel.get().add(attendance);
@@ -53,8 +32,8 @@ public class ScreenValidation implements EntryPoint {
 	public void onModuleLoad() {
 
 		RootPanel rootPanel = RootPanel.get();
-
 		DockDesktop dockDesktop = new DockDesktop();
+		
 		final CriticalEventsWidget attendance = createCriticalEventsWidget();
 
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.settings128().getURL(), "Configurações", new DockSelectionAction() {
@@ -89,7 +68,6 @@ public class ScreenValidation implements EntryPoint {
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.map128().getURL(), "Monitoramento", new DockSelectionAction() {
 			@Override
 			public void action() {
-
 				CopyOfCriticalEventAttendancePanel criticalEventAttendancePanel = new CopyOfCriticalEventAttendancePanel();
 
 				Window window = new Window();
@@ -118,9 +96,9 @@ public class ScreenValidation implements EntryPoint {
 
 	private CriticalEventsWidget createCriticalEventsWidget() {
 		CriticalEventsWidget attendance = new CriticalEventsWidget();
-		attendance.addActionOnDobleClick(new Listener<GridEvent<DtoEvent>>() {
-			public void handleEvent(final GridEvent<DtoEvent> ge) {
-				DtoEvent dtoEvent = ge.getModel();
+		attendance.addActionOnDobleClick(new Listener<GridEvent<DtoCriticalEvent>>() {
+			public void handleEvent(final GridEvent<DtoCriticalEvent> ge) {
+				DtoCriticalEvent dtoEvent = ge.getModel();
 
 				if (dtoEvent != null) {
 					CopyOfCriticalEventAttendancePanel criticalEventAttendancePanel = new CopyOfCriticalEventAttendancePanel();
@@ -142,9 +120,6 @@ public class ScreenValidation implements EntryPoint {
 
 	public void onModuleLoad___() {
 		ContentPanel formUser = new ContentPanelImp();
-		// formUser.getHeader().addTool(new Button("Z"));
-		// formUser.getHeader().addTool(new Button("A"));
-		// formUser.getHeader().addTool(new Button("X"));
 		Draggable d = new Draggable(formUser);
 		formUser.show();
 		formUser.setSize(310, 130);
