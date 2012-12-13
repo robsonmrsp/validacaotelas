@@ -18,9 +18,17 @@ não podemos usar as classes/interfaces de Imagens, pois estas chamam o metodo G
 
 
 **************************************
-Efeitos que devem ser aplicados aos componetes
+Efeitos que devem ser aplicados aos componetesc
 	-- primeiro componente deve ser o LabeledImage.
 	-- O componente labeledImage deve ser alterado de modo a crescer tal qual o numero de eventos vai almentando.9, 99. 999, 9999, etc
 	 
 Bugs Aparentes dos componentes	 
 Melhorar o visual da tela de consulta atendimento.
+
+- Aplicar os templates.
+- Resolver o problema das imagens.
+	Sugestão do Awdryn foi fazer uma especie de de-para.
+
+	
+	
+	adicionar os 

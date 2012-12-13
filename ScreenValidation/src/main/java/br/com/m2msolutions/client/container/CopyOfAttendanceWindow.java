@@ -3,13 +3,13 @@ package br.com.m2msolutions.client.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.m2msolutions.client.AttendanceService;
-import br.com.m2msolutions.client.AttendanceServiceAsync;
+import br.com.m2msolutions.client.InquiryAttendanceService;
+import br.com.m2msolutions.client.InquiryAttendanceServiceAsync;
 import br.com.m2msolutions.client.SimpleGwtLogger;
 import br.com.m2msolutions.client.images.Images;
 import br.com.m2msolutions.shared.dto.DtoAboutEvent;
 import br.com.m2msolutions.shared.dto.DtoContact;
-import br.com.m2msolutions.shared.dto.DtoEvent;
+import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoOperator;
 import br.com.m2msolutions.shared.dto.DtoRecord;
@@ -75,7 +75,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	private TextField<String> textFieldProtocol;
 	private TextField<String> textFieldVehicle;
 	private ComboBox<DtoOperator> comboOperator;
-	private Grid<DtoEvent> gridEvents;
+	private Grid<DtoCriticalEvent> gridEvents;
 	private Grid<DtoRecord> gridRecords;
 	private DateField dateFieldTo;
 	private DateField dateFieldFrom;
@@ -105,13 +105,13 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 
 	// Grid<DtoEvent> grid;
 	// LayoutContainer gridContainer;
-	GridCellRenderer<DtoEvent> imageCellRender;
+	GridCellRenderer<DtoCriticalEvent> imageCellRender;
 	GridCellRenderer<DtoRecord> imageRecordCellRender;
 
-	private GridCellRenderer<DtoEvent> descriptionCellRender;
+	private GridCellRenderer<DtoCriticalEvent> descriptionCellRender;
 	private GridCellRenderer<DtoRecord> descriptionRecordCellRender;
 
-	AttendanceServiceAsync attendanceService = GWT.create(AttendanceService.class);
+	InquiryAttendanceServiceAsync attendanceService = GWT.create(InquiryAttendanceService.class);
 
 	public CopyOfAttendanceWindow() {
 		initComponents();
@@ -247,14 +247,14 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	}
 
 	protected void findEvents() {
-		attendanceService.findEventsByParameter(createSearchParamenter(), new AsyncCallback<ArrayList<DtoEvent>>() {
+		attendanceService.findEventsByParameter(createSearchParamenter(), new AsyncCallback<ArrayList<DtoCriticalEvent>>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				SimpleGwtLogger.error("Find EventsByParameter failure", caught);
 			}
 
 			@Override
-			public void onSuccess(ArrayList<DtoEvent> events) {
+			public void onSuccess(ArrayList<DtoCriticalEvent> events) {
 				gridEvents.getStore().removeAll();
 				gridEvents.getStore().add(events);
 			}
@@ -317,12 +317,12 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return gridRecords;
 	}
 
-	private Grid<DtoEvent> getGridEvents() {
+	private Grid<DtoCriticalEvent> getGridEvents() {
 		if (gridEvents == null) {
-			gridEvents = new Grid<DtoEvent>(createListStory(), createColumnConfig());
+			gridEvents = new Grid<DtoCriticalEvent>(createListStory(), createColumnConfig());
 			gridEvents.setSize("-1", "290");
 			// gridEvents.setAutoExpandMax(500);
-			gridEvents.setSelectionModel(new GridSelectionModel<DtoEvent>());
+			gridEvents.setSelectionModel(new GridSelectionModel<DtoCriticalEvent>());
 			gridEvents.setBorders(false);
 			gridEvents.setStripeRows(true);
 			gridEvents.setId("gridEvents");
@@ -330,12 +330,12 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 			gridEvents.setColumnResize(false);
 			gridEvents.setHideHeaders(true);
 			gridEvents.setHeight(Style.DEFAULT);
-			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
-			gridEvents.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<DtoEvent>() {
+			gridEvents.setAutoExpandColumn(DtoCriticalEvent.DESCRIPTION);
+			gridEvents.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<DtoCriticalEvent>() {
 
 				@Override
-				public void selectionChanged(SelectionChangedEvent<DtoEvent> se) {
-					DtoEvent selectedItem = se.getSelectedItem();
+				public void selectionChanged(SelectionChangedEvent<DtoCriticalEvent> se) {
+					DtoCriticalEvent selectedItem = se.getSelectedItem();
 					if (selectedItem != null) {
 						onSelectionEventChange(selectedItem);
 					}
@@ -345,11 +345,11 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return gridEvents;
 	}
 
-	protected void onSelectionEventChange(DtoEvent selectedItem) {
+	protected void onSelectionEventChange(DtoCriticalEvent selectedItem) {
 		findExtraInfoEvent(selectedItem);
 	}
 
-	private void findExtraInfoEvent(DtoEvent selectedItem) {
+	private void findExtraInfoEvent(DtoCriticalEvent selectedItem) {
 		attendanceService.findExtraInfoEvent(selectedItem, new AsyncCallback<DtoExtraInfoEvent>() {
 			@Override
 			public void onSuccess(DtoExtraInfoEvent extraInfo) {
@@ -585,8 +585,8 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return protocolContainer;
 	}
 
-	ArrayList<DtoEvent> testeListe() {
-		ArrayList<DtoEvent> listStore = new ArrayList<DtoEvent>();
+	ArrayList<DtoCriticalEvent> testeListe() {
+		ArrayList<DtoCriticalEvent> listStore = new ArrayList<DtoCriticalEvent>();
 		// listStore.add(new
 		// DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png",
 		// "120", "22/10/2012 12:01"));
@@ -688,8 +688,8 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return listStore;
 	}
 
-	private ListStore<DtoEvent> createListStory() {
-		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
+	private ListStore<DtoCriticalEvent> createListStory() {
+		ListStore<DtoCriticalEvent> listStore = new ListStore<DtoCriticalEvent>();
 		// listStore.add(UtilData.ALL_EVENTS);
 		return listStore;
 	}
@@ -745,21 +745,21 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return imageRecordCellRender;
 	}
 
-	private GridCellRenderer<DtoEvent> createImageCellRender() {
-		imageCellRender = new GridCellRenderer<DtoEvent>() {
+	private GridCellRenderer<DtoCriticalEvent> createImageCellRender() {
+		imageCellRender = new GridCellRenderer<DtoCriticalEvent>() {
 
 			@Override
-			public Object render(DtoEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoEvent> store, Grid<DtoEvent> grid) {
+			public Object render(DtoCriticalEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoCriticalEvent> store, Grid<DtoCriticalEvent> grid) {
 				return "<span><img src=\"" + model.getImageSrc() + "\" alt=\"image\">  </span>";
 			}
 		};
 		return imageCellRender;
 	}
 
-	private GridCellRenderer<DtoEvent> createDescriptionCellRender() {
-		descriptionCellRender = new GridCellRenderer<DtoEvent>() {
+	private GridCellRenderer<DtoCriticalEvent> createDescriptionCellRender() {
+		descriptionCellRender = new GridCellRenderer<DtoCriticalEvent>() {
 			@Override
-			public Object render(DtoEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoEvent> store, Grid<DtoEvent> grid) {
+			public Object render(DtoCriticalEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoCriticalEvent> store, Grid<DtoCriticalEvent> grid) {
 				return getRendered(model);
 			}
 		};
@@ -793,7 +793,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 		return rendered.toString();
 	}
 
-	protected String getRendered(DtoEvent model) {
+	protected String getRendered(DtoCriticalEvent model) {
 		StringBuffer rendered = new StringBuffer();
 		// rendered.append("<div>");
 		rendered.append("	<table>");
@@ -814,7 +814,7 @@ public class CopyOfAttendanceWindow extends LayoutContainer {
 	// abaixo o evento mouseover e click não funcionam.
 	// para testar basta trocar a chamada ao metodo getRendered por get_rendered
 	// abaixo
-	protected String get_Rendered(DtoEvent model) {
+	protected String get_Rendered(DtoCriticalEvent model) {
 		StringBuffer rendered = new StringBuffer();
 		rendered.append("<div>");
 		rendered.append("	<table>");

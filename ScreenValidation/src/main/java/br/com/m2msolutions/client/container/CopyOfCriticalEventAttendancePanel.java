@@ -2,20 +2,19 @@ package br.com.m2msolutions.client.container;
 
 import java.util.ArrayList;
 
-import br.com.m2msolutions.client.AttendanceService;
-import br.com.m2msolutions.client.AttendanceServiceAsync;
+import br.com.m2msolutions.client.InquiryAttendanceService;
+import br.com.m2msolutions.client.InquiryAttendanceServiceAsync;
 import br.com.m2msolutions.client.SimpleGwtLogger;
 import br.com.m2msolutions.client.images.Images;
 import br.com.m2msolutions.shared.dto.DtoAboutEvent;
 import br.com.m2msolutions.shared.dto.DtoContact;
-import br.com.m2msolutions.shared.dto.DtoEvent;
+import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoRecord;
 import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
 import br.com.mr.dock.client.containers.Position;
 
 import com.extjs.gxt.ui.client.Style;
-import com.extjs.gxt.ui.client.Style.Direction;
 import com.extjs.gxt.ui.client.Style.IconAlign;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
@@ -26,7 +25,6 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.util.Util;
@@ -59,7 +57,6 @@ import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
@@ -96,10 +93,10 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 	private Html htmlVehicleLocation;
 	private Html htmlAboutEvent;
 	private Html htmlContact;
-	private DtoEvent event;
+	private DtoCriticalEvent event;
 	private SlidePanel panel = new SlidePanel();
 
-	AttendanceServiceAsync attendanceService = GWT.create(AttendanceService.class);
+	InquiryAttendanceServiceAsync attendanceService = GWT.create(InquiryAttendanceService.class);
 
 	public CopyOfCriticalEventAttendancePanel() {
 		initComponents();
@@ -172,7 +169,6 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 					}
 				}
 			}));
-
 			occurrenceRecordsContainer.setLayout(new RowLayout(Orientation.VERTICAL));
 			occurrenceRecordsContainer.add(getCpHistoricoChat(), new RowData(Style.DEFAULT, 1.0, new Margins(5, 5, 5, 5)));
 			occurrenceRecordsContainer.add(getCpEntradaChat(), new RowData(Style.DEFAULT, Style.DEFAULT, new Margins(5, 5, 5, 5)));
@@ -532,11 +528,11 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		}
 	}
 
-	public void setEvent(DtoEvent dtoEvent) {
+	public void setEvent(DtoCriticalEvent dtoEvent) {
 		this.event = dtoEvent;
 	}
 
-	private void findExtraInfoEvent(DtoEvent selectedItem) {
+	private void findExtraInfoEvent(DtoCriticalEvent selectedItem) {
 		attendanceService.findExtraInfoEvent(selectedItem, new AsyncCallback<DtoExtraInfoEvent>() {
 			@Override
 			public void onSuccess(DtoExtraInfoEvent extraInfo) {
@@ -589,5 +585,4 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 		mapLocation.setZoomLevel(15);
 		mapLocation.checkResizeAndCenter();
 	}
-
 }

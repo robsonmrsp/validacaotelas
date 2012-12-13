@@ -2,7 +2,7 @@ package br.com.m2msolutions.client.container;
 
 import br.com.m2msolutions.shared.dto.DtoAboutEvent;
 import br.com.m2msolutions.shared.dto.DtoContact;
-import br.com.m2msolutions.shared.dto.DtoEvent;
+import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoRecord;
 import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
 
@@ -99,13 +99,13 @@ public class AttendanceWidGetTemplates {
 		template.append("<span id=\"template-events\">");
 		template.append("<table>");
 		template.append("<tr>");
-		template.append("<td rowspan=\"2\"><img id=\"image-11\" src=\"{" + DtoEvent.IMAGE_SRC + "}\"/> </td>");
-		template.append("<td><span class=\"template-label\">inicio</span>: {" + DtoEvent.START_DATE_TIME + "} </td>");
-		template.append("<td><span class=\"template-label\">Veiculo</span>: {" + DtoEvent.VEHICLE_CODE + "}</td>");
+		template.append("<td rowspan=\"2\"><img id=\"image-11\" src=\"{" + DtoCriticalEvent.IMAGE_SRC + "}\"/> </td>");
+		template.append("<td><span class=\"template-label\">inicio</span>: {" + DtoCriticalEvent.START_DATE_TIME + "} </td>");
+		template.append("<td><span class=\"template-label\">Veiculo</span>: {" + DtoCriticalEvent.VEHICLE_CODE + "}</td>");
 		template.append("</tr>");
 		template.append("<tr>");
-		template.append("<td><span class=\"template-label\">Atendente</span>: {" + DtoEvent.OPERATOR + "}</td>");
-		template.append("<td><span class=\"template-label\">Protocolo</span>: {" + DtoEvent.PROTOCOL + "}</td>");
+		template.append("<td><span class=\"template-label\">Atendente</span>: {" + DtoCriticalEvent.OPERATOR + "}</td>");
+		template.append("<td><span class=\"template-label\">Protocolo</span>: {" + DtoCriticalEvent.PROTOCOL + "}</td>");
 		template.append("</tr>	");
 		template.append("</table>");
 		template.append("</span>");

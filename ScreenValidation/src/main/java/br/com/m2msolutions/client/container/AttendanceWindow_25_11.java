@@ -6,7 +6,7 @@ import java.util.List;
 import br.com.m2msolutions.client.images.Images;
 import br.com.m2msolutions.shared.dto.DtoAboutEvent;
 import br.com.m2msolutions.shared.dto.DtoContact;
-import br.com.m2msolutions.shared.dto.DtoEvent;
+import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoOperator;
 import br.com.m2msolutions.shared.dto.DtoRecord;
 import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
@@ -63,7 +63,7 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 	private TextField<String> textFieldVehicle;
 	private ComboBox<DtoOperator> comboOperator;
 	// private ListView<DtoEvent> listViewEvents;
-	private Grid<DtoEvent> gridEvents;
+	private Grid<DtoCriticalEvent> gridEvents;
 	private Grid<DtoRecord> gridRecords;
 	private DateField dateFieldTo;
 	private DateField dateFieldFrom;
@@ -91,10 +91,10 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 
 	// Grid<DtoEvent> grid;
 	// LayoutContainer gridContainer;
-	GridCellRenderer<DtoEvent> imageCellRender;
+	GridCellRenderer<DtoCriticalEvent> imageCellRender;
 	GridCellRenderer<DtoRecord> imageRecordCellRender;
 
-	private GridCellRenderer<DtoEvent> descriptionCellRender;
+	private GridCellRenderer<DtoCriticalEvent> descriptionCellRender;
 	private GridCellRenderer<DtoRecord> descriptionRecordCellRender;
 
 	public AttendanceWindow_25_11() {
@@ -214,7 +214,7 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 
 	protected void findEvents() {
 		gridEvents.getStore().removeAll();
-		ArrayList<DtoEvent> events = ClienteDataUtil.applyEventSearch(getValue(dateFieldFrom), getValue(dateFieldTo), getValue(comboOperator), getValue(textFieldVehicle), getValue(textFieldVehicle));
+		ArrayList<DtoCriticalEvent> events = ClienteDataUtil.applyEventSearch(getValue(dateFieldFrom), getValue(dateFieldTo), getValue(comboOperator), getValue(textFieldVehicle), getValue(textFieldVehicle));
 		gridEvents.getStore().add(events);
 	}
 
@@ -268,12 +268,12 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 		return gridRecords;
 	}
 
-	private Grid<DtoEvent> getGridEvents() {
+	private Grid<DtoCriticalEvent> getGridEvents() {
 		if (gridEvents == null) {
-			gridEvents = new Grid<DtoEvent>(createListStory(), createColumnConfig());
+			gridEvents = new Grid<DtoCriticalEvent>(createListStory(), createColumnConfig());
 			gridEvents.setSize("-1", "290");
 			// gridEvents.setAutoExpandMax(500);
-			gridEvents.setSelectionModel(new GridSelectionModel<DtoEvent>());
+			gridEvents.setSelectionModel(new GridSelectionModel<DtoCriticalEvent>());
 			gridEvents.setBorders(false);
 			gridEvents.setStripeRows(true);
 			gridEvents.setId("gridEvents");
@@ -281,17 +281,17 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 			gridEvents.setColumnResize(false);
 			gridEvents.setHideHeaders(true);
 			gridEvents.setHeight(Style.DEFAULT);
-			gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
+			gridEvents.setAutoExpandColumn(DtoCriticalEvent.DESCRIPTION);
 		}
 		return gridEvents;
 	}
 
-	private GridSelectionModel<DtoEvent> createSelectionModel() {
-		GridSelectionModel<DtoEvent> selectionModel = new GridSelectionModel<DtoEvent>();
-		selectionModel.addSelectionChangedListener(new SelectionChangedListener<DtoEvent>() {
+	private GridSelectionModel<DtoCriticalEvent> createSelectionModel() {
+		GridSelectionModel<DtoCriticalEvent> selectionModel = new GridSelectionModel<DtoCriticalEvent>();
+		selectionModel.addSelectionChangedListener(new SelectionChangedListener<DtoCriticalEvent>() {
 			@Override
-			public void selectionChanged(SelectionChangedEvent<DtoEvent> se) {
-				DtoEvent selectedItem = se.getSelectedItem();
+			public void selectionChanged(SelectionChangedEvent<DtoCriticalEvent> se) {
+				DtoCriticalEvent selectedItem = se.getSelectedItem();
 				if (selectedItem != null) {
 					System.out.println("CopyOfAttendanceWindow.createSelectionModel().new SelectionChangedListener() {...}.selectionChanged()" + selectedItem);
 				}
@@ -513,8 +513,8 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 		return protocolContainer;
 	}
 
-	ArrayList<DtoEvent> testeListe() {
-		ArrayList<DtoEvent> listStore = new ArrayList<DtoEvent>();
+	ArrayList<DtoCriticalEvent> testeListe() {
+		ArrayList<DtoCriticalEvent> listStore = new ArrayList<DtoCriticalEvent>();
 		// listStore.add(new
 		// DtoEvent("https://www.leadingtheserviceindustry.com/images/cancel_icon.png",
 		// "120", "22/10/2012 12:01"));
@@ -602,8 +602,8 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 		return listStore;
 	}
 
-	private ListStore<DtoEvent> createListStory() {
-		ListStore<DtoEvent> listStore = new ListStore<DtoEvent>();
+	private ListStore<DtoCriticalEvent> createListStory() {
+		ListStore<DtoCriticalEvent> listStore = new ListStore<DtoCriticalEvent>();
 
 		// listStore.add(UtilData.ALL_EVENTS);
 		return listStore;
@@ -630,13 +630,13 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		ColumnConfig column = new ColumnConfig();
-		column.setId(DtoEvent.IMAGE_SRC);
+		column.setId(DtoCriticalEvent.IMAGE_SRC);
 		column.setWidth(35);
 		column.setRenderer(createImageCellRender());
 		configs.add(column);
 
 		ColumnConfig column2 = new ColumnConfig();
-		column2.setId(DtoEvent.DESCRIPTION);
+		column2.setId(DtoCriticalEvent.DESCRIPTION);
 		column2.setRenderer(createDescriptionCellRender());
 
 		configs.add(column2);
@@ -656,21 +656,21 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 		return imageRecordCellRender;
 	}
 
-	private GridCellRenderer<DtoEvent> createImageCellRender() {
-		imageCellRender = new GridCellRenderer<DtoEvent>() {
+	private GridCellRenderer<DtoCriticalEvent> createImageCellRender() {
+		imageCellRender = new GridCellRenderer<DtoCriticalEvent>() {
 
 			@Override
-			public Object render(DtoEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoEvent> store, Grid<DtoEvent> grid) {
+			public Object render(DtoCriticalEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoCriticalEvent> store, Grid<DtoCriticalEvent> grid) {
 				return "<span><img src=\"" + model.getImageSrc() + "\" alt=\"image\">  </span>";
 			}
 		};
 		return imageCellRender;
 	}
 
-	private GridCellRenderer<DtoEvent> createDescriptionCellRender() {
-		descriptionCellRender = new GridCellRenderer<DtoEvent>() {
+	private GridCellRenderer<DtoCriticalEvent> createDescriptionCellRender() {
+		descriptionCellRender = new GridCellRenderer<DtoCriticalEvent>() {
 			@Override
-			public Object render(DtoEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoEvent> store, Grid<DtoEvent> grid) {
+			public Object render(DtoCriticalEvent model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoCriticalEvent> store, Grid<DtoCriticalEvent> grid) {
 //				return getRendered(model);
 				return getRendered(model);
 			}
@@ -705,7 +705,7 @@ public class AttendanceWindow_25_11 extends LayoutContainer {
 		return rendered.toString();
 	}
 
-	protected String getRendered(DtoEvent model) {
+	protected String getRendered(DtoCriticalEvent model) {
 		StringBuffer rendered = new StringBuffer();
 		rendered.append("<span>");
 		rendered.append("	<table>");

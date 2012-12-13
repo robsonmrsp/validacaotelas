@@ -13,6 +13,7 @@
 	<properties>
 		<!-- Convenience property to set the GWT version -->
 		<gwt.version>2.4.0</gwt.version>
+		<event.service.version>1.2.0</event.service.version>
 		<gxt.version>2.2.5-gwt22</gxt.version>
 		<!-- GWT needs at least java 1.6 -->
 		<maven.compiler.source>1.6</maven.compiler.source>
@@ -21,10 +22,23 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-remote</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+		<!-- GWTEventService -->
+		<dependency>
+			<groupId>de.novanic.gwteventservice</groupId>
+			<artifactId>gwteventservice</artifactId>
+			<version>${event.service.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.google.gwt.google-apis</groupId>
 			<artifactId>gwt-maps</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.extjs</groupId>
 			<artifactId>gxt</artifactId>
@@ -72,6 +86,7 @@
 
 	<build>
 		<!-- Generate compiled stuff in the folder used for developing mode -->
+<!-- 		<outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory> -->
 		<outputDirectory>target/www/WEB-INF/classes</outputDirectory>
 
 		<plugins>
@@ -245,5 +260,12 @@
 			<id>gmaps</id>
 			<url>http://cloud1.cggh.org/maven2/</url>
 		</repository>
+
+		<repository>
+			<id>typesafe</id>
+			<name>Typesafe Repository</name>
+			<url>http://repo.typesafe.com/typesafe/releases/</url>
+		</repository>
+
 	</repositories>
 </project>

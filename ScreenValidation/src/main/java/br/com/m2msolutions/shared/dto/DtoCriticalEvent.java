@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 
-public class DtoEvent extends BaseModelData {
+public class DtoCriticalEvent extends BaseModelData {
 
 	private static final long serialVersionUID = 6308342747740478807L;
 
@@ -21,7 +21,7 @@ public class DtoEvent extends BaseModelData {
 	public static final String TIME_IN_EVENT = "timeInEvent";
 	public static final String TIME_ATTENDANCE = "timeAttendance";
 
-	public DtoEvent(Long id, String src, String vehicle, Date startTime, String category, String operator, String protocol, String status, String timeInEvent, String timeAttendance) {
+	public DtoCriticalEvent(Long id, String src, String vehicle, Date startTime, String category, String operator, String protocol, String status, String timeInEvent, String timeAttendance) {
 		this(id, src, vehicle, startTime, category);
 		setOperator(operator);
 		setProtocol(protocol);
@@ -30,21 +30,21 @@ public class DtoEvent extends BaseModelData {
 		setTimeAttendance(timeAttendance);
 	}
 
-	public DtoEvent() {
+	public DtoCriticalEvent() {
 
 	}
 
-	public DtoEvent(Long id, String src, String vehicle, Date startTime, String category) {
+	public DtoCriticalEvent(Long id, String src, String vehicle, Date startTime, String category) {
 		this(id, src, vehicle, startTime);
 		setCategory(category);
 	}
 
-	public DtoEvent(Long id, String src, String vehicle, Date startTime) {
+	public DtoCriticalEvent(Long id, String src, String vehicle, Date startTime) {
 		this(id, src, vehicle);
 		setStartDateTime(startTime);
 	}
 
-	public DtoEvent(Long id, String src, String vehicle) {
+	public DtoCriticalEvent(Long id, String src, String vehicle) {
 		setId(id);
 		setImageSrc(src);
 		setVehicleCode(vehicle);
@@ -244,7 +244,7 @@ public class DtoEvent extends BaseModelData {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DtoEvent other = (DtoEvent) obj;
+		DtoCriticalEvent other = (DtoCriticalEvent) obj;
 		if (getId() == null) {
 			if (other.getId() != null)
 				return false;
