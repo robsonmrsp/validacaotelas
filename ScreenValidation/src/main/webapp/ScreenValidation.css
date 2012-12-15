@@ -45,6 +45,10 @@ body {
 	font-weight: bold !important;;
 }
 
+.search-box input{	
+	left:0px !important;
+}
+
 .search-box {
 	background: url("images/search-white.png") no-repeat scroll 10px 3px
 		#FCFCFC;
