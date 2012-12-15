@@ -3,17 +3,15 @@ package br.com.m2msolutions.client;
 import br.com.m2msolutions.client.container.CriticalEventsWidget;
 import br.com.m2msolutions.client.container.FormCriticalEventsAttendance;
 import br.com.m2msolutions.client.container.FormCriticalEventsConfiguration;
-import br.com.m2msolutions.client.container.PanelCriticalEventsAttendance;
-import br.com.m2msolutions.client.container.PanelInquiryCriticalEventsAttendance;
+import br.com.m2msolutions.client.container.FormInquiryCriticalEventsAttendance;
 import br.com.m2msolutions.client.images.Images;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.mr.dock.client.DockDesktop;
 import br.com.mr.dock.client.menu.DockSelectionAction;
 
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.widget.Window;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -22,9 +20,10 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class ScreenValidation implements EntryPoint {
 
+	// usado apenas em testes de layout rápido
 	public void on_ModuleLoad() {
-		final CriticalEventsWidget attendance = new CriticalEventsWidget();
-		RootPanel.get().add(attendance);
+		final CriticalEventsWidget attendance = createCriticalEventsWidget();
+		// RootPanel.get().add(attendance);
 		attendance.show();
 	}
 
@@ -54,7 +53,7 @@ public class ScreenValidation implements EntryPoint {
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.settings128().getURL(), "Configurações", new DockSelectionAction() {
 			@Override
 			public void action() {
-				showWidGetConfiguration();
+				showCriticalEventsConfiguration();
 			}
 
 		});
@@ -62,7 +61,7 @@ public class ScreenValidation implements EntryPoint {
 		dockDesktop.getBottomDock().addItem(Images.INSTANCE.form128().getURL(), "Velha consulta atendimento", new DockSelectionAction() {
 			@Override
 			public void action() {
-				queryAttendanceWindowO().show();
+				showInquiryAttendanceWindow();
 			}
 		});
 
@@ -85,7 +84,7 @@ public class ScreenValidation implements EntryPoint {
 
 			@Override
 			public void action() {
-				showFormCriticalEventsAttendance();
+				showCriticalEventsAttendance();
 			}
 		});
 
@@ -97,33 +96,38 @@ public class ScreenValidation implements EntryPoint {
 		});
 
 		dockDesktop.addWindow(attendance);
-
 		rootPanel.add(dockDesktop);
-
 	}
 
-	protected void showFormCriticalEventsAttendance() {
+	/**
+	 * Tela de atendimento de eventos criticos.
+	 */
+	protected void showCriticalEventsAttendance() {
 		FormCriticalEventsAttendance criticalEventAttendance = new FormCriticalEventsAttendance();
 		criticalEventAttendance.show();
 	}
 
+	/**
+	 * monta o Widget e o retorna para uso
+	 * 
+	 * @return o widget de eventos críticos propriamente dito.
+	 */
 	private CriticalEventsWidget createCriticalEventsWidget() {
 		CriticalEventsWidget attendance = new CriticalEventsWidget();
+		attendance.addAttendanceListener(new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				showInquiryAttendanceWindow();
+			}
+		});
+
 		attendance.addActionOnDobleClick(new Listener<GridEvent<DtoCriticalEvent>>() {
 			public void handleEvent(final GridEvent<DtoCriticalEvent> ge) {
 				DtoCriticalEvent dtoEvent = ge.getModel();
-
 				if (dtoEvent != null) {
-					PanelCriticalEventsAttendance criticalEventAttendancePanel = new PanelCriticalEventsAttendance();
+					FormCriticalEventsAttendance criticalEventAttendancePanel = new FormCriticalEventsAttendance();
 					criticalEventAttendancePanel.setEvent(dtoEvent);
-					Window window = new Window();
-					window.setMaximizable(true);
-					window.setMinimizable(true);
-					window.setLayout(new FitLayout());
-					window.setSize(850, 600);
-
-					window.add(criticalEventAttendancePanel);
-					window.show();
+					criticalEventAttendancePanel.show();
 				}
 			}
 		});
@@ -131,26 +135,19 @@ public class ScreenValidation implements EntryPoint {
 		return attendance;
 	}
 
-	
+	/**
+	 * Tela de consulta de atendimento
+	 */
+	private void showInquiryAttendanceWindow() {
+		FormInquiryCriticalEventsAttendance inquiryCriticalEventsAttendance = new FormInquiryCriticalEventsAttendance();
+		inquiryCriticalEventsAttendance.show();
 
-	private Window queryAttendanceWindowO() {
-		PanelInquiryCriticalEventsAttendance attendanceWindow = new PanelInquiryCriticalEventsAttendance();
-		attendanceWindow.setAutoWidth(true);
-
-		Window window = new Window();
-		window.setBodyBorder(false);
-		window.setBorders(false);
-
-		window.setMaximizable(true);
-		window.setMinimizable(true);
-		window.setLayout(new FitLayout());
-		window.setSize(1015, 550);
-
-		window.add(attendanceWindow);
-		return window;
 	}
 
-	private void showWidGetConfiguration() {
+	/**
+	 * Tela de configuração de eventos críticos.
+	 */
+	private void showCriticalEventsConfiguration() {
 		FormCriticalEventsConfiguration configuration = new FormCriticalEventsConfiguration();
 		configuration.show();
 	}

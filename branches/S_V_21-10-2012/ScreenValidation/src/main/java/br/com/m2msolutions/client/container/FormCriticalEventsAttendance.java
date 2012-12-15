@@ -1,5 +1,7 @@
 package br.com.m2msolutions.client.container;
 
+import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
+
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
@@ -29,5 +31,9 @@ public class FormCriticalEventsAttendance extends Window {
 
 		}
 		return criticalEventsAttendance;
+	}
+
+	public void setEvent(DtoCriticalEvent dtoEvent) {
+		criticalEventsAttendance.setEvent(dtoEvent);
 	}
 }

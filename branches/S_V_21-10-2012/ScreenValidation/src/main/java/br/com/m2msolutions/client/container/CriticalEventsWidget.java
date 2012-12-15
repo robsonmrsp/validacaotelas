@@ -17,16 +17,17 @@ import com.extjs.gxt.ui.client.Style.Direction;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FxEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.fx.Draggable;
 import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -52,10 +53,10 @@ import de.novanic.eventservice.client.event.Event;
 import de.novanic.eventservice.client.event.RemoteEventService;
 import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
 import de.novanic.eventservice.client.event.listener.RemoteEventListener;
-import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
-import com.extjs.gxt.ui.client.widget.layout.AnchorLayout;
 
 public class CriticalEventsWidget extends DockWindow {
+
+	protected static final EventType OnClickAttendace = new EventType();
 
 	// TODO Verificar se será filtrado SOMENTE os que estão no grid
 	private Html heading;
@@ -77,7 +78,7 @@ public class CriticalEventsWidget extends DockWindow {
 	private LayoutContainer buttonAttContainer;
 
 	private LayoutContainer gridContainer;
-	private Image image_1;
+	private Image imageAttendance;
 
 	CriticalEventsServiceAsync criticalEventsService = CriticalEventsService.Util.getInstance();
 
@@ -96,15 +97,16 @@ public class CriticalEventsWidget extends DockWindow {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-//		getCriticalEventsInfo();
+		getCriticalEventsInfo();
 	}
 
 	private void getCriticalEventsInfo() {
 		criticalEventsService.getCriticalEventsInfo(new AsyncCallback<DtoCriticalEventsInfo>() {
 			@Override
 			public void onSuccess(DtoCriticalEventsInfo criticalEventsInfo) {
-				gridEvents.getStore().add(criticalEventsInfo.getEvents());
-				initDataPush();
+				
+//				gridEvents.getStore().add(criticalEventsInfo.getEvents());
+//				initDataPush();
 			}
 
 			@Override
@@ -153,7 +155,7 @@ public class CriticalEventsWidget extends DockWindow {
 			footer.setBorders(false);
 			footer.setStyleName("widget-window-footer");
 			footer.setLayout(new BorderLayout());
-//			footer.setLayout(new ColumnLayout());
+			// footer.setLayout(new ColumnLayout());
 			footer.add(getSearchBox(), new BorderLayoutData(LayoutRegion.WEST));
 			footer.add(getButtonAttContainer(), new BorderLayoutData(LayoutRegion.EAST, 20.0f));
 		}
@@ -166,8 +168,6 @@ public class CriticalEventsWidget extends DockWindow {
 			principal.setId("principal");
 			principal.setLayout(new RowLayout(Orientation.VERTICAL));
 			principal.setBorders(false);
-			// principal.add(getGridContainer(), new RowData(-1, 200.0, new
-			// Margins()));
 			principal.add(getGrid());
 			principal.add(getFooter(), new RowData(1, 25.0, new Margins()));
 		}
@@ -435,11 +435,11 @@ public class CriticalEventsWidget extends DockWindow {
 	private LayoutContainer getSearchBox() {
 		if (searchBox == null) {
 			searchBox = new SearchBox();
-//			searchBox.setSize("150", "26");
+			// searchBox.setSize("150", "26");
 			searchBox.setSize(200, 26);
 			searchBox.setId("searchBoxContainer");
 			searchBox.setTextWhenEmpty("Buscar");
-			
+
 			searchBox.setChangeListener(new Listener<SearchBoxEvent>() {
 				@Override
 				public void handleEvent(SearchBoxEvent be) {
@@ -473,17 +473,6 @@ public class CriticalEventsWidget extends DockWindow {
 		return buttonAttContainer;
 	}
 
-	// private TextBox getSearchBox() {
-	// if (searchBox == null) {
-	// searchBox = new TextBox();
-	// // searchBox.setHeight("16px");
-	// searchBox.getElement().setId("search");
-	// searchBox.getElement().setAttribute("placeholder", "Buscar");
-	// searchBox.setStyleName("search-box");
-	// }
-	// return searchBox;
-	// }
-
 	private LayoutContainer getGridContainer() {
 		if (gridContainer == null) {
 			gridContainer = new LayoutContainer();
@@ -497,34 +486,20 @@ public class CriticalEventsWidget extends DockWindow {
 	}
 
 	private Image getImage_1() {
-		if (image_1 == null) {
-			image_1 = new Image(Images.INSTANCE.attendance22());
-			image_1.setSize("24px", "24px");
-			image_1.addClickHandler(new ClickHandler() {
+		if (imageAttendance == null) {
+			imageAttendance = new Image(Images.INSTANCE.attendance22());
+			imageAttendance.setSize("24px", "24px");
+			imageAttendance.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					queryAttendanceWindow().show();
+					fireEvent(OnClickAttendace);
 				}
 			});
 		}
-		return image_1;
+		return imageAttendance;
 	}
 
-	private Window queryAttendanceWindow() {
-		CopyOfAttendanceWindow attendanceWindow = new CopyOfAttendanceWindow();
-		attendanceWindow.setAutoWidth(true);
-
-		Window window = new Window();
-		window.setBodyBorder(false);
-		window.setBorders(false);
-
-		window.setMaximizable(true);
-		window.setMinimizable(true);
-		window.setLayout(new FitLayout());
-		window.setSize(1015, 550);
-
-		window.add(attendanceWindow);
-		return window;
+	public void addAttendanceListener(Listener<BaseEvent> listener) {
+		addListener(OnClickAttendace, listener);
 	}
-
 }
