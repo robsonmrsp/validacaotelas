@@ -33,46 +33,37 @@
 		<servlet-name>SystemServiceServlet</servlet-name>
 		<url-pattern>/_ah/spi/*</url-pattern>
 	</servlet-mapping>
+
+	<!-- Servico da consulta de atendimento -->
 	<servlet>
 		<servlet-name>InquiryAttendanceService</servlet-name>
 		<servlet-class>br.com.m2msolutions.server.InquiryAttendanceServiceImpl</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>InquiryAttendanceService</servlet-name>
-		<url-pattern>/screenvalidation/attendanceService</url-pattern>
+		<url-pattern>/screenvalidation/inquiryAttendanceService</url-pattern>
 	</servlet-mapping>
+
+	<!-- Servico do widget de eventos críticos -->
 	<servlet>
 		<servlet-name>CriticalEventsService</servlet-name>
 		<servlet-class>br.com.m2msolutions.server.CriticalEventsServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CriticalEventsService</servlet-name>
-		<url-pattern>/br.com.m2msolutions.ScreenValidationJUnit/CriticalEventsService</url-pattern>
+		<url-pattern>/screenvalidation/criticalEventsService</url-pattern>
 	</servlet-mapping>
-	<servlet>
-		<servlet-name>CriticalEventsService</servlet-name>
-		<servlet-class>br.com.m2msolutions.server.CriticalEventsServiceImpl</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CriticalEventsService</servlet-name>
-		<url-pattern>/br.com.m2msolutions.ScreenValidationJUnit/CriticalEventsService</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>CriticalEventsService</servlet-name>
-		<servlet-class>br.com.m2msolutions.server.CriticalEventsServiceImpl</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CriticalEventsService</servlet-name>
-		<url-pattern>/br.com.m2msolutions.ScreenValidationJUnit/CriticalEventsService</url-pattern>
-	</servlet-mapping>
+
+	<!-- Servico da tela de configuração de eventos. -->
 	<servlet>
 		<servlet-name>CriticalEventsConfigurationService</servlet-name>
 		<servlet-class>br.com.m2msolutions.server.CriticalEventsConfigurationServiceImpl</servlet-class>
+
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CriticalEventsConfigurationService</servlet-name>
-		<url-pattern>/br.com.m2msolutions.ScreenValidationJUnit/CriticalEventsConfigurationService</url-pattern>
+		<url-pattern>/screenvalidation/criticalEventsConfigurationService</url-pattern>
 	</servlet-mapping>
 
 </web-app>
