@@ -1,8 +1,8 @@
 package br.com.m2msolutions.client;
 
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.ListView;
-import com.extjs.gxt.ui.client.store.ListStore;
 
 public class TwitterPanel extends LayoutContainer {
 	private ListView<DTOTwitter> listView;

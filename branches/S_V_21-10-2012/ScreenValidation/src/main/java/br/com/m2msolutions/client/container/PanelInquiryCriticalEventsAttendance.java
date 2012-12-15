@@ -810,7 +810,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		return rendered.toString();
 	}
 
-	// TODO por algum motivo ao formatarmos os textos nas celulas da tabela como
+	// FIXME por algum motivo ao formatarmos os textos nas celulas da tabela como
 	// abaixo o evento mouseover e click não funcionam.
 	// para testar basta trocar a chamada ao metodo getRendered por get_rendered
 	// abaixo

@@ -17,16 +17,17 @@ package br.com.m2msolutions.server;
 import java.util.ArrayList;
 
 import br.com.m2msolutions.client.CriticalEventsConfigurationService;
+import br.com.m2msolutions.client.DtoEventType;
 import br.com.m2msolutions.client.container.DtoCategory;
 import br.com.m2msolutions.client.container.DtoCriticalEventsConfiguration;
-import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class CriticalEventsConfigurationServiceImpl extends RemoteServiceServlet implements CriticalEventsConfigurationService {
+	private static final long serialVersionUID = 7896776137153226685L;
 
 	@Override
-	public ArrayList<DtoCriticalEvent> getCriticalEventsByCategory(DtoCategory category) {
+	public ArrayList<DtoEventType> getCriticalEventsByCategory(DtoCategory category) {
 		// TODO Auto-generated method stub
 		return null;
 	}

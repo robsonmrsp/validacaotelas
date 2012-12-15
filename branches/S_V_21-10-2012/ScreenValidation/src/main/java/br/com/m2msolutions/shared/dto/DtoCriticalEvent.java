@@ -14,6 +14,12 @@ public class DtoCriticalEvent extends BaseModelData {
 	public static final String VEHICLE_CODE = "vehicleCode";
 	public static final String OPERATOR = "operator";
 	public static final String PROTOCOL = "protocol";
+
+	// FIXME
+	// Como se trata de uma imagem que será UPADA pelo usuário,
+	// provavelmente iremos usar encode base 64 para renderizar a imagem.
+	// LEMBRAR QUE essa imagem é a mesma que fora gravada no cadastro da
+	// categoria.
 	public static final String IMAGE_SRC = "imageSrc";
 	public static final String DESCRIPTION = "description";
 	public static final String CATEGORY = "category";
