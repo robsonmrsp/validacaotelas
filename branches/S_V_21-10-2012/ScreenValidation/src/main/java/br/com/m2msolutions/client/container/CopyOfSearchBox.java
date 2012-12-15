@@ -7,38 +7,36 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.TextBox;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
-public class SearchBox extends LayoutContainer {
+public class CopyOfSearchBox extends LayoutContainer {
 
 	private TextBox searchBox;
 
-	public SearchBox() {
+	public CopyOfSearchBox() {
 		initComponents();
 	}
 
 	@Override
 	public void setSize(String width, String height) {
-		super.setSize(width, "24px");
+		super.setSize(width, "26px");
 		searchBox.setWidth(width);
 	}
 
 	public void setSize(int width, int height) {
-		super.setSize(width, 24);
+		super.setSize(width, 26);
 		searchBox.setWidth(width - 5 + "px");
 	}
 
 	private void initComponents() {
-//		setSize("150px", "24px");
-		setLayout(new FitLayout());
+		setLayout(new CenterLayout());
 		add(getSearchBox());
-		setWidth("150px");
 	}
 
 	private TextBox getSearchBox() {
 		if (searchBox == null) {
 			searchBox = new TextBox();
 			searchBox.getElement().setId("search");
+			searchBox.getElement().getStyle().setLeft(0, Unit.PX);
 			searchBox.getElement().setAttribute("placeholder", "Search");
 			searchBox.setStyleName("search-box");
 		}

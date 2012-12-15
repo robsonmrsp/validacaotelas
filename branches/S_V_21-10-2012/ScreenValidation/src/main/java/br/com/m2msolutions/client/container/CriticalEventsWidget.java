@@ -52,6 +52,8 @@ import de.novanic.eventservice.client.event.Event;
 import de.novanic.eventservice.client.event.RemoteEventService;
 import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
 import de.novanic.eventservice.client.event.listener.RemoteEventListener;
+import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
+import com.extjs.gxt.ui.client.widget.layout.AnchorLayout;
 
 public class CriticalEventsWidget extends DockWindow {
 
@@ -94,7 +96,7 @@ public class CriticalEventsWidget extends DockWindow {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		getCriticalEventsInfo();
+//		getCriticalEventsInfo();
 	}
 
 	private void getCriticalEventsInfo() {
@@ -112,16 +114,17 @@ public class CriticalEventsWidget extends DockWindow {
 		});
 	}
 
-//	TODO ficará dento do onReceive do sistema de atores remotos
+	// TODO ficará dento do onReceive do sistema de atores remotos
 	protected void initDataPush() {
-		
+
 		RemoteEventService criticalEventsRemoteEventService = RemoteEventServiceFactory.getInstance().getRemoteEventService();
 		criticalEventsRemoteEventService.addListener(CriticalEventMessage.SERVER_MESSAGE_DOMAIN, new RemoteEventListener() {
 			public void apply(Event anEvent) {
 				if (anEvent instanceof CriticalEventMessage) {
 					CriticalEventMessage eventMessage = (CriticalEventMessage) anEvent;
 					DtoCriticalEvent criticalEvent = eventMessage.getCriticalEvent();
-					// TODO criar um local/metodo que centralize a atualização do grid;
+					// TODO criar um local/metodo que centralize a atualização
+					// do grid;
 					gridEvents.getStore().add(criticalEvent);
 				}
 			}
@@ -150,8 +153,9 @@ public class CriticalEventsWidget extends DockWindow {
 			footer.setBorders(false);
 			footer.setStyleName("widget-window-footer");
 			footer.setLayout(new BorderLayout());
-			footer.add(getSearchBox(), new BorderLayoutData(LayoutRegion.CENTER));
-			footer.add(getButtonAttContainer(), new BorderLayoutData(LayoutRegion.EAST, 25.0f));
+//			footer.setLayout(new ColumnLayout());
+			footer.add(getSearchBox(), new BorderLayoutData(LayoutRegion.WEST));
+			footer.add(getButtonAttContainer(), new BorderLayoutData(LayoutRegion.EAST, 20.0f));
 		}
 		return footer;
 	}
@@ -431,16 +435,15 @@ public class CriticalEventsWidget extends DockWindow {
 	private LayoutContainer getSearchBox() {
 		if (searchBox == null) {
 			searchBox = new SearchBox();
+//			searchBox.setSize("150", "26");
+			searchBox.setSize(200, 26);
 			searchBox.setId("searchBoxContainer");
 			searchBox.setTextWhenEmpty("Buscar");
-			searchBox.setChangeListener(new Listener<BaseEvent>() {
+			
+			searchBox.setChangeListener(new Listener<SearchBoxEvent>() {
 				@Override
-				public void handleEvent(BaseEvent be) {
-					SearchBox sb = (SearchBox) be.getSource();
-
-					if (sb.length() > 2 || sb.length() == 0) {
-						runSearch(sb.getValue());
-					}
+				public void handleEvent(SearchBoxEvent be) {
+					runSearch(be.getInputValue());
 				}
 			});
 		}
@@ -462,9 +465,9 @@ public class CriticalEventsWidget extends DockWindow {
 			buttonAttContainer.setId("buttonAttContainer");
 			buttonAttContainer.setBorders(false);
 			buttonAttContainer.setLayout(new CenterLayout());
-			buttonAttContainer.add(getImage_1());
 			buttonAttContainer.setToolTip("Ver consulta de atendimento");
 			buttonAttContainer.setStyleAttribute("cursor", "pointer");
+			buttonAttContainer.add(getImage_1());
 
 		}
 		return buttonAttContainer;

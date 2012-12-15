@@ -5,6 +5,8 @@
 	<inherits name="com.extjs.gxt.ui.GXT" />
 	<inherits name="br.com.mr.dock.GwtDock" />
 	<inherits name='com.google.gwt.maps.GoogleMaps' />
+	<inherits name="de.novanic.eventservice.GWTEventService" />
+
 
 	<entry-point class='br.com.m2msolutions.client.ScreenValidation' />
 	<source path='client' />

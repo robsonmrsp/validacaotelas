@@ -2,10 +2,9 @@ package br.com.m2msolutions.client;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
-
-import com.google.gwt.dev.util.collect.HashMap;
 
 public class DtoCriticalEventsInfo implements Serializable {
 

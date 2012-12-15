@@ -1,6 +1,7 @@
 package br.com.m2msolutions.client.container;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import br.com.m2msolutions.client.InquiryAttendanceService;
@@ -69,7 +70,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
-public class QueryAttendanceWindow extends LayoutContainer {
+public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 	private ContentPanelImp queryContainer;
 	private ContentPanelImp eventsContainer;
 	private TextField<String> textFieldProtocol;
@@ -113,7 +114,7 @@ public class QueryAttendanceWindow extends LayoutContainer {
 
 	InquiryAttendanceServiceAsync attendanceService = GWT.create(InquiryAttendanceService.class);
 
-	public QueryAttendanceWindow() {
+	public PanelInquiryCriticalEventsAttendance() {
 		initComponents();
 	}
 
