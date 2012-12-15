@@ -2,12 +2,10 @@ package br.com.m2msolutions.client.container;
 
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
-import com.google.gwt.dom.client.Style.Unit;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.TextBox;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 public class SearchBox extends LayoutContainer {
 

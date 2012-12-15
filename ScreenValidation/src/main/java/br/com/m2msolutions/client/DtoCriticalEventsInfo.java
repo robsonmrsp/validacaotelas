@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import br.com.m2msolutions.client.container.DtoCategory;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 
 public class DtoCriticalEventsInfo implements Serializable {
@@ -12,17 +13,17 @@ public class DtoCriticalEventsInfo implements Serializable {
 
 	// TODO no futuro será um mapa de categorias e quantidades de eventos
 	// daquela categoria
-	private HashMap<String, Integer> eventsCount;
+	private HashMap<DtoCategory, Integer> eventsCount;
 	private ArrayList<DtoCriticalEvent> events;
 	
 	public DtoCriticalEventsInfo() {
 	
 	}
-	public HashMap<String, Integer> getEventsCount() {
+	public HashMap<DtoCategory, Integer> getEventsCount() {
 		return eventsCount;
 	}
 
-	public void setEventsCount(HashMap<String, Integer> eventsCount) {
+	public void setEventsCount(HashMap<DtoCategory, Integer> eventsCount) {
 		this.eventsCount = eventsCount;
 	}
 

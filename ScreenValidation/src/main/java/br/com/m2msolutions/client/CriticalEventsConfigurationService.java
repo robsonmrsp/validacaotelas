@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import br.com.m2msolutions.client.container.DtoCategory;
 import br.com.m2msolutions.client.container.DtoCriticalEventsConfiguration;
-import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -27,13 +26,27 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("criticalEventsConfigurationService")
 public interface CriticalEventsConfigurationService extends RemoteService {
 
-	ArrayList<DtoCriticalEvent> getCriticalEventsByCategory(DtoCategory category);
-	Boolean saveConfiguration(DtoCriticalEventsConfiguration createConfiguration);
-	
-	
+	/**
+	 * Devolve os eventos que foram associados a uma determinada categoria.
+	 * 
+	 * @param category
+	 * @return
+	 */
+	ArrayList<DtoEventType> getCriticalEventsByCategory(DtoCategory category) throws Exception;
+
+	/**
+	 * Salva a configuração que foi "Montada" na tela. Respeitando as ordens
+	 * definidas.
+	 * 
+	 * Provavelmente apos salvar esta categoria, será necessário comunicar com o
+	 * mecanismo de atores para que este possa se atualizar segundo o novo
+	 * formato da configuração.
+	 **/
+	Boolean saveConfiguration(DtoCriticalEventsConfiguration createConfiguration) throws Exception;
+
 	public static class Util {
 		private static CriticalEventsConfigurationServiceAsync instance;
-		
+
 		public static CriticalEventsConfigurationServiceAsync getInstance() {
 			if (instance == null) {
 				instance = GWT.create(CriticalEventsConfigurationService.class);
@@ -41,6 +54,5 @@ public interface CriticalEventsConfigurationService extends RemoteService {
 			return instance;
 		}
 	}
-
 
 }

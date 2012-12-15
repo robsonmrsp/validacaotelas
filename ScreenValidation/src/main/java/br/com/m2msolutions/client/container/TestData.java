@@ -3,8 +3,6 @@ package br.com.m2msolutions.client.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
-
 public class TestData {
 	public static List<Stock> getStocks() {
 		List<Stock> stocks = new ArrayList<Stock>();

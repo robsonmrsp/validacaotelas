@@ -1,9 +1,9 @@
 package br.com.m2msolutions.server.actors;
 
-import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 
 public class CriticalEventsActor extends UntypedActor {
 	LoggingAdapter log = Logging.getLogger(getContext().system(), this);

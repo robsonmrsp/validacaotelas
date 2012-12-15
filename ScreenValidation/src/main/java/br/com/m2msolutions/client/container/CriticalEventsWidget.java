@@ -22,7 +22,6 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FxEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.fx.Draggable;
 import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
@@ -58,7 +57,6 @@ public class CriticalEventsWidget extends DockWindow {
 
 	protected static final EventType OnClickAttendace = new EventType();
 
-	// TODO Verificar se será filtrado SOMENTE os que estão no grid
 	private Html heading;
 	private LayoutContainer header;
 	private LayoutContainer principal;
@@ -450,6 +448,7 @@ public class CriticalEventsWidget extends DockWindow {
 		return searchBox;
 	}
 
+	//somente serão filtrados os eventos que estão no grid
 	protected void runSearch(String regex) {
 		gridEvents.getStore().removeAll();
 		if (regex.isEmpty())

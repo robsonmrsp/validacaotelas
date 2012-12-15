@@ -2,6 +2,7 @@ package br.com.m2msolutions.server;
 
 import br.com.m2msolutions.client.GreetingService;
 import br.com.m2msolutions.shared.FieldVerifier;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
