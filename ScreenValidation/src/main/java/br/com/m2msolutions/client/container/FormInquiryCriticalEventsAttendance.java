@@ -1,6 +1,7 @@
 package br.com.m2msolutions.client.container;
 
 import com.extjs.gxt.ui.client.widget.Window;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 public class FormInquiryCriticalEventsAttendance extends Window {
 	private PanelInquiryCriticalEventsAttendance inquiryCriticalEventAttendance;
@@ -14,7 +15,8 @@ public class FormInquiryCriticalEventsAttendance extends Window {
 		setMinimizable(true);
 		setMaximizable(true);
 		setClosable(true);
-		setSize(422, 470);
+		setSize(1015, 550);
+		setLayout(new FitLayout());
 		add(getCriticalEventsConfiguration());
 	}
 

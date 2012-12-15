@@ -1,7 +1,6 @@
 package br.com.m2msolutions.client.container;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import br.com.m2msolutions.client.InquiryAttendanceService;
@@ -120,9 +119,18 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		add(getLeftContainer(), new BorderLayoutData(LayoutRegion.WEST, 305.0f));
-		add(getMidleContainer(), new BorderLayoutData(LayoutRegion.CENTER));
-		add(getRightContainer(), new BorderLayoutData(LayoutRegion.EAST, 280.0f));
+		
+		BorderLayoutData leftLayoutData = new BorderLayoutData(LayoutRegion.WEST, 305.0f);
+		leftLayoutData.setMargins(new Margins(5, 2, 5, 5));
+		add(getLeftContainer(), leftLayoutData);
+		
+		BorderLayoutData midleLayoutData = new BorderLayoutData(LayoutRegion.CENTER);
+		midleLayoutData.setMargins(new Margins(5, 2, 5, 2));
+		add(getMidleContainer(), midleLayoutData);
+		
+		BorderLayoutData rightLayoutData = new BorderLayoutData(LayoutRegion.EAST, 280.0f);
+		rightLayoutData.setMargins(new Margins(5, 5, 5, 2));
+		add(getRightContainer(), rightLayoutData);
 
 		createTemplates();
 
@@ -410,10 +418,11 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		}
 		return vehicleLocationContainer;
 	}
-
+	
 	private ContentPanelImp getContactContainer() {
 		if (contactContainer == null) {
 			contactContainer = new ContentPanelImp();
+			
 			contactContainer.setHeading("Contato");
 			contactContainer.setCollapsible(true);
 			contactContainer.setLayout(new FitLayout());
@@ -428,8 +437,6 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		if (occurrenceRecordsContainer == null) {
 			occurrenceRecordsContainer = new ContentPanelImp();
 			occurrenceRecordsContainer.setHeading("Registro de ocorrência");
-			// occurrenceRecordsContainer.addToolButton(createPrinterButton());
-			// occurrenceRecordsContainer.addToolButton(createEditButton());
 			occurrenceRecordsContainer.addToolButton(createPrinterButton());
 			occurrenceRecordsContainer.setCollapsible(true);
 			occurrenceRecordsContainer.setLayout(new FitLayout());
