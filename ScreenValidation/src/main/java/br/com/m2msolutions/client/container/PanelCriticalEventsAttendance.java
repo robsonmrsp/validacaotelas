@@ -59,7 +59,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
+public class PanelCriticalEventsAttendance extends LayoutContainer {
 	private Button btnNewButton;
 	private Button btnResolvido;
 	private ContentPanel cpHistoricoChat;
@@ -98,7 +98,7 @@ public class CopyOfCriticalEventAttendancePanel extends LayoutContainer {
 
 	InquiryAttendanceServiceAsync attendanceService = GWT.create(InquiryAttendanceService.class);
 
-	public CopyOfCriticalEventAttendancePanel() {
+	public PanelCriticalEventsAttendance() {
 		initComponents();
 	}
 
