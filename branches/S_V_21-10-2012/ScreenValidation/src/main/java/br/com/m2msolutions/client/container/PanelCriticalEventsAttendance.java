@@ -2,9 +2,11 @@ package br.com.m2msolutions.client.container;
 
 import java.util.ArrayList;
 
+import br.com.m2msolutions.client.DialogWindowTransfer;
 import br.com.m2msolutions.client.InquiryAttendanceService;
 import br.com.m2msolutions.client.InquiryAttendanceServiceAsync;
 import br.com.m2msolutions.client.SimpleGwtLogger;
+import br.com.m2msolutions.client.WindowContactResearch;
 import br.com.m2msolutions.client.images.Images;
 import br.com.m2msolutions.shared.dto.DtoAboutEvent;
 import br.com.m2msolutions.shared.dto.DtoContact;
@@ -29,9 +31,11 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.ListView;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
@@ -39,6 +43,7 @@ import com.extjs.gxt.ui.client.widget.layout.AbsoluteData;
 import com.extjs.gxt.ui.client.widget.layout.AbsoluteLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
@@ -57,9 +62,12 @@ import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 
 public class PanelCriticalEventsAttendance extends LayoutContainer {
+
 	private Button btnNewButton;
 	private Button btnResolvido;
 	private ContentPanel cpHistoricoChat;
@@ -80,7 +88,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	private Button btRedLed;
 
 	private MapWidget mapLocation;
-	MapHandler mapHandler = new MapHandler();
+	private MapHandler mapHandler = new MapHandler();
 	private ContentPanelImp aboutEventContainer;
 	private ContentPanelImp vehicleLocationContainer;
 	private ContentPanelImp contactContainer;
@@ -94,9 +102,24 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	private Html htmlAboutEvent;
 	private Html htmlContact;
 	private DtoCriticalEvent event;
-	private SlidePanel panel = new SlidePanel();
+	private SlidePanel slidePanel = new SlidePanel();
 
 	InquiryAttendanceServiceAsync attendanceService = GWT.create(InquiryAttendanceService.class);
+	private ContentPanel ctpSobreEvento;
+	private Text txtNewText;
+	private Text txtIncioDoEvento;
+	private Text txtIncioDoAtendimento;
+	private Text txtTempoDecorridoDo;
+	private Text txtAtendenteAtual;
+	private Text txtConclusoDoAtendimento;
+	private Text txtNumeroProtocoloValue;
+	private Text txtIniEventoValue;
+	private Text txtIniAtendimentoValue;
+	private Text txtTempoAtendimentoValue;
+	private Text txtAtendenteValue;
+	private Hyperlink hprlnkTransferir;
+	private Text txtConclusaoValue;
+	private Hyperlink hprlnkResolvido;
 
 	public PanelCriticalEventsAttendance() {
 		initComponents();
@@ -114,6 +137,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 
 		add(getCenterContainer(), centerLayoutData);
 		add(getEastContainer(), eastLayoutData);
+
 		addListener(Events.Attach, new Listener<BaseEvent>() {
 			@Override
 			public void handleEvent(BaseEvent be) {
@@ -158,14 +182,14 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 
 			ToolButton toolButton = new ToolButton(Images.INSTANCE.edit16());
 
-			panel.anchorAt(occurrenceRecordsContainer, Position.LEFT);
+			slidePanel.anchorAt(occurrenceRecordsContainer, Position.LEFT);
 			occurrenceRecordsContainer.addToolButton(new ToolButton(Images.INSTANCE.edit16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
-					if (panel.isVisible()) {
-						panel.hide();
+					if (slidePanel.isVisible()) {
+						slidePanel.hide();
 					} else {
-						panel.show();
+						slidePanel.show();
 					}
 				}
 			}));
@@ -180,12 +204,19 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		if (contactContainer == null) {
 			contactContainer = new ContentPanelImp();
 			contactContainer.setBodyBorder(false);
+			contactContainer.addToolButton(new ToolButton(Images.INSTANCE.find16(), new Listener<BaseEvent>() {
+				@Override
+				public void handleEvent(BaseEvent be) {
+					WindowContactResearch wContact = new WindowContactResearch();
+					wContact.show();
+				}
+			}));
 			contactContainer.addToolButton(new ToolButton(Images.INSTANCE.edit16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
-					Window.alert("Editando contato...");
 				}
 			}));
+			
 			contactContainer.setHeading("Contato:");
 			contactContainer.setLayout(new FitLayout());
 			FitData fd_htmlContact = new FitData(0);
@@ -200,6 +231,13 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		if (vehicleLocationContainer == null) {
 			vehicleLocationContainer = new ContentPanelImp();
 			vehicleLocationContainer.setBodyBorder(false);
+			
+			vehicleLocationContainer.addToolButton(new ToolButton(Images.INSTANCE.camera16(), new Listener<BaseEvent>() {
+				@Override
+				public void handleEvent(BaseEvent be) {
+				}
+			}));
+			
 			vehicleLocationContainer.setHeading("Ve\u00EDculo e localiza\u00E7\u00E3o:");
 			vehicleLocationContainer.setLayout(new BorderLayout());
 			BorderLayoutData bld_htmlVehicleLocation = new BorderLayoutData(LayoutRegion.NORTH, 100.0f);
@@ -207,7 +245,9 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			bld_htmlVehicleLocation.setMaxSize(100);
 
 			vehicleLocationContainer.add(getHtmlVehicleLocation(), bld_htmlVehicleLocation);
-			vehicleLocationContainer.add(getMapContainer(), new BorderLayoutData(LayoutRegion.CENTER));
+			BorderLayoutData bld_mapContainer = new BorderLayoutData(LayoutRegion.CENTER);
+			bld_mapContainer.setMargins(new Margins(5, 5, 5, 5));
+			vehicleLocationContainer.add(getMapContainer(), bld_mapContainer);
 
 		}
 		return vehicleLocationContainer;
@@ -241,26 +281,33 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	private Widget getAboutEventContainer() {
+
 		if (aboutEventContainer == null) {
+
 			aboutEventContainer = new ContentPanelImp();
 			aboutEventContainer.setBodyBorder(false);
 			aboutEventContainer.setHeading("Sobre o Evento:");
 			aboutEventContainer.setLayout(new FitLayout());
-			aboutEventContainer.add(getHtmlAboutEvent());
+			//			aboutEventContainer.add(getHtmlAboutEvent());
+
 			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.transferir16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
 					Window.alert("transferindo atendimento...");
 				}
 			}));
+
 			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.resolvido16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
 					Window.alert("Atendimento resolvido/encerrado...");
 				}
 			}));
+
 			aboutEventContainer.setHeight("180");
+			aboutEventContainer.add(getCtpSobreEvento());
 		}
+
 		return aboutEventContainer;
 	}
 
@@ -274,11 +321,11 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	private void createTemplates() {
-		aboutEventTemplate = XTemplate.create(AttendanceWidGetTemplates.ABOUT_EVENT);
+		//		aboutEventTemplate = XTemplate.create(AttendanceWidGetTemplates.ABOUT_EVENT);
 		contactTemplate = XTemplate.create(AttendanceWidGetTemplates.CONTACTS);
 		vehicleLocationTemplate = XTemplate.create(AttendanceWidGetTemplates.VEHICLE_LOCATION);
 
-		htmlAboutEvent.setHtml(aboutEventTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
+		//		htmlAboutEvent.setHtml(aboutEventTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
 		htmlContact.setHtml(contactTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
 		htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
 
@@ -584,5 +631,157 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		mapLocation.setCenter(center);
 		mapLocation.setZoomLevel(15);
 		mapLocation.checkResizeAndCenter();
+	}
+	private ContentPanel getCtpSobreEvento() {
+		if (ctpSobreEvento == null) {
+			ctpSobreEvento = new ContentPanel();
+			ctpSobreEvento.setBodyBorder(false);
+			ctpSobreEvento.setHeaderVisible(false);
+			ctpSobreEvento.setHeading("New ContentPanel");
+			ctpSobreEvento.setCollapsible(true);
+			ctpSobreEvento.setLayout(new AbsoluteLayout());
+			ctpSobreEvento.add(getTxtNewText(), new AbsoluteData(6, 6));
+			ctpSobreEvento.add(getTxtIncioDoEvento(), new AbsoluteData(6, 21));
+			ctpSobreEvento.add(getTxtIncioDoAtendimento(), new AbsoluteData(6, 36));
+			ctpSobreEvento.add(getTxtTempoDecorridoDo(), new AbsoluteData(6, 51));
+			ctpSobreEvento.add(getTxtAtendenteAtual(), new AbsoluteData(6, 82));
+			ctpSobreEvento.add(getTxtConclusoDoAtendimento(), new AbsoluteData(6, 97));
+			ctpSobreEvento.add(getTxtNumeroProtocoloValue(), new AbsoluteData(206, 6));
+			ctpSobreEvento.add(getTxtIniEventoValue(), new AbsoluteData(206, 21));
+			ctpSobreEvento.add(getTxtIniAtendimentoValue(), new AbsoluteData(206, 36));
+			ctpSobreEvento.add(getTxtTempoAtendimentoValue(), new AbsoluteData(206, 51));
+			ctpSobreEvento.add(getTxtAtendenteValue(), new AbsoluteData(206, 82));
+			ctpSobreEvento.add(getHprlnkTransferir(), new AbsoluteData(313, 82));
+			ctpSobreEvento.add(getTxtConclusaoValue(), new AbsoluteData(206, 97));
+			ctpSobreEvento.add(getHprlnkResolvido(), new AbsoluteData(313, 97));
+		}
+		return ctpSobreEvento;
+	}
+	private Text getTxtNewText() {
+		if (txtNewText == null) {
+			txtNewText = new Text("N\u00FAmero do Protocolo:");
+			txtNewText.setStyleName("template-label");
+			txtNewText.setSize("199px", "15px");
+		}
+		return txtNewText;
+	}
+	private Text getTxtIncioDoEvento() {
+		if (txtIncioDoEvento == null) {
+			txtIncioDoEvento = new Text("In\u00EDcio do evento:");
+			txtIncioDoEvento.setStyleName("template-label");
+			txtIncioDoEvento.setSize("199px", "15px");
+		}
+		return txtIncioDoEvento;
+	}
+	private Text getTxtIncioDoAtendimento() {
+		if (txtIncioDoAtendimento == null) {
+			txtIncioDoAtendimento = new Text("In\u00EDcio do atendimento:");
+			txtIncioDoAtendimento.setStyleName("template-label");
+			txtIncioDoAtendimento.setSize("199px", "15px");
+		}
+		return txtIncioDoAtendimento;
+	}
+	private Text getTxtTempoDecorridoDo() {
+		if (txtTempoDecorridoDo == null) {
+			txtTempoDecorridoDo = new Text("Tempo decorrido do atendimento:");
+			txtTempoDecorridoDo.setStyleName("template-label");
+			txtTempoDecorridoDo.setSize("199px", "15px");
+		}
+		return txtTempoDecorridoDo;
+	}
+	private Text getTxtAtendenteAtual() {
+		if (txtAtendenteAtual == null) {
+			txtAtendenteAtual = new Text("Atendente atual:");
+			txtAtendenteAtual.setStyleName("template-label");
+			txtAtendenteAtual.setSize("199px", "15px");
+		}
+		return txtAtendenteAtual;
+	}
+	private Text getTxtConclusoDoAtendimento() {
+		if (txtConclusoDoAtendimento == null) {
+			txtConclusoDoAtendimento = new Text("Conclus\u00E3o do atendimento:");
+			txtConclusoDoAtendimento.setStyleName("template-label");
+			txtConclusoDoAtendimento.setSize("199px", "15px");
+		}
+		return txtConclusoDoAtendimento;
+	}
+	private Text getTxtNumeroProtocoloValue() {
+		if (txtNumeroProtocoloValue == null) {
+			txtNumeroProtocoloValue = new Text("123456");
+			txtNumeroProtocoloValue.setSize("160px", "15px");
+		}
+		return txtNumeroProtocoloValue;
+	}
+	private Text getTxtIniEventoValue() {
+		if (txtIniEventoValue == null) {
+			txtIniEventoValue = new Text("16/12/2012 as 13:20");
+			txtIniEventoValue.setSize("160px", "15px");
+		}
+		return txtIniEventoValue;
+	}
+	private Text getTxtIniAtendimentoValue() {
+		if (txtIniAtendimentoValue == null) {
+			txtIniAtendimentoValue = new Text("16/12/2012 as 13:32");
+			txtIniAtendimentoValue.setSize("160px", "15px");
+		}
+		return txtIniAtendimentoValue;
+	}
+	private Text getTxtTempoAtendimentoValue() {
+		if (txtTempoAtendimentoValue == null) {
+			txtTempoAtendimentoValue = new Text("12min");
+			txtTempoAtendimentoValue.setSize("160px", "15px");
+		}
+		return txtTempoAtendimentoValue;
+	}
+	private Text getTxtAtendenteValue() {
+		if (txtAtendenteValue == null) {
+			txtAtendenteValue = new Text("Vandercleison");
+			txtAtendenteValue.setSize("102px", "15px");
+		}
+		return txtAtendenteValue;
+	}
+	@SuppressWarnings("deprecation")
+	private Hyperlink getHprlnkTransferir() {
+		if (hprlnkTransferir == null) {
+			hprlnkTransferir = new Hyperlink("Transferir", false, "newHistoryToken");
+			hprlnkTransferir.addClickListener(new ClickListener() {
+				@Override
+				public void onClick(Widget sender) {
+					DialogWindowTransfer dialog = new DialogWindowTransfer();
+					dialog.show();
+				}
+			});
+		}
+		return hprlnkTransferir;
+	}
+	private Text getTxtConclusaoValue() {
+		if (txtConclusaoValue == null) {
+			txtConclusaoValue = new Text("");
+			txtConclusaoValue.setSize("102px", "15px");
+		}
+		return txtConclusaoValue;
+	}
+	@SuppressWarnings("deprecation")
+	private Hyperlink getHprlnkResolvido() {
+		if (hprlnkResolvido == null) {
+			hprlnkResolvido = new Hyperlink("Resolvido", false, "newHistoryToken");
+			hprlnkResolvido.addClickListener(new ClickListener() {
+				@Override
+				public void onClick(Widget sender) {
+					Text txt = new Text("Desenja realmente concluir esse atendimento?");
+					Dialog box = new Dialog();
+					box.setSize("290px", "163px");
+					box.setButtons(Dialog.YESNO);
+					box.setResizable(false);
+					box.setModal(true);
+					box.setHeading("Confirme");
+					box.setLayout(new CenterLayout());
+					box.add(txt);
+					box.show();
+				}
+			});
+			hprlnkResolvido.setSize("53px", "15px");
+		}
+		return hprlnkResolvido;
 	}
 }
