@@ -128,4 +128,28 @@ public interface Images extends ClientBundle {
 	@Source("br/com/m2msolutions/client/images/hard_red.png")
 	ImageResource  hardRed30();
 	
+	@Source("br/com/m2msolutions/client/images/dark_yellow.png")
+	ImageResource  darkYellow30();
+	
+	@Source("br/com/m2msolutions/client/images/dark_blue.png")
+	ImageResource  darkBlue30();
+	
+	@Source("br/com/m2msolutions/client/images/dark_green.png")
+	ImageResource  darkGreen30();
+	
+	@Source("br/com/m2msolutions/client/images/dark_red.png")
+	ImageResource  darkRed30();
+	
+	@Source("br/com/m2msolutions/client/images/light_yellow.png")
+	ImageResource  lightYellow30();
+	
+	@Source("br/com/m2msolutions/client/images/light_blue.png")
+	ImageResource  lightBlue30();
+	
+	@Source("br/com/m2msolutions/client/images/light_green.png")
+	ImageResource  lightGreen30();
+	
+	@Source("br/com/m2msolutions/client/images/light_red.png")
+	ImageResource  lightRed30();
+	
 }
