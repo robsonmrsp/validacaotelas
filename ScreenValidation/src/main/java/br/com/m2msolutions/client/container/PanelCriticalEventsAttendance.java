@@ -183,7 +183,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			ToolButton toolButton = new ToolButton(Images.INSTANCE.edit16());
 
 			slidePanel.anchorAt(occurrenceRecordsContainer, Position.LEFT);
-			occurrenceRecordsContainer.addToolButton(new ToolButton(Images.INSTANCE.edit16(), new Listener<BaseEvent>() {
+			occurrenceRecordsContainer.addToolButton(new ToolButton(Images.INSTANCE.editar16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
 					if (slidePanel.isVisible()) {
@@ -211,7 +211,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 					wContact.show();
 				}
 			}));
-			contactContainer.addToolButton(new ToolButton(Images.INSTANCE.edit16(), new Listener<BaseEvent>() {
+			contactContainer.addToolButton(new ToolButton(Images.INSTANCE.editar16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
 				}
@@ -290,17 +290,10 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			aboutEventContainer.setLayout(new FitLayout());
 			//			aboutEventContainer.add(getHtmlAboutEvent());
 
-			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.transferir16(), new Listener<BaseEvent>() {
+			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.impressora16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
-					Window.alert("transferindo atendimento...");
-				}
-			}));
-
-			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.resolvido16(), new Listener<BaseEvent>() {
-				@Override
-				public void handleEvent(BaseEvent be) {
-					Window.alert("Atendimento resolvido/encerrado...");
+					Window.alert("Imprimindo atendimento...");
 				}
 			}));
 
@@ -347,7 +340,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		return htmlContact;
 	}
 
-	private Button getBtnNewButton() {
+	/*private Button getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new Button("Transferir");
 			btnNewButton.setSize("75px", "19px");
@@ -363,7 +356,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			btnResolvido.setIcon(AbstractImagePrototype.create(Images.INSTANCE.resolvido16()));
 		}
 		return btnResolvido;
-	}
+	}*/
 
 	private ContentPanel getCpHistoricoChat() {
 		if (cpHistoricoChat == null) {
@@ -505,7 +498,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			btGreenLed = new Button("");
 			btGreenLed.setIconAlign(IconAlign.RIGHT);
 			btGreenLed.setWidth("30px");
-			btGreenLed.setIcon(AbstractImagePrototype.create(Images.INSTANCE.hardGreen30()));
+			btGreenLed.setIcon(AbstractImagePrototype.create(Images.INSTANCE.darkGreen30()));
 		}
 		return btGreenLed;
 	}
@@ -515,7 +508,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			btBlueLed = new Button("");
 			btBlueLed.setWidth("30px");
 			btBlueLed.setIconAlign(IconAlign.RIGHT);
-			btBlueLed.setIcon(AbstractImagePrototype.create(Images.INSTANCE.hardBlue30()));
+			btBlueLed.setIcon(AbstractImagePrototype.create(Images.INSTANCE.darkBlue30()));
 		}
 		return btBlueLed;
 	}
@@ -525,7 +518,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			btYallowLed = new Button("");
 			btYallowLed.setWidth("30px");
 			btYallowLed.setIconAlign(IconAlign.RIGHT);
-			btYallowLed.setIcon(AbstractImagePrototype.create(Images.INSTANCE.hardYellow30()));
+			btYallowLed.setIcon(AbstractImagePrototype.create(Images.INSTANCE.darkYellow30()));
 		}
 		return btYallowLed;
 	}
@@ -535,7 +528,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			btRedLed = new Button("");
 			btRedLed.setWidth("30px");
 			btRedLed.setIconAlign(IconAlign.RIGHT);
-			btRedLed.setIcon(AbstractImagePrototype.create(Images.INSTANCE.hardRed30()));
+			btRedLed.setIcon(AbstractImagePrototype.create(Images.INSTANCE.darkRed30()));
 		}
 		return btRedLed;
 	}
