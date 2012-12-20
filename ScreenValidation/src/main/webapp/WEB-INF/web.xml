@@ -65,5 +65,15 @@
 		<servlet-name>CriticalEventsConfigurationService</servlet-name>
 		<url-pattern>/screenvalidation/criticalEventsConfigurationService</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CriticalEventsAttendanceService</servlet-name>
+		<servlet-class>br.com.m2msolutions.server.CriticalEventsAttendanceServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>CriticalEventsAttendanceService</servlet-name>
+		<url-pattern>/screenvalidation/CriticalEventsAttendanceService</url-pattern>
+	</servlet-mapping>
 
 </web-app>
