@@ -24,6 +24,13 @@ import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import de.novanic.eventservice.client.event.Event;
 import de.novanic.eventservice.service.RemoteEventServiceServlet;
 
+/**
+ * deve ser um RemoteEventServiceServlet para atender as necessidades de
+ * datapush
+ * 
+ * @author Robson
+ * 
+ */
 public class CriticalEventsServiceImpl extends RemoteEventServiceServlet implements CriticalEventsService {
 
 	private static final long serialVersionUID = 1L;
@@ -45,14 +52,14 @@ public class CriticalEventsServiceImpl extends RemoteEventServiceServlet impleme
 		return null;
 	}
 
-	//esse ator será remoto.
-	//Pergunta:
-		//Como assinar a um servico que está sendo executado em outra maquina
+	// esse ator será remoto.
+	// Pergunta:
+	// Como assinar a um servico que está sendo executado em outra maquina
 	class CriticalEventsActor extends UntypedActor {
 		LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
 		public void onReceive(Object message) throws Exception {
-			if (message instanceof DtoCriticalEvent) {				
+			if (message instanceof DtoCriticalEvent) {
 				DtoCriticalEvent messageEvent = (DtoCriticalEvent) message;
 				Event theEvent = new CriticalEventMessage(messageEvent);
 				addEvent(CriticalEventMessage.SERVER_MESSAGE_DOMAIN, theEvent);
