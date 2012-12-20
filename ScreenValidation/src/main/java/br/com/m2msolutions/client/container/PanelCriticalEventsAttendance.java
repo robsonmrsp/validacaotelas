@@ -38,6 +38,7 @@ import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.Text;
+import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
@@ -60,7 +61,6 @@ import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Icon;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -209,6 +209,10 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		return occurrenceRecordsContainer;
 	}
 
+	public void setAnchorSlidePanel(Window window) {
+		slidePanel.setAnchorMoveAndClose(window);
+	}
+
 	private Widget getContactContainer() {
 		if (contactContainer == null) {
 			contactContainer = new ContentPanelImp();
@@ -302,7 +306,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.impressora16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
-					Window.alert("Imprimindo atendimento...");
+					// Window.alert("Imprimindo atendimento...");
 				}
 			}));
 
@@ -844,7 +848,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		return hprlnkResolvido;
 	}
 
-	private void closeAttendance(){
+	private void closeAttendance() {
 		eventsAttendanceService.closeAttencance(actualEvent, new AsyncCallback<Boolean>() {
 			@Override
 			public void onFailure(Throwable caught) {

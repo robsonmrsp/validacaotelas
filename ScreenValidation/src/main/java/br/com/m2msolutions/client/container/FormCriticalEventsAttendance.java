@@ -27,8 +27,8 @@ public class FormCriticalEventsAttendance extends Window {
 	private PanelCriticalEventsAttendance getCriticalEventsConfiguration() {
 		if (criticalEventsAttendance == null) {
 			criticalEventsAttendance = new PanelCriticalEventsAttendance();
+			criticalEventsAttendance.setAnchorSlidePanel(this);
 			criticalEventsAttendance.setHeight("435");
-
 		}
 		return criticalEventsAttendance;
 	}

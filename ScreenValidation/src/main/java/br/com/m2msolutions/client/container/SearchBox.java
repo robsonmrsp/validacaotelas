@@ -18,24 +18,34 @@ public class SearchBox extends LayoutContainer {
 	@Override
 	public void setSize(String width, String height) {
 		super.setSize(width, "24px");
-		searchBox.setWidth(width);
+		int parseInt = getWidth(width);
+		searchBox.setWidth((parseInt - 35) + "px");
+	}
+
+	private int getWidth(String width) {
+		int parseInt = 100;
+		try {
+			parseInt = Integer.parseInt(width);
+		} catch (Exception e) {
+		}
+		return parseInt;
 	}
 
 	public void setSize(int width, int height) {
 		super.setSize(width, 24);
-		searchBox.setWidth(width - 5 + "px");
+		searchBox.setWidth(width - 35 + "px");
 	}
 
 	private void initComponents() {
-//		setSize("150px", "24px");
+		// setSize("150px", "24px");
 		setLayout(new FitLayout());
 		add(getSearchBox());
-		setWidth("150px");
 	}
 
 	private TextBox getSearchBox() {
 		if (searchBox == null) {
 			searchBox = new TextBox();
+			searchBox.setSize("100px", "25px");
 			searchBox.getElement().setId("search");
 			searchBox.getElement().setAttribute("placeholder", "Search");
 			searchBox.setStyleName("search-box");
