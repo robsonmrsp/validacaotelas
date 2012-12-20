@@ -1,10 +1,11 @@
 package br.com.m2msolutions.client.container;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import br.com.m2msolutions.client.CriticalEventsAttendanceService;
+import br.com.m2msolutions.client.CriticalEventsAttendanceServiceAsync;
 import br.com.m2msolutions.client.DialogWindowTransfer;
-import br.com.m2msolutions.client.InquiryAttendanceService;
-import br.com.m2msolutions.client.InquiryAttendanceServiceAsync;
 import br.com.m2msolutions.client.SimpleGwtLogger;
 import br.com.m2msolutions.client.WindowContactResearch;
 import br.com.m2msolutions.client.images.Images;
@@ -12,6 +13,7 @@ import br.com.m2msolutions.shared.dto.DtoAboutEvent;
 import br.com.m2msolutions.shared.dto.DtoContact;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
+import br.com.m2msolutions.shared.dto.DtoOperator;
 import br.com.m2msolutions.shared.dto.DtoRecord;
 import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
 import br.com.mr.dock.client.containers.Position;
@@ -50,7 +52,6 @@ import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.event.MapDoubleClickHandler;
@@ -103,8 +104,8 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	private Html htmlContact;
 	private DtoCriticalEvent event;
 	private SlidePanel slidePanel = new SlidePanel();
+	private DialogWindowTransfer dialogTransfer;
 
-	InquiryAttendanceServiceAsync attendanceService = GWT.create(InquiryAttendanceService.class);
 	private ContentPanel ctpSobreEvento;
 	private Text txtNewText;
 	private Text txtIncioDoEvento;
@@ -120,6 +121,14 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	private Hyperlink hprlnkTransferir;
 	private Text txtConclusaoValue;
 	private Hyperlink hprlnkResolvido;
+
+	private CriticalEventsAttendanceServiceAsync eventsAttendanceService = CriticalEventsAttendanceService.Util.getInstance();
+
+	// TODO fazer com que a tela receba o evento ao ser chamada. Não faz sentido
+	// atender a um evento que não se conhece. Talvez adicionar o parametro ao
+	// construtor.
+
+	private DtoCriticalEvent actualEvent;
 
 	public PanelCriticalEventsAttendance() {
 		initComponents();
@@ -216,7 +225,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 				public void handleEvent(BaseEvent be) {
 				}
 			}));
-			
+
 			contactContainer.setHeading("Contato:");
 			contactContainer.setLayout(new FitLayout());
 			FitData fd_htmlContact = new FitData(0);
@@ -231,13 +240,13 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		if (vehicleLocationContainer == null) {
 			vehicleLocationContainer = new ContentPanelImp();
 			vehicleLocationContainer.setBodyBorder(false);
-			
+
 			vehicleLocationContainer.addToolButton(new ToolButton(Images.INSTANCE.camera16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
 				}
 			}));
-			
+
 			vehicleLocationContainer.setHeading("Ve\u00EDculo e localiza\u00E7\u00E3o:");
 			vehicleLocationContainer.setLayout(new BorderLayout());
 			BorderLayoutData bld_htmlVehicleLocation = new BorderLayoutData(LayoutRegion.NORTH, 100.0f);
@@ -288,7 +297,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			aboutEventContainer.setBodyBorder(false);
 			aboutEventContainer.setHeading("Sobre o Evento:");
 			aboutEventContainer.setLayout(new FitLayout());
-			//			aboutEventContainer.add(getHtmlAboutEvent());
+			// aboutEventContainer.add(getHtmlAboutEvent());
 
 			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.impressora16(), new Listener<BaseEvent>() {
 				@Override
@@ -314,11 +323,13 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	private void createTemplates() {
-		//		aboutEventTemplate = XTemplate.create(AttendanceWidGetTemplates.ABOUT_EVENT);
+		// aboutEventTemplate =
+		// XTemplate.create(AttendanceWidGetTemplates.ABOUT_EVENT);
 		contactTemplate = XTemplate.create(AttendanceWidGetTemplates.CONTACTS);
 		vehicleLocationTemplate = XTemplate.create(AttendanceWidGetTemplates.VEHICLE_LOCATION);
 
-		//		htmlAboutEvent.setHtml(aboutEventTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
+		// htmlAboutEvent.setHtml(aboutEventTemplate.applyTemplate(Util.getJsObject(new
+		// BaseModelData())));
 		htmlContact.setHtml(contactTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
 		htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
 
@@ -340,23 +351,19 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		return htmlContact;
 	}
 
-	/*private Button getBtnNewButton() {
-		if (btnNewButton == null) {
-			btnNewButton = new Button("Transferir");
-			btnNewButton.setSize("75px", "19px");
-			btnNewButton.setIcon(AbstractImagePrototype.create(Images.INSTANCE.transferir16()));
-		}
-		return btnNewButton;
-	}
-
-	private Button getBtnResolvido() {
-		if (btnResolvido == null) {
-			btnResolvido = new Button("Resolvido");
-			btnResolvido.setSize("75px", "17px");
-			btnResolvido.setIcon(AbstractImagePrototype.create(Images.INSTANCE.resolvido16()));
-		}
-		return btnResolvido;
-	}*/
+	/*
+	 * private Button getBtnNewButton() { if (btnNewButton == null) {
+	 * btnNewButton = new Button("Transferir"); btnNewButton.setSize("75px",
+	 * "19px");
+	 * btnNewButton.setIcon(AbstractImagePrototype.create(Images.INSTANCE
+	 * .transferir16())); } return btnNewButton; }
+	 * 
+	 * private Button getBtnResolvido() { if (btnResolvido == null) {
+	 * btnResolvido = new Button("Resolvido"); btnResolvido.setSize("75px",
+	 * "17px");
+	 * btnResolvido.setIcon(AbstractImagePrototype.create(Images.INSTANCE
+	 * .resolvido16())); } return btnResolvido; }
+	 */
 
 	private ContentPanel getCpHistoricoChat() {
 		if (cpHistoricoChat == null) {
@@ -572,8 +579,10 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		this.event = dtoEvent;
 	}
 
+	// TODO provavelmente esse metodo será chamado recebendo como parametro o
+	// "actualEvent"
 	private void findExtraInfoEvent(DtoCriticalEvent selectedItem) {
-		attendanceService.findExtraInfoEvent(selectedItem, new AsyncCallback<DtoExtraInfoEvent>() {
+		eventsAttendanceService.findExtraInfoEvent(selectedItem, new AsyncCallback<DtoExtraInfoEvent>() {
 			@Override
 			public void onSuccess(DtoExtraInfoEvent extraInfo) {
 				applyExtraInfo(extraInfo);
@@ -625,6 +634,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		mapLocation.setZoomLevel(15);
 		mapLocation.checkResizeAndCenter();
 	}
+
 	private ContentPanel getCtpSobreEvento() {
 		if (ctpSobreEvento == null) {
 			ctpSobreEvento = new ContentPanel();
@@ -650,6 +660,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return ctpSobreEvento;
 	}
+
 	private Text getTxtNewText() {
 		if (txtNewText == null) {
 			txtNewText = new Text("N\u00FAmero do Protocolo:");
@@ -658,6 +669,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtNewText;
 	}
+
 	private Text getTxtIncioDoEvento() {
 		if (txtIncioDoEvento == null) {
 			txtIncioDoEvento = new Text("In\u00EDcio do evento:");
@@ -666,6 +678,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtIncioDoEvento;
 	}
+
 	private Text getTxtIncioDoAtendimento() {
 		if (txtIncioDoAtendimento == null) {
 			txtIncioDoAtendimento = new Text("In\u00EDcio do atendimento:");
@@ -674,6 +687,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtIncioDoAtendimento;
 	}
+
 	private Text getTxtTempoDecorridoDo() {
 		if (txtTempoDecorridoDo == null) {
 			txtTempoDecorridoDo = new Text("Tempo decorrido do atendimento:");
@@ -682,6 +696,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtTempoDecorridoDo;
 	}
+
 	private Text getTxtAtendenteAtual() {
 		if (txtAtendenteAtual == null) {
 			txtAtendenteAtual = new Text("Atendente atual:");
@@ -690,6 +705,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtAtendenteAtual;
 	}
+
 	private Text getTxtConclusoDoAtendimento() {
 		if (txtConclusoDoAtendimento == null) {
 			txtConclusoDoAtendimento = new Text("Conclus\u00E3o do atendimento:");
@@ -698,6 +714,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtConclusoDoAtendimento;
 	}
+
 	private Text getTxtNumeroProtocoloValue() {
 		if (txtNumeroProtocoloValue == null) {
 			txtNumeroProtocoloValue = new Text("123456");
@@ -705,6 +722,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtNumeroProtocoloValue;
 	}
+
 	private Text getTxtIniEventoValue() {
 		if (txtIniEventoValue == null) {
 			txtIniEventoValue = new Text("16/12/2012 as 13:20");
@@ -712,6 +730,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtIniEventoValue;
 	}
+
 	private Text getTxtIniAtendimentoValue() {
 		if (txtIniAtendimentoValue == null) {
 			txtIniAtendimentoValue = new Text("16/12/2012 as 13:32");
@@ -719,6 +738,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtIniAtendimentoValue;
 	}
+
 	private Text getTxtTempoAtendimentoValue() {
 		if (txtTempoAtendimentoValue == null) {
 			txtTempoAtendimentoValue = new Text("12min");
@@ -726,6 +746,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtTempoAtendimentoValue;
 	}
+
 	private Text getTxtAtendenteValue() {
 		if (txtAtendenteValue == null) {
 			txtAtendenteValue = new Text("Vandercleison");
@@ -733,20 +754,59 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtAtendenteValue;
 	}
+
 	@SuppressWarnings("deprecation")
 	private Hyperlink getHprlnkTransferir() {
 		if (hprlnkTransferir == null) {
 			hprlnkTransferir = new Hyperlink("Transferir", false, "newHistoryToken");
 			hprlnkTransferir.addClickListener(new ClickListener() {
+
 				@Override
 				public void onClick(Widget sender) {
-					DialogWindowTransfer dialog = new DialogWindowTransfer();
-					dialog.show();
+					dialogTransfer.show();
 				}
 			});
+			initDialogTransfer();
 		}
 		return hprlnkTransferir;
 	}
+
+	private void initDialogTransfer() {
+		dialogTransfer = new DialogWindowTransfer();
+		dialogTransfer.addClickOkListener(new Listener<TransferEvent>() {
+			@Override
+			public void handleEvent(TransferEvent be) {
+				DtoOperator operator = be.getOperator();
+				transferAttendance(operator);
+			}
+		});
+		eventsAttendanceService.getOperators(new AsyncCallback<List<DtoOperator>>() {
+			@Override
+			public void onSuccess(List<DtoOperator> operators) {
+				dialogTransfer.updateOperators(operators);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO
+			}
+		});
+	}
+
+	protected void transferAttendance(DtoOperator operator) {
+		eventsAttendanceService.transferAttendance(actualEvent, operator, new AsyncCallback<Boolean>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				// TODO o que fazer com esse tru ou false.
+			}
+		});
+	}
+
 	private Text getTxtConclusaoValue() {
 		if (txtConclusaoValue == null) {
 			txtConclusaoValue = new Text("");
@@ -754,14 +814,19 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtConclusaoValue;
 	}
+
 	@SuppressWarnings("deprecation")
 	private Hyperlink getHprlnkResolvido() {
 		if (hprlnkResolvido == null) {
 			hprlnkResolvido = new Hyperlink("Resolvido", false, "newHistoryToken");
+			// TODO este dialogBox deve seguir os principios do dislog box de
+			// transferencia. Será necessário executar um servico quando o
+			// usuário clicar em OK. NEsse momento será chamado o método para
+			// fechar o atendimento. chamar o método closeAttendance()
 			hprlnkResolvido.addClickListener(new ClickListener() {
 				@Override
 				public void onClick(Widget sender) {
-					Text txt = new Text("Desenja realmente concluir esse atendimento?");
+					Text txt = new Text("Deseja realmente concluir esse atendimento?");
 					Dialog box = new Dialog();
 					box.setSize("290px", "163px");
 					box.setButtons(Dialog.YESNO);
@@ -771,10 +836,27 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 					box.setLayout(new CenterLayout());
 					box.add(txt);
 					box.show();
+
 				}
 			});
 			hprlnkResolvido.setSize("53px", "15px");
 		}
 		return hprlnkResolvido;
 	}
+
+	private void closeAttendance(){
+		eventsAttendanceService.closeAttencance(actualEvent, new AsyncCallback<Boolean>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+
+				// TODO
+			}
+		});
+	}
+
 }

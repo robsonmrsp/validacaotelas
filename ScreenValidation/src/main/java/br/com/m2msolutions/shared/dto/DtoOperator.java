@@ -8,6 +8,9 @@ public class DtoOperator extends BaseModelData {
 	public static final String ID = "id";
 	public static final String NAME = "name";
 
+	public DtoOperator() {
+		// TODO Auto-generated constructor stub
+	}
 	public DtoOperator(Long id, String name) {
 		setId(id);
 		setName(name);
