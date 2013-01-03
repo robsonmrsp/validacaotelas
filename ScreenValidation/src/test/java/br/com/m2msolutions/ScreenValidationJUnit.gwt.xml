@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module>
-  <!-- Inherit our applications main module.                      -->
-  <inherits name='br.com.m2msolutions.ScreenValidation'/>
-
-  <!-- Specify the path to any remote services.                   -->
-  <servlet path="/screenvalidation/greet" class="br.com.m2msolutions.server.GreetingServiceImpl" />
-
-</module>
