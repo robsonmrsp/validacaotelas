@@ -22,6 +22,7 @@ public class DtoCriticalEvent extends BaseModelData {
 	// categoria.
 	public static final String IMAGE_SRC = "imageSrc";
 	public static final String DESCRIPTION = "description";
+	//TODO talvez seja necessário que a categoria realmente seja um DTO e não apenas o nome.
 	public static final String CATEGORY = "category";
 	public static final String STATUS = "status";
 	public static final String TIME_IN_EVENT = "timeInEvent";

@@ -690,7 +690,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 
 	private ListStore<DtoCriticalEvent> createListStory() {
 		ListStore<DtoCriticalEvent> listStore = new ListStore<DtoCriticalEvent>();
-		// listStore.add(UtilData.ALL_EVENTS);
+//		 listStore.add(UtilData.ALL_EVENTS);
 		return listStore;
 	}
 

@@ -29,6 +29,33 @@ public class UtilData {
 		DtoCriticalEvent eventTree = new DtoCriticalEvent(3L, "", "129763", new Date(), "ALERT", "CCO - 003", "280904", "IN_ATTENDANCE", "2 mim", "1 mim");
 		eventTree.setStartDateTimeAsText(format(new Date()));
 		ALL_EVENTS.add(eventTree);
+		DtoCriticalEvent eventOne1 = new DtoCriticalEvent(1l, "", "113498", new Date(), "PANE", "CCO - 022", "280901", "IN_ATTENDANCE", "2 mim", "1 mim");
+		eventOne1.setStartDateTimeAsText(format(new Date()));
+		ALL_EVENTS.add(eventOne1);
+		DtoCriticalEvent eventTwo2 = new DtoCriticalEvent(2L, "", "172723", new Date(), "MESSAGE", "CCO - 002", "20020902", "IN_ATTENDANCE", "2 mim", "1 mim");
+		eventTwo2.setStartDateTimeAsText(format(new Date()));
+		ALL_EVENTS.add(eventTwo2);
+		DtoCriticalEvent eventTree3 = new DtoCriticalEvent(3L, "", "129763", new Date(), "ALERT", "CCO - 003", "280904", "IN_ATTENDANCE", "2 mim", "1 mim");
+		eventTree3.setStartDateTimeAsText(format(new Date()));
+		ALL_EVENTS.add(eventTree3);
+		DtoCriticalEvent eventOne4 = new DtoCriticalEvent(1l, "", "113498", new Date(), "PANE", "CCO - 022", "280901", "IN_ATTENDANCE", "2 mim", "1 mim");
+		eventOne4.setStartDateTimeAsText(format(new Date()));
+		ALL_EVENTS.add(eventOne4);
+		DtoCriticalEvent eventTwo5 = new DtoCriticalEvent(2L, "", "172723", new Date(), "MESSAGE", "CCO - 002", "20020902", "IN_ATTENDANCE", "2 mim", "1 mim");
+		eventTwo5.setStartDateTimeAsText(format(new Date()));
+		ALL_EVENTS.add(eventTwo5);
+		DtoCriticalEvent eventTree6 = new DtoCriticalEvent(3L, "", "129763", new Date(), "ALERT", "CCO - 003", "280904", "IN_ATTENDANCE", "2 mim", "1 mim");
+		eventTree6.setStartDateTimeAsText(format(new Date()));
+		ALL_EVENTS.add(eventTree6);
+		DtoCriticalEvent eventOne7 = new DtoCriticalEvent(1l, "", "113498", new Date(), "PANE", "CCO - 022", "280901", "IN_ATTENDANCE", "2 mim", "1 mim");
+		eventOne7.setStartDateTimeAsText(format(new Date()));
+		ALL_EVENTS.add(eventOne7);
+		DtoCriticalEvent eventTwo8 = new DtoCriticalEvent(2L, "", "172723", new Date(), "MESSAGE", "CCO - 002", "20020902", "IN_ATTENDANCE", "2 mim", "1 mim");
+		eventTwo8.setStartDateTimeAsText(format(new Date()));
+		ALL_EVENTS.add(eventTwo8);
+		DtoCriticalEvent eventTree9 = new DtoCriticalEvent(3L, "", "129763", new Date(), "ALERT", "CCO - 003", "280904", "IN_ATTENDANCE", "2 mim", "1 mim");
+		eventTree9.setStartDateTimeAsText(format(new Date()));
+		ALL_EVENTS.add(eventTree9);
 
 		populateExtraInfo();
 	}

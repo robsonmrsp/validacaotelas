@@ -1,6 +1,7 @@
 package br.com.m2msolutions.client.container;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.m2msolutions.client.CriticalEventMessage;
@@ -77,6 +78,7 @@ public class CriticalEventsWidget extends DockWindow {
 
 	private LayoutContainer gridContainer;
 	private Image imageAttendance;
+	private HashMap<DtoCategory, LabeledImage> mapCategoryImages = new HashMap<DtoCategory, LabeledImage>();
 
 	CriticalEventsServiceAsync criticalEventsService = CriticalEventsService.Util.getInstance();
 
@@ -102,9 +104,10 @@ public class CriticalEventsWidget extends DockWindow {
 		criticalEventsService.getCriticalEventsInfo(new AsyncCallback<DtoCriticalEventsInfo>() {
 			@Override
 			public void onSuccess(DtoCriticalEventsInfo criticalEventsInfo) {
-				
-//				gridEvents.getStore().add(criticalEventsInfo.getEvents());
-//				initDataPush();
+				// TODO descomentar o codigo abaixo
+				updateHeader(criticalEventsInfo.getEventsCount());
+				// gridEvents.getStore().add(criticalEventsInfo.getEvents());
+				// initDataPush();
 			}
 
 			@Override
@@ -112,6 +115,27 @@ public class CriticalEventsWidget extends DockWindow {
 				SimpleGwtLogger.error("Get CriticalEventsInfo: " + caught.getMessage());
 			}
 		});
+	}
+
+	protected void updateHeader(HashMap<DtoCategory, Integer> categoryCounts) {
+		for (DtoCategory category : categoryCounts.keySet()) {
+			createOrUpdateLabeledImage(category, categoryCounts.get(category));
+		}
+	}
+
+	private void createOrUpdateLabeledImage(DtoCategory category, Integer integer) {
+		LabeledImage labeledImage = mapCategoryImages.get(category);
+		if (labeledImage == null) {
+			labeledImage = new LabeledImage();
+			labeledImage.setImage(category.getIcon());
+			labeledImage.setEventQtd(integer);
+			mapCategoryImages.put(category, labeledImage);
+			headingContainer.add(labeledImage);
+		} else {
+			labeledImage.setImage(category.getIcon());
+			labeledImage.setEventQtd(integer);
+			mapCategoryImages.put(category, labeledImage);
+		}
 	}
 
 	// TODO ficará dento do onReceive do sistema de atores remotos
@@ -230,9 +254,11 @@ public class CriticalEventsWidget extends DockWindow {
 			headingContainer = new LayoutContainer();
 			headingContainer.setLayout(new RowLayout(Orientation.HORIZONTAL));
 			headingContainer.setBorders(false);
-			headingContainer.add(getAlertIcon());
-			headingContainer.add(getPaneIcon());
-			headingContainer.add(getOtherIcon());
+
+			// headingContainer.add(getAlertIcon());
+			// headingContainer.add(getPaneIcon());
+			// headingContainer.add(getOtherIcon());
+			//
 			// headingContainer.add(getImageAlert());
 			// headingContainer.add(getHeading());
 		}
@@ -331,21 +357,19 @@ public class CriticalEventsWidget extends DockWindow {
 	private Grid<DtoCriticalEvent> getGrid() {
 		if (gridEvents == null) {
 			gridEvents = new Grid<DtoCriticalEvent>(createListStory(), createColumnConfig());
-			// gridEvents.setAutoExpandMax(500);
-			// gridEvents.setWidth(400);
-			//
+			// gridEvents.setSelectionModel(new
+			// GridSelectionModel<DtoCriticalEvent>());
 			// gridEvents.setBorders(false);
+			// gridEvents.setStripeRows(true);
 			// gridEvents.setId("gridEvents");
-			//
-			// gridEvents.setAutoWidth(true);
-			// // gridEvents.setWidth(335);
-			// gridEvents.setColumnResize(true);
-			// // gridEvents.setWidth(Style.DEFAULT);
-			// gridEvents.setLoadMask(true);
+			// gridEvents.setAutoWidth(false);
+			// gridEvents.setColumnResize(false);
 			// gridEvents.setHideHeaders(true);
-			// gridEvents.getView().setEmptyText("Sem eventos para exibir...");
-			// gridEvents.setAutoExpandColumn(DtoEvent.DESCRIPTION);
-			gridEvents.setSize(360, 190);
+			// gridEvents.setHeight(Style.DEFAULT);
+			// gridEvents.setAutoExpandColumn(DtoCriticalEvent.DESCRIPTION);
+			// gridEvents.getSelectionModel().addSelectionChangedListener(new
+			// SelectionChangedListener<DtoCriticalEvent>() {
+			gridEvents.setSize(-1, 190);
 			// gridEvents.setAutoExpandMax(500);
 			gridEvents.setSelectionModel(new GridSelectionModel<DtoCriticalEvent>());
 			gridEvents.setBorders(false);
@@ -354,7 +378,7 @@ public class CriticalEventsWidget extends DockWindow {
 			gridEvents.setAutoWidth(false);
 			gridEvents.setColumnResize(false);
 			gridEvents.setHideHeaders(true);
-			// gridEvents.setHeight(Style.DEFAULT);
+			gridEvents.setHeight(Style.DEFAULT);
 			gridEvents.setAutoExpandColumn(DtoCriticalEvent.DESCRIPTION);
 		}
 
@@ -448,7 +472,7 @@ public class CriticalEventsWidget extends DockWindow {
 		return searchBox;
 	}
 
-	//somente serão filtrados os eventos que estão no grid
+	// somente serão filtrados os eventos que estão no grid
 	protected void runSearch(String regex) {
 		gridEvents.getStore().removeAll();
 		if (regex.isEmpty())
