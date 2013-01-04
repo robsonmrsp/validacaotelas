@@ -48,16 +48,24 @@ public class LabeledImage extends LayoutContainer {
 		return config;
 	}
 
-	public void setImage(ImageResource image) {
-		setImage(image.getSafeUri());
-	}
-
-	public void setImage(SafeUri imageSrc) {
+	public void setImage(String url) {
 		if (image == null) {
 			image = new Image();
 		}
-		image.setUrl(imageSrc);
+		image.setUrl(url);
 	}
+	
+	@SuppressWarnings("deprecation")
+	public void setImage(ImageResource image) {
+		setImage(image.getURL());
+	}
+
+//	public void setImage(SafeUri imageSrc) {
+//		if (image == null) {
+//			image = new Image();
+//		}
+//		image.setUrl(imageSrc);
+//	}
 
 	public LabeledImage() {
 		initComponents();
