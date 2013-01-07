@@ -9,11 +9,11 @@ import br.com.m2msolutions.shared.dto.DtoVehicleAndLocation;
 //TODO AInda falta definir as constantes de internacionalização.
 public class AttendanceWidGetTemplates {
 
-	public static final String ABOUT_EVENT = createTemplateAboutEvent();
-	public static final String VEHICLE_LOCATION = createTemplateVehicleLocation();
+	public static final String ABOUT_EVENT = createNewAboutTemplate();
+	public static final String VEHICLE_LOCATION = createNewVehicleLocationTemplate();
 	public static final String EVENTS = createEventTemplate();
 	public static final String RECORD_MESSAGES = createRecordsTemplate();
-	public static final String CONTACTS = createContactsTemplate();
+	public static final String CONTACTS = createNewContactsTemplate();
 
 	private static String createTemplateVehicleLocation() {
 		StringBuffer template = new StringBuffer();
@@ -40,6 +40,84 @@ public class AttendanceWidGetTemplates {
 		return template.toString();
 	}
 
+	private static String createNewVehicleLocationTemplate() {
+		StringBuffer template = new StringBuffer();
+		template.append("<span id=\"template-vehicle-location\"  class=\"vehicle-location\">");
+		template.append("<table >");
+		template.append("<tr>");
+		template.append("<td>	");
+		template.append("	<table >");
+
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("					<span class=\"template-label\">Veículo</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("					{" + DtoVehicleAndLocation.VEHICLE + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("					<span class=\"template-label\">Linha</span>: ");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("					{" + DtoVehicleAndLocation.BUSSERVICE_NAME + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("					<span class=\"template-label\">Empresa</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("					{" + DtoVehicleAndLocation.COMPANY_NAME + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("					<span class=\"template-label\">Proximo ponto</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("						{" + DtoVehicleAndLocation.NEXT_STOP + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("	</table>");
+		template.append("</td>");
+		template.append("<td style=\"vertical-align: top !important;  padding-left: 20px;\">	<table  >");
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("					<span class=\"template-label\">Endereço</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("					{" + DtoVehicleAndLocation.ADDRESS + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("		<tr>");
+		template.append("		    <td>");
+		template.append("					<span class=\"template-label\">Latitude</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("					{" + DtoVehicleAndLocation.LATITUDE + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("					<span class=\"template-label\">Longitude</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("					{" + DtoVehicleAndLocation.LONGITUDE + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("	</table>");
+		template.append("</td>");
+		template.append("</tr>");
+		template.append("</table>");
+		template.append("");
+		template.append("</span>");
+		return template.toString();
+	}
+
 	private static String createContactsTemplate() {
 		StringBuffer template = new StringBuffer();
 
@@ -54,6 +132,59 @@ public class AttendanceWidGetTemplates {
 		template.append("					<br><span class=\"template-label\">Matricula</span>:  {" + DtoContact.MATRICULA + "} ");
 		template.append("					<br><span class=\"template-label\">Telefone</span>: {" + DtoContact.PHONE + "} ");
 		template.append("					<br><span class=\"template-label\">Idade</span>: {" + DtoContact.AGE + "} ");
+		template.append("				 </span> ");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("	</table>");
+		template.append("	</span>");
+
+		return template.toString();
+	}
+
+	private static String createNewContactsTemplate() {
+		StringBuffer template = new StringBuffer();
+
+		template.append("	<span id=\"template-contact\" class=\"contact\">");
+		template.append("<br>");
+		template.append("	<table>");
+		template.append("		<tr>");
+		template.append("			<td> <img style=\"width: 72px; height: 72px;\" id=\"image-message\" src=\"{" + DtoContact.IMAGE_SRC + "}\" </td>");
+		template.append("			<td>");
+		template.append("				 <span id=\"record\" class=\"record\">");
+		template.append("				<table >");
+		template.append("					<tr>");
+		template.append("						<td>");
+		template.append("							<span class=\"template-label\">Nome</span>:");
+		template.append("						</td>");
+		template.append("						<td>");
+		template.append("							{" + DtoContact.NAME + "}");
+		template.append("						</td>");
+		template.append("					</tr>");
+		template.append("					<tr>");
+		template.append("						<td>");
+		template.append("							<span class=\"template-label\">Matricula</span>: ");
+		template.append("						</td>");
+		template.append("						<td>");
+		template.append("							{" + DtoContact.MATRICULA + "}");
+		template.append("						</td>");
+		template.append("					</tr>");
+		template.append("					<tr>");
+		template.append("						<td>");
+		template.append("							<span class=\"template-label\">Telefone</span>:");
+		template.append("						</td>");
+		template.append("						<td>");
+		template.append("							{" + DtoContact.PHONE + "}");
+		template.append("						</td>");
+		template.append("					</tr>");
+		template.append("					<tr>");
+		template.append("						<td>");
+		template.append("							<span class=\"template-label\">Idade</span>:");
+		template.append("						</td>");
+		template.append("						<td>");
+		template.append("							{" + DtoContact.AGE + "}");
+		template.append("						</td>");
+		template.append("					</tr>");
+		template.append("				</table>");
 		template.append("				 </span> ");
 		template.append("			</td>");
 		template.append("		</tr>");
@@ -94,6 +225,7 @@ public class AttendanceWidGetTemplates {
 	}
 
 	private static String createEventTemplate() {
+		// TODO internacionalização
 		StringBuffer template = new StringBuffer();
 
 		template.append("<span id=\"template-events\">");
@@ -112,4 +244,51 @@ public class AttendanceWidGetTemplates {
 		return template.toString();
 	}
 
+	private static String createNewAboutTemplate() {
+		StringBuffer template = new StringBuffer();
+		template.append("<span id=\"template-events\">");
+		template.append("		<table>");
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("				<span class=\"template-label\">Numero do protocolo</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("				{" + DtoAboutEvent.PROTOCOL + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("				<span class=\"template-label\">Inicio do atendimento</span>: ");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("				{" + DtoAboutEvent.START_TIME + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("				<span class=\"template-label\">Tempo de corrido do atendimento</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("				{" + DtoAboutEvent.DURATION + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("				<span class=\"template-label\">Operador</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("				{" + DtoAboutEvent.OPERATOR + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("		<tr>");
+		template.append("			<td>");
+		template.append("				<span class=\"template-label\">Conclusão do atendimento</span>:");
+		template.append("			</td>");
+		template.append("			<td>");
+		template.append("				{" + DtoAboutEvent.CONSLUSION + "}");
+		template.append("			</td>");
+		template.append("		</tr>");
+		template.append("	</table>");
+		return template.toString();
+	}
 }

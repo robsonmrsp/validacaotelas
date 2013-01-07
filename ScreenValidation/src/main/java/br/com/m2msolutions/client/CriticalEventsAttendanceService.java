@@ -26,6 +26,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("CriticalEventsAttendanceService")
 public interface CriticalEventsAttendanceService extends RemoteService {
+	
 	/**
 	 * Utility class for simplifying access to the instance of async service.
 	 */

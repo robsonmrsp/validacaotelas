@@ -202,11 +202,70 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 					}
 				}
 			}));
+			slidePanel.addSaveNewMessageListener(new Listener<SlidePanelEvent>() {
+				@Override
+				public void handleEvent(SlidePanelEvent be) {
+					saveNewMessage(be.getMessage());
+				}
+			});
+
+			slidePanel.addRemoveMessageListener(new Listener<SlidePanelEvent>() {
+				@Override
+				public void handleEvent(SlidePanelEvent be) {
+					removeMessage(be.getMessage());
+				}
+			});
+
+			slidePanel.addRemoveMessageListener(new Listener<SlidePanelEvent>() {
+				@Override
+				public void handleEvent(SlidePanelEvent be) {
+					removeMessage(be.getMessage());
+				}
+			});
+
+			slidePanel.addEditMessageListener(new Listener<SlidePanelEvent>() {
+				@Override
+				public void handleEvent(SlidePanelEvent be) {
+					removeMessage(be.getMessage());
+				}
+			});
+
+			slidePanel.addRemoveMessageListener(new Listener<SlidePanelEvent>() {
+				@Override
+				public void handleEvent(SlidePanelEvent be) {
+					removeMessage(be.getMessage());
+				}
+			});
+
+			slidePanel.addSelectMessageListener(new Listener<SlidePanelEvent>() {
+				@Override
+				public void handleEvent(SlidePanelEvent be) {
+					applyMessage(be.getMessage());
+				}
+			});
 			occurrenceRecordsContainer.setLayout(new RowLayout(Orientation.VERTICAL));
 			occurrenceRecordsContainer.add(getCpHistoricoChat(), new RowData(Style.DEFAULT, 1.0, new Margins(5, 5, 5, 5)));
 			occurrenceRecordsContainer.add(getCpEntradaChat(), new RowData(Style.DEFAULT, Style.DEFAULT, new Margins(5, 5, 5, 5)));
 		}
 		return occurrenceRecordsContainer;
+	}
+
+	protected void removeMessage(DtoPredefinedMessage message) {
+		// TODO Auto-generated method stub
+
+	}
+
+	protected void applyMessage(DtoPredefinedMessage predefinedMessage) {
+		// TODO Auto-generated method stub
+		// somente irá enviar a mensagem para o grid.
+
+	}
+
+	protected void saveNewMessage(DtoPredefinedMessage predefinedMessage) {
+		// TODO Auto-generated method stub
+		// deve ser criado um novo metodo na classe de servico para atender a
+		// essa necessidade
+
 	}
 
 	public void setAnchorSlidePanel(Window window) {
@@ -296,12 +355,10 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	private Widget getAboutEventContainer() {
 
 		if (aboutEventContainer == null) {
-
 			aboutEventContainer = new ContentPanelImp();
 			aboutEventContainer.setBodyBorder(false);
 			aboutEventContainer.setHeading("Sobre o Evento:");
 			aboutEventContainer.setLayout(new FitLayout());
-			// aboutEventContainer.add(getHtmlAboutEvent());
 
 			aboutEventContainer.addToolButton(new ToolButton(Images.INSTANCE.impressora16(), new Listener<BaseEvent>() {
 				@Override
@@ -327,25 +384,14 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	private void createTemplates() {
-		// aboutEventTemplate =
-		// XTemplate.create(AttendanceWidGetTemplates.ABOUT_EVENT);
 		contactTemplate = XTemplate.create(AttendanceWidGetTemplates.CONTACTS);
 		vehicleLocationTemplate = XTemplate.create(AttendanceWidGetTemplates.VEHICLE_LOCATION);
 
-		// htmlAboutEvent.setHtml(aboutEventTemplate.applyTemplate(Util.getJsObject(new
-		// BaseModelData())));
 		htmlContact.setHtml(contactTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
 		htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
 
 	}
 
-	private Html getHtmlAboutEvent() {
-		if (htmlAboutEvent == null) {
-			htmlAboutEvent = new Html();
-			// "\t<div id=\"template-about-event\" class=\"about-event\">\r\n\t\t<br>Numero do protocolo: 12345 \r\n\t\t<br>Inicio do evento: 09/07/2012 14:30 \r\n\t\t<br>Inicio do atendimento: 09/07/2012 14:31 \r\n\t\t<br>Tempo de corrido do atendimento: 5m \r\n\t\t<br>Atendente atual: Operador 1 \r\n\t\t<br>Conclusão do atendimento: 14:35      \t\t\r\n\t</div>");
-		}
-		return htmlAboutEvent;
-	}
 
 	private Html getHtmlContact() {
 		if (htmlContact == null) {
@@ -600,7 +646,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	protected void applyExtraInfo(DtoExtraInfoEvent extraInfo) {
-		updateAboutContainer(extraInfo.getAbout());
+//		updateAboutContainer(extraInfo.getAbout());
 		updateVehicleLocationContainer(extraInfo.getVehicleLocation());
 		updateContactContainer(extraInfo.getContact());
 		updateRecordsContainer(extraInfo.getRecords());
@@ -840,7 +886,6 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 					box.setLayout(new CenterLayout());
 					box.add(txt);
 					box.show();
-
 				}
 			});
 			hprlnkResolvido.setSize("53px", "15px");
@@ -862,5 +907,4 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			}
 		});
 	}
-
 }

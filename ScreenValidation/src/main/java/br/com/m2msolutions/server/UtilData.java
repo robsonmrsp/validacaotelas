@@ -77,16 +77,17 @@ public class UtilData {
 		extraInfo.setVehicleLocation(new DtoVehicleAndLocation("300123", "Av. Dom manuel", "Messejana Centro", "Aço Forte", "Nsa. Senhora", -3.736549, -38.523804));
 		ArrayList<DtoRecord> records = new ArrayList<DtoRecord>();
 
-		records.add(new DtoRecord(1L, "", "VEHICLE", format(new Date()), "Olá CSO, boa noite"));
-		records.add(new DtoRecord(2L, "", "OPERATOR", format(new Date()), "Boa noite Motorista! "));
-		records.add(new DtoRecord(3L, "", "OPERATOR", format(new Date()), "Algum problema! "));
-		records.add(new DtoRecord(4L, "", "VEHICLE", format(new Date()), "Não! nenhum! "));
-		records.add(new DtoRecord(3L, "", "OPERATOR", format(new Date()), "Em que podemos ajudar?"));
-		records.add(new DtoRecord(4L, "", "VEHICLE", format(new Date()), "Podemos Jantar agora!"));
-		records.add(new DtoRecord(3L, "", "OPERATOR", format(new Date()), "Claro que sim!"));
-		records.add(new DtoRecord(4L, "", "VEHICLE", format(new Date()), "Grato!"));
+		records.add(new DtoRecord(1L, "http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/32/bus.png", "VEHICLE", format(new Date()), "Olá CSO, boa noite"));
+		records.add(new DtoRecord(2L, "http://cdn1.iconfinder.com/data/icons/Basic_set2_Png/32/user1.png", "OPERATOR", format(new Date()), "Boa noite Motorista! "));
+		records.add(new DtoRecord(3L, "http://cdn1.iconfinder.com/data/icons/Basic_set2_Png/32/user1.png", "OPERATOR", format(new Date()), "Algum problema! "));
+		records.add(new DtoRecord(4L, "http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/32/bus.png", "VEHICLE", format(new Date()), "Não! nenhum! "));
+		records.add(new DtoRecord(3L, "http://cdn1.iconfinder.com/data/icons/Basic_set2_Png/32/user1.png", "OPERATOR", format(new Date()), "Em que podemos ajudar?"));
+		records.add(new DtoRecord(4L, "http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/32/bus.png", "VEHICLE", format(new Date()), "Podemos Jantar agora!"));
+		records.add(new DtoRecord(3L, "http://cdn1.iconfinder.com/data/icons/Basic_set2_Png/32/user1.png", "OPERATOR", format(new Date()), "Claro que sim!"));
+		records.add(new DtoRecord(4L, "http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/32/bus.png", "VEHICLE", format(new Date()), "Grato!"));
 		extraInfo.setRecords(records);
 
+		
 		EXTRA_INFO.put(1L, extraInfo);
 
 		DtoExtraInfoEvent extraInfo2 = new DtoExtraInfoEvent();
@@ -96,9 +97,9 @@ public class UtilData {
 		extraInfo2.setVehicleLocation(new DtoVehicleAndLocation("376125", "R. Barao do Rio BRanco", "Messejana Centro", "Ceara motor", "Nsa. Senhora", -3.739282, -38.532331));
 		ArrayList<DtoRecord> records2 = new ArrayList<DtoRecord>();
 
-		records2.add(new DtoRecord(11L, "", "VEHICLE", format(new Date()), "Informamos pane na via"));
-		records2.add(new DtoRecord(12L, "", "OPERATOR", format(new Date()), "ok!"));
-		records2.add(new DtoRecord(12L, "", "OPERATOR", format(new Date()), "Enviando reboque! "));
+		records2.add(new DtoRecord(11L, "http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/32/bus.png", "VEHICLE", format(new Date()), "Informamos pane na via"));
+		records2.add(new DtoRecord(12L, "http://cdn1.iconfinder.com/data/icons/Basic_set2_Png/32/user1.png", "OPERATOR", format(new Date()), "ok!"));
+		records2.add(new DtoRecord(12L, "http://cdn1.iconfinder.com/data/icons/Basic_set2_Png/32/user1.png", "OPERATOR", format(new Date()), "Enviando reboque! "));
 
 		extraInfo2.setRecords(records2);
 
@@ -111,9 +112,9 @@ public class UtilData {
 		extraInfo3.setVehicleLocation(new DtoVehicleAndLocation("37618", "Godofredo Maciel", "Centro Messejana ", "Ceara motor", "Via MEtro", -3.759282, -38.532331));
 		ArrayList<DtoRecord> records3 = new ArrayList<DtoRecord>();
 
-		records3.add(new DtoRecord(21L, "", "OPERATOR", format(new Date()), "Ultima Viagem do dia"));
-		records3.add(new DtoRecord(22L, "", "VEHICLE", format(new Date()), "ok!"));
-		records3.add(new DtoRecord(22L, "", "VEHICLE", format(new Date()), "Recebemos sua informação! "));
+		records3.add(new DtoRecord(21L, "http://cdn1.iconfinder.com/data/icons/Basic_set2_Png/32/user1.png", "OPERATOR", format(new Date()), "Ultima Viagem do dia"));
+		records3.add(new DtoRecord(22L, "http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/32/bus.png", "VEHICLE", format(new Date()), "ok!"));
+		records3.add(new DtoRecord(22L, "http://cdn1.iconfinder.com/data/icons/STROKE/accounting/png/32/bus.png", "VEHICLE", format(new Date()), "Recebemos sua informação! "));
 
 		extraInfo3.setRecords(records3);
 
