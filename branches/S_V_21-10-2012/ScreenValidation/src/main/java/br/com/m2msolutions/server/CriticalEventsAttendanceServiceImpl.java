@@ -35,9 +35,8 @@ public class CriticalEventsAttendanceServiceImpl extends RemoteServiceServlet im
 	}
 
 	@Override
-	public DtoExtraInfoEvent findExtraInfoEvent(DtoCriticalEvent selectedItem) {
-		// TODO Auto-generated method stub
-		return null;
+	public DtoExtraInfoEvent findExtraInfoEvent(DtoCriticalEvent event) {
+		return UtilData.EXTRA_INFO.get(event.getId());
 	}
 
 	@Override

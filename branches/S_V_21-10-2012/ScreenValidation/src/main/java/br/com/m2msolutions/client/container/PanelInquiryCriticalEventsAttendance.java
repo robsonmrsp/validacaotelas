@@ -33,6 +33,7 @@ import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
@@ -70,6 +71,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
 public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
+
 	private ContentPanelImp queryContainer;
 	private ContentPanelImp eventsContainer;
 	private TextField<String> textFieldProtocol;
@@ -77,6 +79,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 	private ComboBox<DtoOperator> comboOperator;
 	private Grid<DtoCriticalEvent> gridEvents;
 	private Grid<DtoRecord> gridRecords;
+	private ListView<DtoRecord> listViewRecords;
 	private DateField dateFieldTo;
 	private DateField dateFieldFrom;
 	private ContentPanelImp aboutEventContainer;
@@ -100,7 +103,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 	private LayoutContainer rightContainer;
 	private LayoutContainer toFromContainer;
 	private LayoutContainer protocolContainer;
-	
+
 	MapHandler mapHandler = new MapHandler();
 
 	// Grid<DtoEvent> grid;
@@ -119,15 +122,15 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		
+
 		BorderLayoutData leftLayoutData = new BorderLayoutData(LayoutRegion.WEST, 305.0f);
 		leftLayoutData.setMargins(new Margins(5, 2, 5, 5));
 		add(getLeftContainer(), leftLayoutData);
-		
+
 		BorderLayoutData midleLayoutData = new BorderLayoutData(LayoutRegion.CENTER);
 		midleLayoutData.setMargins(new Margins(5, 2, 5, 2));
 		add(getMidleContainer(), midleLayoutData);
-		
+
 		BorderLayoutData rightLayoutData = new BorderLayoutData(LayoutRegion.EAST, 280.0f);
 		rightLayoutData.setMargins(new Margins(5, 5, 5, 2));
 		add(getRightContainer(), rightLayoutData);
@@ -303,10 +306,14 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		if (gridRecords == null) {
 			gridRecords = new Grid<DtoRecord>(createRecordListStory(), createRecordColumnConfig());
 			gridRecords.setSize("-1", "290");
-			gridRecords.setSelectionModel(new GridSelectionModel<DtoRecord>());
+			// gridRecords.setSelectionModel(new
+			// GridSelectionModel<DtoRecord>());
 			// gridRecords.setMinColumnWidth(150);
 			// gridRecords.setAutoExpandMax(500);
 			gridRecords.setBorders(false);
+			gridRecords.disableEvents(true);
+
+			gridRecords.setTrackMouseOver(false);
 			gridRecords.setId("gridRecords");
 			gridRecords.setWidth(Style.DEFAULT);
 			gridRecords.setColumnLines(false);
@@ -315,6 +322,16 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 			gridRecords.setAutoExpandColumn(DtoRecord.DESCRIPTION);
 		}
 		return gridRecords;
+	}
+
+	private ListView<DtoRecord> getListView() {
+		listViewRecords = new ListView<DtoRecord>(new ListStore<DtoRecord>());
+		// listViewRecords.setOverStyle("");
+		// listViewRecords.addStyleName("msg");
+		// listViewRecords.setTemplate(TEMPLATE_MSG);
+
+		return listViewRecords;
+
 	}
 
 	private Grid<DtoCriticalEvent> getGridEvents() {
@@ -383,6 +400,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 			eventsContainer.setBorders(false);
 			eventsContainer.setLayout(new FitLayout());
 			eventsContainer.add(getGridEvents());
+			// eventsContainer.add(getListView());
 		}
 		return eventsContainer;
 	}
@@ -418,11 +436,11 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		}
 		return vehicleLocationContainer;
 	}
-	
+
 	private ContentPanelImp getContactContainer() {
 		if (contactContainer == null) {
 			contactContainer = new ContentPanelImp();
-			
+
 			contactContainer.setHeading("Contato");
 			contactContainer.setCollapsible(true);
 			contactContainer.setLayout(new FitLayout());
@@ -441,6 +459,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 			occurrenceRecordsContainer.setCollapsible(true);
 			occurrenceRecordsContainer.setLayout(new FitLayout());
 			occurrenceRecordsContainer.add(getGridRecords());
+			// occurrenceRecordsContainer.add(getListView());
 		}
 		return occurrenceRecordsContainer;
 	}
@@ -458,19 +477,18 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	private Widget getMapPosition() {
-		
+
 		LatLng fortalCity = LatLng.newInstance(-3.736549, -38.523804);
 		mapLocation = new MapWidget();
-		
+
 		mapLocation.setCenter(fortalCity);
 		mapLocation.checkResizeAndCenter();
 		mapLocation.setSize("100%", "100%");
-		
+
 		mapLocation.addMapClickHandler(mapHandler);
 		mapLocation.addMapDoubleClickHandler(mapHandler);
 		mapLocation.addMapDragEndHandler(mapHandler);
-		
-		
+
 		return mapLocation;
 
 	}
@@ -626,82 +644,23 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 	private ListStore<DtoRecord> createRecordListStory() {
 		ListStore<DtoRecord> listStore = new ListStore<DtoRecord>();
 
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:30", "Olá tudo bem?"));
-
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:31", "Posso ir almoçar?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(),
-		// "26/10/2012 12:32", "Claro que sim?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(),
-		// "26/10/2012 12:32", "Tá na hora mesmo?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:31", "Posso ir almoçar?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(),
-		// "26/10/2012 12:32", "Claro que sim?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(),
-		// "26/10/2012 12:32", "Tá na hora mesmo?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:31", "Posso ir almoçar?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(),
-		// "26/10/2012 12:32", "Claro que sim?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(),
-		// "26/10/2012 12:32", "Tá na hora mesmo?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.driver14().getSafeUri().asString(),
-		// "26/10/2012 12:31", "Posso ir almoçar?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(),
-		// "26/10/2012 12:32", "Claro que sim?"));
-		// listStore.add(new
-		// DtoRecord(Images.INSTANCE.vehicle16().getSafeUri().asString(),
-		// "26/10/2012 12:32", "Tá na hora mesmo?"));
-
 		return listStore;
 	}
 
 	private ListStore<DtoCriticalEvent> createListStory() {
 		ListStore<DtoCriticalEvent> listStore = new ListStore<DtoCriticalEvent>();
-//		 listStore.add(UtilData.ALL_EVENTS);
+		// listStore.add(UtilData.ALL_EVENTS);
 		return listStore;
 	}
 
 	private ColumnModel createRecordColumnConfig() {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		ColumnConfig column = new ColumnConfig();
-		column.setId(DtoRecord.IMAGE_SRC);
-		column.setWidth(35);
-		column.setRenderer(createRecordImageCellRender());
-		configs.add(column);
+//		ColumnConfig column = new ColumnConfig();
+		// column.setId(DtoRecord.IMAGE_SRC);
+		// column.setWidth(35);
+		// column.setRenderer(createRecordImageCellRender());
+		// configs.add(column);
 
 		ColumnConfig column2 = new ColumnConfig();
 		column2.setId(DtoRecord.DESCRIPTION);
@@ -770,10 +729,36 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		descriptionRecordCellRender = new GridCellRenderer<DtoRecord>() {
 			@Override
 			public Object render(DtoRecord model, String property, com.extjs.gxt.ui.client.widget.grid.ColumnData config, int rowIndex, int colIndex, ListStore<DtoRecord> store, Grid<DtoRecord> grid) {
-				return getRecordRendered(model);
+				return getNewRecordRendered(model);
 			}
 		};
 		return descriptionRecordCellRender;
+	}
+
+	protected String getNewRecordRendered(DtoRecord model) {
+		StringBuffer rendered = new StringBuffer();
+//		TODO Melhorar o CSS para que fique mais com a cara da tela!
+//		rendered.append("<div class=\"userMsg\"> ");
+		rendered.append("<div> ");
+		rendered.append("<table style=\"width: 100%; CELLSPACING:0px; \">");
+		rendered.append("	<tr>");
+		rendered.append("		<td rowspan='2' style=\"width: 5%\">");
+		rendered.append("		 <img src=\"" + model.getImageSrc() + "\"/>");
+		rendered.append("			<td>");
+		rendered.append("				<div> " + model.getMessageDate() + "  </div>");
+		rendered.append("			</td>");
+		rendered.append("		</td>");
+		rendered.append("	</tr>");
+		rendered.append("	<tr>");
+		rendered.append("	<td style=\" width: 90% \">");
+		rendered.append("		<div style=\"width: 100%; height: 100%; margin: 5px; oveflow: hidden; word-wrap:break-word;\">");
+		rendered.append("			<span align=\"justify\">" + model.getMessage() + "</span>");
+		rendered.append("		</div>");
+		rendered.append("	</td>");
+		rendered.append("</table>");
+		rendered.append("");
+		return rendered.toString();
+
 	}
 
 	protected String getRecordRendered(DtoRecord model) {
@@ -782,9 +767,10 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		rendered.append("	<table>");
 		rendered.append("		<tr>");
 		rendered.append("			<td>");
-		rendered.append("				 <div id=\"record\" class=\"record\">");
-		rendered.append("				 	 [ " + model.getMessageDate() + " ] " + model.getMessage());
-		rendered.append("				 </div> ");
+		rendered.append("				 <span>");
+		rendered.append("				 	 [ " + model.getMessageDate() + " ] ");
+		rendered.append("				 </span> ");
+		rendered.append(model.getMessage());
 		rendered.append("			</td>");
 		rendered.append("		</tr>");
 		rendered.append("	</table>");
@@ -810,7 +796,8 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		return rendered.toString();
 	}
 
-	// FIXME por algum motivo ao formatarmos os textos nas celulas da tabela como
+	// FIXME por algum motivo ao formatarmos os textos nas celulas da tabela
+	// como
 	// abaixo o evento mouseover e click não funcionam.
 	// para testar basta trocar a chamada ao metodo getRendered por get_rendered
 	// abaixo
@@ -869,7 +856,6 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		updateVehicleLocationContainer(extraInfo.getVehicleLocation());
 		updateContactContainer(extraInfo.getContact());
 		updateRecordsContainer(extraInfo.getRecords());
-
 	}
 
 	class MapHandler implements MapDragEndHandler, MapDoubleClickHandler, MapClickHandler {

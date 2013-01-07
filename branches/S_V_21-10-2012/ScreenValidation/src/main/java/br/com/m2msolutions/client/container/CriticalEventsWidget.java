@@ -105,7 +105,7 @@ public class CriticalEventsWidget extends DockWindow {
 			@Override
 			public void onSuccess(DtoCriticalEventsInfo criticalEventsInfo) {
 				// TODO descomentar o codigo abaixo
-				updateHeader(criticalEventsInfo.getEventsCount());
+//				updateHeader(criticalEventsInfo.getEventsCount());
 				// gridEvents.getStore().add(criticalEventsInfo.getEvents());
 				// initDataPush();
 			}

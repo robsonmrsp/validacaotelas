@@ -14,6 +14,8 @@ public class DtoRecord extends BaseModelData {
 	public static final String IMAGE_SRC = "imageSrc";
 	public static final String DESCRIPTION = "description";
 
+	public static final String CLASS_CSS = "userMsg";
+
 	public DtoRecord() {
 		// TODO Auto-generated constructor stub
 	}
