@@ -21,10 +21,15 @@ public class StoragePositionRS {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/sample")
 	public Response getSample() {
+		
 		JsonPosition entity = new JsonPosition();
-		entity.setDevideId("ROBSON_MOBILE_001");
+		entity.setDeviceId("ROBSON_MOBILE_001");
 		entity.setLatitude(0.0);
 		entity.setLongitude(0.0);
+		entity.setAccuracy(0f);
+		entity.setSpeed(0f);
+		entity.setAltitude(0d);
+		
 		return Response.ok().entity(entity).build(); 
 	}
 	

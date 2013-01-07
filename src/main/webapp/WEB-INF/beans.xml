@@ -20,10 +20,8 @@
 	<context:property-placeholder />
 	<context:annotation-config />
 	<context:component-scan base-package="br.com.mr" />
-	<bean
-		class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer" />
-	<bean
-		class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer" />
+	<bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer" />
+	<bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer" />
 
 	<jaxrs:server id="services" address="/">
 		<jaxrs:serviceBeans>
@@ -40,7 +38,7 @@
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://127.0.0.1:5432/storage_position" />
 		<property name="username" value="postgres" />
-		<property name="password" value="robson78" />
+		<property name="password" value="masterkey" />
 	</bean>
 
 	<tx:annotation-driven />
