@@ -45,8 +45,8 @@ body {
 	font-weight: bold !important;;
 }
 
-.search-box input{	
-	left:0px !important;
+.search-box input {
+	left: 0px !important;
 }
 
 .search-box {
@@ -96,8 +96,7 @@ body {
 	font-family: tahoma, arial, verdana, sans-serif;
 }
 
-.template-label {
-	/* 	color: #6b7b99; */
+.template-label { /* 	color: #6b7b99; */
 	color: #35476a;
 	font-size: 11px;
 	font-family: tahoma, arial, verdana, sans-serif;
@@ -111,8 +110,15 @@ body {
 .template-grid-event {
 	width: 246px;
 }
+
 .titulo-label {
-font: 12px Arial, Helvetica, Sans-serif;
+	font: 12px Arial, Helvetica, Sans-serif;
 	font-weight: bold;
 	background-color: #d6e2f6;
+}
+
+.userMsg {
+	background-color: #F0FBF5 !important;
+	color: #3764a0 !important;
+	font: bold 10px tahoma, arial, helvetica, sans-serif !important;
 }
