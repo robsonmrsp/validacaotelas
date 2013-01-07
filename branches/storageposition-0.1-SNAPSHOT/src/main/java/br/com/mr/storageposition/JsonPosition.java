@@ -1,28 +1,30 @@
 package br.com.mr.storageposition;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 public class JsonPosition implements Serializable {
 
-	private String devideId;
-	private Timestamp creationDate;
+	private String deviceId;
+	private Long creationDate;
 	private Double latitude;
 	private Double longitude;
+	private Float speed;    
+	private Double altitude;
+	private Float accuracy;
 
-	public String getDevideId() {
-		return devideId;
+	public String getDeviceId() {
+		return deviceId;
 	}
 
-	public void setDevideId(String devideId) {
-		this.devideId = devideId;
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
 
-	public Timestamp getCreationDate() {
+	public Long getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Timestamp creationDate) {
+	public void setCreationDate(Long creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -44,7 +46,31 @@ public class JsonPosition implements Serializable {
 
 	@Override
 	public String toString() {
-		return "JsonPosition [devideId=" + devideId + ", latitude=" + latitude + ", longitude=" + longitude + "]";
+		return "JsonPosition [devideId=" + deviceId + ", latitude=" + latitude + ", longitude=" + longitude + "]";
+	}
+
+	public Float getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(Float speed) {
+		this.speed = speed;
+	}
+
+	public Double getAltitude() {
+		return altitude;
+	}
+
+	public void setAltitude(Double altitude) {
+		this.altitude = altitude;
+	}
+
+	public Float getAccuracy() {
+		return accuracy;
+	}
+
+	public void setAccuracy(Float accuracy) {
+		this.accuracy = accuracy;
 	}
 
 }

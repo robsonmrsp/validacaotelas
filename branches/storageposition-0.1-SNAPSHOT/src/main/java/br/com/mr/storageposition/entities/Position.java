@@ -1,7 +1,6 @@
 package br.com.mr.storageposition.entities;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,21 +15,7 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "POSITION_SEQUENCY", sequenceName = "POSITION_SEQUENCY")
 public class Position implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2929623862319517953L;
-
-	public Position() {
-	}
-
-	public Position(String deviceId, Timestamp creationDate, Double latitude, Double longitude) {
-		super();
-		this.deviceId = deviceId;
-		this.setCreationDate(creationDate);
-		this.latitude = latitude;
-		this.longitude = longitude;
-	}
 
 	@Id
 	@Column(name = "ID")
@@ -41,12 +26,36 @@ public class Position implements Serializable {
 	private String deviceId;
 
 	@Column
-	private Timestamp creationDate;
+	private Long creationDate;
+	
 	@Column
 	private Double latitude;
 
 	@Column
 	private Double longitude;
+	
+	@Column
+	private Float accuracy;
+	
+	@Column
+	private Float speed;
+	
+	@Column
+	private Double altitude;
+	
+	
+	public Position() {}
+
+	public Position(String deviceId, Long creationDate, Double latitude, Double longitude, Float accuracy, Float speed, Double altitude) {
+		super();
+		this.deviceId = deviceId;
+		this.setCreationDate(creationDate);
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.speed = speed;
+		this.altitude = altitude;
+		this.accuracy = accuracy;
+	}
 
 	public Long getId() {
 		return id;
@@ -80,12 +89,36 @@ public class Position implements Serializable {
 		this.deviceId = deviceId;
 	}
 
-	public Timestamp getCreationDate() {
+	public Long getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Timestamp creationDate) {
+	public void setCreationDate(Long creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public Float getAccuracy() {
+		return accuracy;
+	}
+
+	public void setAccuracy(Float accuracy) {
+		this.accuracy = accuracy;
+	}
+
+	public Float getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(Float speed) {
+		this.speed = speed;
+	}
+
+	public Double getAltitude() {
+		return altitude;
+	}
+
+	public void setAltitude(Double altitude) {
+		this.altitude = altitude;
 	}
 
 }
