@@ -7,13 +7,42 @@
 	<version>0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<properties>
+		<maven.compiler.source> 1.6 </maven.compiler.source>
+		<maven.compiler.target>1.6 </maven.compiler.target>
+		<gwt.version>2.4.0</gwt.version>
 		<cxf.version>2.6.3</cxf.version>
 		<jackson.version>1.8.6</jackson.version>
 		<spring.version>3.0.6.RELEASE</spring.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 	</properties>
-
 	<dependencies>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.gwt.google-apis</groupId>
+			<artifactId>gwt-maps</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwt.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -161,125 +190,196 @@
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-nop</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.6</version>
+		</dependency>
 
 	</dependencies>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>tomcat-maven-plugin</artifactId>
-					<version>1.1</version>
-					<executions>
-						<execution>
-							<id>default-cli</id>
-							<goals>
-								<goal>run</goal>
-							</goals>
-							<configuration>
-								<port>13000</port>
-								<path>/jaxrs-service</path>
-								<useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.5</source>
-						<target>1.5</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<configuration>
-						<projectNameTemplate>[artifactId]-[version]</projectNameTemplate>
-						<wtpmanifest>true</wtpmanifest>
-						<wtpapplicationxml>true</wtpapplicationxml>
-						<wtpversion>2.0</wtpversion>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+		<!-- Generate compiled stuff in the folder used for developing mode -->
+		<outputDirectory>src/main/webapp//WEB-INF/classes</outputDirectory>
+
 		<plugins>
+
+			<!-- GWT Maven Plugin -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.5</version>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>2.2.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-dev</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-servlet</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+				</dependencies>
+				<!-- JS is only needed in the package phase, this speeds up testing -->
 				<executions>
 					<execution>
-						<id>reserve-network-port</id>
+						<phase>prepare-package</phase>
 						<goals>
-							<goal>reserve-network-port</goal>
+							<goal>compile</goal>
 						</goals>
-						<phase>process-test-resources</phase>
+					</execution>
+				</executions>
+				<!-- Plugin configuration. There are many available options, see gwt-maven-plugin 
+					documentation at codehaus.org -->
+				<configuration>
+					<!-- URL that should be automatically opened in the GWT shell (gwt:run). -->
+					<runTarget>StoragePosition.html</runTarget>
+					<!-- Location of the develop-mode web application structure (gwt:run). -->
+					<hostedWebapp>target/www</hostedWebapp>
+					<!-- Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile) -->
+					<compileReport>true</compileReport>
+				</configuration>
+			</plugin>
+
+			<!-- Add source folders to test classpath in order to run gwt-tests as 
+				normal junit-tests -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<additionalClasspathElements>
+						<additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement>
+						<additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
+					</additionalClasspathElements>
+					<useManifestOnlyJar>false</useManifestOnlyJar>
+					<forkMode>always</forkMode>
+
+					<!-- Folder for generated testing stuff -->
+					<systemProperties>
+						<property>
+							<name>gwt.args</name>
+							<value>-out target/www</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+			<!-- Copy static web files before executing gwt:run -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.2</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
 						<configuration>
-							<portNames>
-								<portName>test.server.port</portName>
-							</portNames>
+							<outputDirectory>target/www</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/webapp</directory>
+								</resource>
+							</resources>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- Delete gwt generated stuff -->
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>tomcat-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>start-tomcat</id>
-						<goals>
-							<goal>run-war</goal>
-						</goals>
-						<phase>pre-integration-test</phase>
-						<configuration>
-							<port>${test.server.port}</port>
-							<path>/jaxrs-service</path>
-							<fork>true</fork>
-							<useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
-						</configuration>
-					</execution>
-					<execution>
-						<id>stop-tomcat</id>
-						<goals>
-							<goal>shutdown</goal>
-						</goals>
-						<phase>post-integration-test</phase>
-						<configuration>
-							<path>/jaxrs-service</path>
-						</configuration>
-					</execution>
-				</executions>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src/main/webapp/app</directory>
+						</fileset>
+						<fileset>
+							<directory>src/main/webapp/WEB-INF/classes</directory>
+						</fileset>
+						<fileset>
+							<directory>tomcat</directory>
+						</fileset>
+						<fileset>
+							<directory>www-test</directory>
+						</fileset>
+						<fileset>
+							<directory>.gwt-tmp</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.7</version>  <!-- Note 2.8 does not work with AspectJ aspect path -->
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+					<wtpversion>2.0</wtpversion>
+					<additionalBuildcommands>
+						<buildCommand>
+							<name>com.google.gwt.eclipse.core.gwtProjectValidator</name>
+						</buildCommand>
+					</additionalBuildcommands>
+					<additionalProjectnatures>
+						<projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
+					</additionalProjectnatures>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.8.1</version>
-				<executions>
-					<execution>
-						<id>integration-test</id>
-						<goals>
-							<goal>integration-test</goal>
-						</goals>
-						<configuration>
-							<systemPropertyVariables>
-								<service.url>http://localhost:${test.server.port}/jaxrs-service</service.url>
-							</systemPropertyVariables>
-						</configuration>
-					</execution>
-					<execution>
-						<id>verify</id>
-						<goals>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 	<repositories>
+		<!-- add JBOSS repository for easy access to Hibernate libraries -->
+		<repository>
+			<id>Maps</id>
+			<url>http://cloud1.cggh.org/maven2/</url>
+		</repository>
+
+		<repository>
+			<id>JBOSS2</id>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+		</repository>
+
+		<repository>
+			<id>maven</id>
+			<name>central</name>
+			<url>http://repo2.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>jahia</id>
+			<name>jahiaMaven</name>
+			<url>http://maven.jahia.org/maven2/</url>
+		</repository>
+		<!--Para uso do hibernate spatial (ABAIXO) -->
 		<repository>
 			<id>OSGEO GeoTools repo</id>
 			<url>http://download.osgeo.org/webdav/geotools</url>
