@@ -20,8 +20,8 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
-	<servlet-mapping>
+		<servlet-mapping>
 		<servlet-name>CXFServlet</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/storageposition/ws/*</url-pattern>
 	</servlet-mapping>
 </web-app>
