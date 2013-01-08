@@ -44,6 +44,7 @@ public class SlidePanel extends ContentPanelImp {
 	private static final EventType OnRemoveMessage = new EventType();
 	private static final EventType OnSaveNewMessage = new EventType();
 	private static final EventType OnEditMessage = new EventType();
+	private static final EventType OnUpdateMessage = new EventType();
 	
 	private Component anchor;
 	private Window anchorMoveAndClose;
@@ -422,5 +423,9 @@ public class SlidePanel extends ContentPanelImp {
 
 	public void addEditMessageListener(Listener<SlidePanelEvent> listener) {
 		addListener(OnEditMessage, listener);
+	}
+
+	public void addUpdateMessageListener(Listener<SlidePanelEvent> listener) {
+		addListener(OnUpdateMessage, listener);
 	}
 }

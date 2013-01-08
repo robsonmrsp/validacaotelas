@@ -2,6 +2,7 @@ package br.com.m2msolutions.client;
 
 import java.util.List;
 
+import br.com.m2msolutions.client.container.DtoPredefinedMessage;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoOperator;
@@ -17,5 +18,11 @@ public interface CriticalEventsAttendanceServiceAsync {
 	void findExtraInfoEvent(DtoCriticalEvent selectedItem, AsyncCallback<DtoExtraInfoEvent> asyncCallback);
 
 	void closeAttencance(DtoCriticalEvent actualEvent, AsyncCallback<Boolean> asyncCallback);
+
+	void savePredefinedMessage(DtoPredefinedMessage predefinedMessage, AsyncCallback<Boolean> asyncCallback);
+
+	void removePredefinedMessage(DtoPredefinedMessage predefinedMessage, AsyncCallback<Boolean> asyncCallback);
+
+	void updatePredefinedMessage(DtoPredefinedMessage predefinedMessage, AsyncCallback<Boolean> asyncCallback);
 
 }

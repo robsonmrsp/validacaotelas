@@ -7,6 +7,9 @@ public class DtoPredefinedMessage extends BaseModelData {
 	private static final long serialVersionUID = 1L;
 	public static final String TEXT = "text";
 
+	public DtoPredefinedMessage() {
+	}
+
 	public DtoPredefinedMessage(String text) {
 		setText(text);
 	}
