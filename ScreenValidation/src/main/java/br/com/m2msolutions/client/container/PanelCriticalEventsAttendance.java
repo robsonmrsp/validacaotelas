@@ -216,6 +216,12 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 				}
 			});
 
+			slidePanel.addUpdateMessageListener(new Listener<SlidePanelEvent>() {
+				@Override
+				public void handleEvent(SlidePanelEvent be) {
+					updateMessage(be.getMessage());
+				}
+			});
 			slidePanel.addRemoveMessageListener(new Listener<SlidePanelEvent>() {
 				@Override
 				public void handleEvent(SlidePanelEvent be) {
@@ -250,8 +256,40 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		return occurrenceRecordsContainer;
 	}
 
+	protected void updateMessage(DtoPredefinedMessage message) {
+		eventsAttendanceService.updatePredefinedMessage(message, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
+	}
+
 	protected void removeMessage(DtoPredefinedMessage message) {
-		// TODO Auto-generated method stub
+		eventsAttendanceService.removePredefinedMessage(message, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
 
 	}
 
@@ -265,6 +303,20 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		// TODO Auto-generated method stub
 		// deve ser criado um novo metodo na classe de servico para atender a
 		// essa necessidade
+		eventsAttendanceService.savePredefinedMessage(predefinedMessage, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 	}
 
@@ -391,7 +443,6 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
 
 	}
-
 
 	private Html getHtmlContact() {
 		if (htmlContact == null) {
@@ -646,7 +697,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	protected void applyExtraInfo(DtoExtraInfoEvent extraInfo) {
-//		updateAboutContainer(extraInfo.getAbout());
+		// updateAboutContainer(extraInfo.getAbout());
 		updateVehicleLocationContainer(extraInfo.getVehicleLocation());
 		updateContactContainer(extraInfo.getContact());
 		updateRecordsContainer(extraInfo.getRecords());

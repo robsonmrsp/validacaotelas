@@ -16,6 +16,7 @@ package br.com.m2msolutions.client;
 
 import java.util.List;
 
+import br.com.m2msolutions.client.container.DtoPredefinedMessage;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoOperator;
@@ -26,7 +27,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("CriticalEventsAttendanceService")
 public interface CriticalEventsAttendanceService extends RemoteService {
-	
+
 	/**
 	 * Utility class for simplifying access to the instance of async service.
 	 */
@@ -47,5 +48,11 @@ public interface CriticalEventsAttendanceService extends RemoteService {
 
 	DtoExtraInfoEvent findExtraInfoEvent(DtoCriticalEvent selectedItem);
 
-	boolean closeAttencance(DtoCriticalEvent actualEvent);
+	Boolean closeAttencance(DtoCriticalEvent actualEvent);
+
+	Boolean savePredefinedMessage(DtoPredefinedMessage predefinedMessage);
+
+	Boolean removePredefinedMessage(DtoPredefinedMessage predefinedMessage);
+
+	Boolean updatePredefinedMessage(DtoPredefinedMessage predefinedMessage);
 }
