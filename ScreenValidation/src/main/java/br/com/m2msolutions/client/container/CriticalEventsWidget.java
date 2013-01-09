@@ -105,7 +105,7 @@ public class CriticalEventsWidget extends DockWindow {
 			@Override
 			public void onSuccess(DtoCriticalEventsInfo criticalEventsInfo) {
 				// TODO descomentar o codigo abaixo
-//				updateHeader(criticalEventsInfo.getEventsCount());
+				updateHeader(criticalEventsInfo.getEventsCount());
 				// gridEvents.getStore().add(criticalEventsInfo.getEvents());
 				// initDataPush();
 			}
@@ -147,9 +147,9 @@ public class CriticalEventsWidget extends DockWindow {
 				if (anEvent instanceof CriticalEventMessage) {
 					CriticalEventMessage eventMessage = (CriticalEventMessage) anEvent;
 					DtoCriticalEvent criticalEvent = eventMessage.getCriticalEvent();
-					// TODO criar um local/metodo que centralize a atualização
-					// do grid;
-					gridEvents.getStore().add(criticalEvent);
+
+//					createOrUpdateLabeledImage(criticalEvent.getCategory());
+					gridEvents.getStore().insert(criticalEvent, 0);
 				}
 			}
 		});
@@ -357,20 +357,7 @@ public class CriticalEventsWidget extends DockWindow {
 	private Grid<DtoCriticalEvent> getGrid() {
 		if (gridEvents == null) {
 			gridEvents = new Grid<DtoCriticalEvent>(createListStory(), createColumnConfig());
-			// gridEvents.setSelectionModel(new
-			// GridSelectionModel<DtoCriticalEvent>());
-			// gridEvents.setBorders(false);
-			// gridEvents.setStripeRows(true);
-			// gridEvents.setId("gridEvents");
-			// gridEvents.setAutoWidth(false);
-			// gridEvents.setColumnResize(false);
-			// gridEvents.setHideHeaders(true);
-			// gridEvents.setHeight(Style.DEFAULT);
-			// gridEvents.setAutoExpandColumn(DtoCriticalEvent.DESCRIPTION);
-			// gridEvents.getSelectionModel().addSelectionChangedListener(new
-			// SelectionChangedListener<DtoCriticalEvent>() {
 			gridEvents.setSize(-1, 190);
-			// gridEvents.setAutoExpandMax(500);
 			gridEvents.setSelectionModel(new GridSelectionModel<DtoCriticalEvent>());
 			gridEvents.setBorders(false);
 			gridEvents.setStripeRows(true);
@@ -380,6 +367,22 @@ public class CriticalEventsWidget extends DockWindow {
 			gridEvents.setHideHeaders(true);
 			gridEvents.setHeight(Style.DEFAULT);
 			gridEvents.setAutoExpandColumn(DtoCriticalEvent.DESCRIPTION);
+			gridEvents.addListener(Events.OnDoubleClick, new Listener<GridEvent<DtoCriticalEvent>>() {
+				@Override
+				public void handleEvent(GridEvent<DtoCriticalEvent> be) {
+
+
+					// usuário logado
+					// TODO chama um servico para que seja salvo o
+					// relacionamento entre o operador e o evento, dizendo que o
+					// operador está atendendo o evento.
+
+					// TODO o servico deverá disparar uma ação do tipo datapush
+					// para sinalizar a todos os widgets abertos que aquele
+					// evento foi disparado.
+//					DtoCriticalEvent event = be.getModel()	
+				}
+			});
 		}
 
 		return gridEvents;

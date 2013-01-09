@@ -69,6 +69,8 @@ import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
+import com.extjs.gxt.ui.client.widget.Slider;
+import com.google.gwt.user.client.ui.Image;
 
 public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 
@@ -115,6 +117,16 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 	private GridCellRenderer<DtoRecord> descriptionRecordCellRender;
 
 	InquiryAttendanceServiceAsync attendanceService = GWT.create(InquiryAttendanceService.class);
+	private LayoutContainer mapTolboxContainer;
+
+	private LayoutContainer tooboxContainer;
+	private LayoutContainer slyderContainer;
+	private Slider sliderPositions;
+	private Image imagePlay;
+	private Image imageNext;
+	private Image imagePrevius;
+	private Image imageLast;
+	private Image imageFirst;
 
 	public PanelInquiryCriticalEventsAttendance() {
 		initComponents();
@@ -306,13 +318,8 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		if (gridRecords == null) {
 			gridRecords = new Grid<DtoRecord>(createRecordListStory(), createRecordColumnConfig());
 			gridRecords.setSize("-1", "290");
-			// gridRecords.setSelectionModel(new
-			// GridSelectionModel<DtoRecord>());
-			// gridRecords.setMinColumnWidth(150);
-			// gridRecords.setAutoExpandMax(500);
 			gridRecords.setBorders(false);
 			gridRecords.disableEvents(true);
-
 			gridRecords.setTrackMouseOver(false);
 			gridRecords.setId("gridRecords");
 			gridRecords.setWidth(Style.DEFAULT);
@@ -411,6 +418,8 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 			aboutEventContainer.setHeight("150");
 			aboutEventContainer.setHeading("Sobre o Evento");
 			aboutEventContainer.setCollapsible(true);
+			aboutEventContainer.addToolButton(createPrinterButton());
+			
 			aboutEventContainer.setLayout(new FitLayout());
 
 			FitData fd_htmlAboutEvent = new FitData(0);
@@ -433,6 +442,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 			BorderLayoutData bld_mapContainer = new BorderLayoutData(LayoutRegion.CENTER, 270.0f);
 			bld_mapContainer.setMinSize(270);
 			vehicleLocationContainer.add(getMapContainer(), bld_mapContainer);
+			vehicleLocationContainer.setBottomComponent(getMapTolboxContainer());
 		}
 		return vehicleLocationContainer;
 	}
@@ -455,7 +465,6 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		if (occurrenceRecordsContainer == null) {
 			occurrenceRecordsContainer = new ContentPanelImp();
 			occurrenceRecordsContainer.setHeading("Registro de ocorrência");
-			occurrenceRecordsContainer.addToolButton(createPrinterButton());
 			occurrenceRecordsContainer.setCollapsible(true);
 			occurrenceRecordsContainer.setLayout(new FitLayout());
 			occurrenceRecordsContainer.add(getGridRecords());
@@ -656,7 +665,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 	private ColumnModel createRecordColumnConfig() {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-//		ColumnConfig column = new ColumnConfig();
+		// ColumnConfig column = new ColumnConfig();
 		// column.setId(DtoRecord.IMAGE_SRC);
 		// column.setWidth(35);
 		// column.setRenderer(createRecordImageCellRender());
@@ -737,8 +746,8 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 
 	protected String getNewRecordRendered(DtoRecord model) {
 		StringBuffer rendered = new StringBuffer();
-//		TODO Melhorar o CSS para que fique mais com a cara da tela!
-//		rendered.append("<div class=\"userMsg\"> ");
+		// TODO Melhorar o CSS para que fique mais com a cara da tela!
+		// rendered.append("<div class=\"userMsg\"> ");
 		rendered.append("<div> ");
 		rendered.append("<table style=\"width: 100%; CELLSPACING:0px; \">");
 		rendered.append("	<tr>");
@@ -874,5 +883,9 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 		public void onDragEnd(MapDragEndEvent event) {
 			event.getSender().checkResizeAndCenter();
 		}
+	}
+
+	private LayoutContainer getMapTolboxContainer() {
+		return new MapNavigationToolBox();
 	}
 }
