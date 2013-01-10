@@ -117,16 +117,8 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 	private GridCellRenderer<DtoRecord> descriptionRecordCellRender;
 
 	InquiryAttendanceServiceAsync attendanceService = GWT.create(InquiryAttendanceService.class);
-	private LayoutContainer mapTolboxContainer;
 
-	private LayoutContainer tooboxContainer;
-	private LayoutContainer slyderContainer;
-	private Slider sliderPositions;
-	private Image imagePlay;
-	private Image imageNext;
-	private Image imagePrevius;
-	private Image imageLast;
-	private Image imageFirst;
+	private MapNavigationToolBox mapNavigationToolBox;
 
 	public PanelInquiryCriticalEventsAttendance() {
 		initComponents();
@@ -419,7 +411,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 			aboutEventContainer.setHeading("Sobre o Evento");
 			aboutEventContainer.setCollapsible(true);
 			aboutEventContainer.addToolButton(createPrinterButton());
-			
+
 			aboutEventContainer.setLayout(new FitLayout());
 
 			FitData fd_htmlAboutEvent = new FitData(0);
@@ -441,6 +433,7 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 			vehicleLocationContainer.add(getHtmlVehicleLocation(), bld_htmlVehicleLocation);
 			BorderLayoutData bld_mapContainer = new BorderLayoutData(LayoutRegion.CENTER, 270.0f);
 			bld_mapContainer.setMinSize(270);
+//			bld_mapContainer.setMargins(new Margins(5, 5, 5, 5));
 			vehicleLocationContainer.add(getMapContainer(), bld_mapContainer);
 			vehicleLocationContainer.setBottomComponent(getMapTolboxContainer());
 		}
@@ -886,6 +879,44 @@ public class PanelInquiryCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	private LayoutContainer getMapTolboxContainer() {
-		return new MapNavigationToolBox();
+		if (mapNavigationToolBox == null) {
+			mapNavigationToolBox = new MapNavigationToolBox();
+			mapNavigationToolBox.setSize("318", "20");
+			mapNavigationToolBox.addClickFirstListener(new Listener<MapNavigationEvent>() {
+				@Override
+				public void handleEvent(MapNavigationEvent be) {
+				}
+			});
+			mapNavigationToolBox.addClickNextListener(new Listener<MapNavigationEvent>() {
+				@Override
+				public void handleEvent(MapNavigationEvent be) {
+				}
+			});
+			mapNavigationToolBox.addClickPreviousListener(new Listener<MapNavigationEvent>() {
+				@Override
+				public void handleEvent(MapNavigationEvent be) {
+				}
+			});
+			mapNavigationToolBox.addClickLastListener(new Listener<MapNavigationEvent>() {
+				@Override
+				public void handleEvent(MapNavigationEvent be) {
+				}
+			});
+			mapNavigationToolBox.addSlideChangeListener(new Listener<MapNavigationEvent>() {
+				@Override
+				public void handleEvent(MapNavigationEvent be) {
+				}
+			});
+		}
+		return mapNavigationToolBox;
 	}
-}
+	//TODO
+	//ao clicar no botão:
+	//Pergunta?
+	// serao exibidos todos os pontos?
+	// 
+	// Adicionar um marker no mapa.
+	//
+	// gerar um poligono com os pontos que foram escolhidos.
+	
+ }
