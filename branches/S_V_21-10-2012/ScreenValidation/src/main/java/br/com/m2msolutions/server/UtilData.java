@@ -72,7 +72,7 @@ public class UtilData {
 
 	private static void populateExtraInfo() {
 		DtoExtraInfoEvent extraInfo = new DtoExtraInfoEvent();
-		extraInfo.setAbout(new DtoAboutEvent(1L, "0100123", format(new Date()), "5 min", "CSO - 01", format(new Date())));
+		extraInfo.setAbout(new DtoAboutEvent(1L, "0100123", format(new Date()), format(new Date()), "5 min", "CSO - 01", format(new Date())));
 		extraInfo.setContact(new DtoContact("Kara \"Starbuck\" Thrace", "20081202", "(85) 3023-8909", "35", "http://editorial.sidereel.com/Images/Posts/sackhoff.jpg"));
 		extraInfo.setVehicleLocation(new DtoVehicleAndLocation("300123", "Av. Dom manuel", "Messejana Centro", "Aço Forte", "Nsa. Senhora", -3.736549, -38.523804));
 		ArrayList<DtoRecord> records = new ArrayList<DtoRecord>();
@@ -91,7 +91,7 @@ public class UtilData {
 		EXTRA_INFO.put(1L, extraInfo);
 
 		DtoExtraInfoEvent extraInfo2 = new DtoExtraInfoEvent();
-		extraInfo2.setAbout(new DtoAboutEvent(2L, "0134523", format(new Date()), "5 min", "CSO - 02", format(new Date())));
+		extraInfo2.setAbout(new DtoAboutEvent(2L, "0134523", format(new Date()), format(new Date()) , "5 min", "CSO - 02", format(new Date())));
 		extraInfo2.setContact(new DtoContact("Laura Roselin", "20081201", "(85) 3453-8709", "36", "http://upload.wikimedia.org/wikipedia/en/0/05/LauraRoslin.jpg"));
 
 		extraInfo2.setVehicleLocation(new DtoVehicleAndLocation("376125", "R. Barao do Rio BRanco", "Messejana Centro", "Ceara motor", "Nsa. Senhora", -3.739282, -38.532331));
@@ -106,7 +106,7 @@ public class UtilData {
 		EXTRA_INFO.put(2L, extraInfo2);
 
 		DtoExtraInfoEvent extraInfo3 = new DtoExtraInfoEvent();
-		extraInfo3.setAbout(new DtoAboutEvent(3L, "1234562", format(new Date()), "13 min", "CSO - 23", format(new Date())));
+		extraInfo3.setAbout(new DtoAboutEvent(3L, "1234562", format(new Date()), format(new Date()), "13 min", "CSO - 23", format(new Date())));
 		extraInfo3.setContact(new DtoContact("Gaius Baltar", "20081203", "(88) 4362-1105", "43", "http://media.battlestarwiki.org/images/thumb/7/73/Gaius_Baltar.jpg/200px-Gaius_Baltar.jpg"));
 
 		extraInfo3.setVehicleLocation(new DtoVehicleAndLocation("37618", "Godofredo Maciel", "Centro Messejana ", "Ceara motor", "Via MEtro", -3.759282, -38.532331));

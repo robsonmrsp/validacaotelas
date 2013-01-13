@@ -198,7 +198,7 @@ public class AttendanceWidGetTemplates {
 		StringBuffer template = new StringBuffer();
 		template.append("<span id=\"template-about-event\" class=\"about-event\">");
 		template.append("<br><span class=\"template-label\">Numero do protocolo</span>: {" + DtoAboutEvent.PROTOCOL + "} ");
-		template.append("<br><span class=\"template-label\">Inicio do atendimento</span>: {" + DtoAboutEvent.START_TIME + "} ");
+		template.append("<br><span class=\"template-label\">Inicio do atendimento</span>: {" + DtoAboutEvent.START_EVENT + "} ");
 		template.append("<br><span class=\"template-label\">Tempo de corrido do atendimento</span>: {" + DtoAboutEvent.DURATION + "} ");
 		template.append("<br><span class=\"template-label\">Operador</span>: {" + DtoAboutEvent.OPERATOR + "} ");
 		template.append("<br><span class=\"template-label\">Conclusão do atendimento</span>: {" + DtoAboutEvent.CONSLUSION + "}");
@@ -261,7 +261,7 @@ public class AttendanceWidGetTemplates {
 		template.append("				<span class=\"template-label\">Inicio do atendimento</span>: ");
 		template.append("			</td>");
 		template.append("			<td>");
-		template.append("				{" + DtoAboutEvent.START_TIME + "}");
+		template.append("				{" + DtoAboutEvent.START_EVENT + "}");
 		template.append("			</td>");
 		template.append("		</tr>");
 		template.append("		<tr>");
