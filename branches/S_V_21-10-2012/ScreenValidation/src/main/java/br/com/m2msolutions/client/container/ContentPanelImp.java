@@ -1,6 +1,7 @@
 package br.com.m2msolutions.client.container;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.google.gwt.user.client.Element;
 
 public class ContentPanelImp extends ContentPanel {
 	public ContentPanelImp() {

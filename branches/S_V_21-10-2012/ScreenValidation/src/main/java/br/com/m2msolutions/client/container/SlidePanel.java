@@ -34,18 +34,19 @@ import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SlidePanel extends ContentPanelImp {
-	
+
 	private static final EventType OnSelectedMessage = new EventType();
 	private static final EventType OnRemoveMessage = new EventType();
 	private static final EventType OnSaveNewMessage = new EventType();
 	private static final EventType OnEditMessage = new EventType();
 	private static final EventType OnUpdateMessage = new EventType();
-	
+
 	private Component anchor;
 	private Window anchorMoveAndClose;
 	private Position position;
@@ -89,9 +90,14 @@ public class SlidePanel extends ContentPanelImp {
 		hide(true);
 	}
 
+	@Override
+	protected void onRender(Element parent, int pos) {
+		super.onRender(parent, pos);
+		getBody().setStyleName("m2m-borders-panel");
+	}
+
 	public void show() {
 		super.show();
-
 		setPosition(14 + anchor.getAbsoluteLeft() + anchor.getOffsetWidth(), anchor.getAbsoluteTop());
 		if (!isAttached()) {
 			RootPanel.get().add(this);
@@ -137,6 +143,7 @@ public class SlidePanel extends ContentPanelImp {
 	private LayoutContainer getHeaderContainer() {
 		if (headerContainer == null) {
 			headerContainer = new LayoutContainer();
+			headerContainer.setStyleName("m2m-borders-panel");
 			BorderLayoutData bld_searchBox = new BorderLayoutData(LayoutRegion.EAST, 150.0f);
 			bld_searchBox.setMaxSize(100);
 			headerContainer.add(getSearchBox(), bld_searchBox);
@@ -156,7 +163,7 @@ public class SlidePanel extends ContentPanelImp {
 	private Grid<DtoPredefinedMessage> getGridPredefinedMessages() {
 		if (gridPredefinedMessage == null) {
 			gridPredefinedMessage = new Grid<DtoPredefinedMessage>(createListStorePredefinedMessage(), createColumnConfig());
-//			gridPredefinedMessage.setSize("-1", "290");
+			// gridPredefinedMessage.setSize("-1", "290");
 			gridPredefinedMessage.setSelectionModel(new GridSelectionModel<DtoPredefinedMessage>());
 			gridPredefinedMessage.setBorders(false);
 			gridPredefinedMessage.setStripeRows(true);
@@ -243,13 +250,14 @@ public class SlidePanel extends ContentPanelImp {
 	private GridCellRenderer<DtoPredefinedMessage> createRemoveImageCellRender() {
 		GridCellRenderer<DtoPredefinedMessage> render = new GridCellRenderer<DtoPredefinedMessage>() {
 			@Override
-			public Object render(final DtoPredefinedMessage model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoPredefinedMessage> store, Grid<DtoPredefinedMessage> grid) {
+			public Object render(final DtoPredefinedMessage model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoPredefinedMessage> store,
+					Grid<DtoPredefinedMessage> grid) {
 
 				Image image = new Image("http://cdn1.iconfinder.com/data/icons/basicset/trash_16.png");
 				image.addClickHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
-						
+
 						fireEvent(OnRemoveMessage, new SlidePanelEvent(SlidePanel.this, model));
 					}
 				});
@@ -262,7 +270,8 @@ public class SlidePanel extends ContentPanelImp {
 	private GridCellRenderer<DtoPredefinedMessage> createEditImageCellRender() {
 		GridCellRenderer<DtoPredefinedMessage> render = new GridCellRenderer<DtoPredefinedMessage>() {
 			@Override
-			public Object render(final DtoPredefinedMessage model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoPredefinedMessage> store, Grid<DtoPredefinedMessage> grid) {
+			public Object render(final DtoPredefinedMessage model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoPredefinedMessage> store,
+					Grid<DtoPredefinedMessage> grid) {
 
 				Image image = new Image("http://cdn1.iconfinder.com/data/icons/gnomeicontheme/16x16/actions/gtk-edit.png");
 				image.addClickHandler(new ClickHandler() {
@@ -280,7 +289,8 @@ public class SlidePanel extends ContentPanelImp {
 	private GridCellRenderer<DtoPredefinedMessage> createApplyImageCellRender() {
 		GridCellRenderer<DtoPredefinedMessage> render = new GridCellRenderer<DtoPredefinedMessage>() {
 			@Override
-			public Object render(final DtoPredefinedMessage model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoPredefinedMessage> store, Grid<DtoPredefinedMessage> grid) {
+			public Object render(final DtoPredefinedMessage model, String property, ColumnData config, int rowIndex, int colIndex, ListStore<DtoPredefinedMessage> store,
+					Grid<DtoPredefinedMessage> grid) {
 
 				Image image = new Image("http://cdn1.iconfinder.com/data/icons/crystalproject/16x16/apps/clean.png");
 				image.addClickHandler(new ClickHandler() {
@@ -332,7 +342,8 @@ public class SlidePanel extends ContentPanelImp {
 			@Override
 			public void dragMove(DragEvent de) {
 				super.dragMove(de);
-				setPosition(16 + de.getComponent().getAbsoluteLeft() + de.getComponent().getOffsetWidth(), de.getComponent().getAbsoluteTop() + de.getComponent().getOffsetHeight() - SlidePanel.this.getHeight());
+				setPosition(16 + de.getComponent().getAbsoluteLeft() + de.getComponent().getOffsetWidth(), de.getComponent().getAbsoluteTop() + de.getComponent().getOffsetHeight()
+						- SlidePanel.this.getHeight());
 			}
 		});
 
@@ -401,6 +412,7 @@ public class SlidePanel extends ContentPanelImp {
 	protected void removeMessageFromGrid(DtoPredefinedMessage message) {
 		gridPredefinedMessage.getStore().remove(message);
 	}
+
 	protected void addMessageToGrid(DtoPredefinedMessage message) {
 		gridPredefinedMessage.getStore().add(message);
 	}
