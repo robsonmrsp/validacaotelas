@@ -8,16 +8,18 @@ public class DtoAboutEvent extends BaseModelData {
 
 	public static final String EVENT_ID = "eventId";
 	public static final String PROTOCOL = "protocol";
-	public static final String START_TIME = "startTime";
+	public static final String START_EVENT = "startEvent";
+	public static final String START_ATTENDANCE = "startAttendance";
 	public static final String DURATION = "duration";
 	public static final String OPERATOR = "operator";
 	public static final String CONSLUSION = "conclusion";
 
-	public DtoAboutEvent(Long eventId, String protocol, String startTime, String duration, String operatorName, String conclusionTime) {
+	public DtoAboutEvent(Long eventId, String protocol, String startEvent, String startAttendance , String duration, String operatorName, String conclusionTime) {
 		this();
 		setEventId(eventId);
 		setProtocol(protocol);
-		setStartTime(startTime);
+		setStartEvent(startEvent);
+		setStartAttendance(startAttendance);
 		setDuration(duration);
 		setOperator(operatorName);
 		setConclusion(conclusionTime);
@@ -27,12 +29,20 @@ public class DtoAboutEvent extends BaseModelData {
 
 	}
 
-	public String getStartTime() {
-		return get(START_TIME);
+	public String getStartEvent() {
+		return get(START_EVENT);
 	}
 
-	public void setStartTime(String startTime) {
-		set(START_TIME, startTime);
+	public void setStartEvent(String startTime) {
+		set(START_EVENT, startTime);
+	}
+	
+	public String getStartAttendance() {
+		return get(START_ATTENDANCE);
+	}
+
+	public void setStartAttendance(String startAttendance) {
+		set(START_ATTENDANCE, startAttendance);
 	}
 
 	public void setOperator(String operator) {

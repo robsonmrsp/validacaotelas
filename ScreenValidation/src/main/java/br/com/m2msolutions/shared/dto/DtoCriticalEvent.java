@@ -122,38 +122,6 @@ public class DtoCriticalEvent extends BaseModelData {
 		set(DESCRIPTION, description);
 	}
 
-	// public int hashCode() {
-	// final int prime = 31;
-	// int result = 1;
-	// result = prime * result + ((getStartDateTime() == null) ? 0 :
-	// getStartDateTime().hashCode());
-	// result = prime * result + ((getVehicleCode() == null) ? 0 :
-	// getVehicleCode().hashCode());
-	// return result;
-	// }
-
-	// @Override
-	// public boolean equals(Object obj) {
-	// if (this == obj)
-	// return true;
-	// if (obj == null)
-	// return false;
-	// if (getClass() != obj.getClass())
-	// return false;
-	// DtoEvent other = (DtoEvent) obj;
-	// if (getStartDateTime() == null) {
-	// if (other.getStartDateTime() != null)
-	// return false;
-	// } else if (!getStartDateTime().equals(other.getStartDateTime()))
-	// return false;
-	// if (getVehicleCode() == null) {
-	// if (other.getVehicleCode() != null)
-	// return false;
-	// } else if (!getVehicleCode().equals(other.getVehicleCode()))
-	// return false;
-	// return true;
-	// }
-
 	public String getCategory() {
 		return get(CATEGORY);
 	}
