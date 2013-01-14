@@ -13,9 +13,8 @@ import com.extjs.gxt.ui.client.event.DragEvent;
 import com.extjs.gxt.ui.client.event.DragListener;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.fx.FxConfig;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
@@ -98,7 +97,7 @@ public class SlidePanel extends ContentPanelImp {
 
 	public void show() {
 		super.show();
-		setPosition(14 + anchor.getAbsoluteLeft() + anchor.getOffsetWidth(), anchor.getAbsoluteTop());
+		reposition();
 		if (!isAttached()) {
 			RootPanel.get().add(this);
 		}
@@ -114,6 +113,7 @@ public class SlidePanel extends ContentPanelImp {
 		anchor.addListener(Events.Minimize, new Listener<BaseEvent>() {
 			@Override
 			public void handleEvent(BaseEvent be) {
+
 			}
 		});
 
@@ -129,14 +129,15 @@ public class SlidePanel extends ContentPanelImp {
 
 			}
 		});
-		anchor.addListener(Events.Move, new Listener<BaseEvent>() {
-			@Override
-			public void handleEvent(BaseEvent be) {
-				if (isVisible()) {
-					setPosition(14 + anchor.getAbsoluteLeft() + anchor.getOffsetWidth(), anchor.getAbsoluteTop());
-				}
-			}
-		});
+		// anchor.addListener(Events.Move, new Listener<BaseEvent>() {
+		// @Override
+		// public void handleEvent(BaseEvent be) {
+		// if (isVisible()) {
+		// setPosition(14 + anchor.getAbsoluteLeft() + anchor.getOffsetWidth(),
+		// anchor.getAbsoluteTop());
+		// }
+		// }
+		// });
 		this.position = position;
 	}
 
@@ -163,7 +164,6 @@ public class SlidePanel extends ContentPanelImp {
 	private Grid<DtoPredefinedMessage> getGridPredefinedMessages() {
 		if (gridPredefinedMessage == null) {
 			gridPredefinedMessage = new Grid<DtoPredefinedMessage>(createListStorePredefinedMessage(), createColumnConfig());
-			// gridPredefinedMessage.setSize("-1", "290");
 			gridPredefinedMessage.setSelectionModel(new GridSelectionModel<DtoPredefinedMessage>());
 			gridPredefinedMessage.setBorders(false);
 			gridPredefinedMessage.setStripeRows(true);
@@ -173,10 +173,10 @@ public class SlidePanel extends ContentPanelImp {
 			gridPredefinedMessage.setHideHeaders(true);
 			gridPredefinedMessage.setHeight(Style.DEFAULT);
 			gridPredefinedMessage.setAutoExpandColumn(DtoPredefinedMessage.TEXT);
-			gridPredefinedMessage.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<DtoPredefinedMessage>() {
+			gridPredefinedMessage.addListener(Events.OnDoubleClick, new Listener<GridEvent<DtoPredefinedMessage>>() {
 				@Override
-				public void selectionChanged(SelectionChangedEvent<DtoPredefinedMessage> se) {
-					DtoPredefinedMessage selectedItem = se.getSelectedItem();
+				public void handleEvent(GridEvent<DtoPredefinedMessage> gridEvent) {
+					DtoPredefinedMessage selectedItem = gridEvent.getModel();
 					if (selectedItem != null) {
 						fireEvent(OnSelectedMessage, new SlidePanelEvent(SlidePanel.this, selectedItem));
 					}
@@ -309,7 +309,6 @@ public class SlidePanel extends ContentPanelImp {
 		if (editContainer == null) {
 			editContainer = new LayoutContainer();
 			editContainer.setBorders(true);
-			getLayoutContainer().setLayout(new CenterLayout());
 			editContainer.add(getLayoutContainer(), new BorderLayoutData(LayoutRegion.WEST, 225.0f));
 			editContainer.add(getLayoutContainer_1(), new BorderLayoutData(LayoutRegion.CENTER, 50.0f));
 		}
@@ -369,6 +368,7 @@ public class SlidePanel extends ContentPanelImp {
 	private LayoutContainer getLayoutContainer() {
 		if (layoutContainer == null) {
 			layoutContainer = new LayoutContainer();
+			layoutContainer.setLayout(new CenterLayout());
 			layoutContainer.add(getNewMessage());
 		}
 		return layoutContainer;
