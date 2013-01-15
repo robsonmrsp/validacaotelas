@@ -3,6 +3,8 @@ package br.com.m2msolutions.client;
 import java.util.List;
 
 import br.com.m2msolutions.client.container.DtoPredefinedMessage;
+import br.com.m2msolutions.shared.dto.DtoContact;
+import br.com.m2msolutions.shared.dto.DtoContactParameters;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoOperator;
@@ -10,7 +12,11 @@ import br.com.m2msolutions.shared.dto.DtoOperator;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface CriticalEventsAttendanceServiceAsync {
-
+	
+	void updateContactForAttendance(DtoContact dtoContact, AsyncCallback<Boolean> asyncCallback);
+	
+	void getContactList(DtoContactParameters dtoContactParameters, AsyncCallback<List<DtoContact>> asyncCallback);
+	
 	void getOperators(AsyncCallback<List<DtoOperator>> asyncCallback);
 
 	void transferAttendance(DtoCriticalEvent actualEvent, DtoOperator operator, AsyncCallback<Boolean> asyncCallback);

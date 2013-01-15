@@ -18,6 +18,8 @@ import java.util.List;
 
 import br.com.m2msolutions.client.CriticalEventsAttendanceService;
 import br.com.m2msolutions.client.container.DtoPredefinedMessage;
+import br.com.m2msolutions.shared.dto.DtoContact;
+import br.com.m2msolutions.shared.dto.DtoContactParameters;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoOperator;
@@ -60,6 +62,19 @@ public class CriticalEventsAttendanceServiceImpl extends RemoteServiceServlet im
 
 	@Override
 	public Boolean updatePredefinedMessage(DtoPredefinedMessage predefinedMessage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DtoContact> getContactList(
+			DtoContactParameters dtoContactParameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean updateContactForAttendance(DtoContact dtoContact) {
 		// TODO Auto-generated method stub
 		return null;
 	}
