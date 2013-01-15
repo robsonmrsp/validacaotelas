@@ -103,6 +103,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	private Html htmlAboutEvent;
 	private DtoCriticalEvent event;
 	private SlidePanel slidePanel = new SlidePanel();
+	private ContactEditorPanel editorPanel = new ContactEditorPanel();
 	private DialogWindowTransfer dialogTransfer;
 
 	private ContentPanel ctpSobreEvento;
@@ -123,7 +124,8 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 
 	private CriticalEventsAttendanceServiceAsync eventsAttendanceService = CriticalEventsAttendanceService.Util.getInstance();
 
-	// TODO fazer com que a tela receba o evento ao ser chamada. Não faz sentido
+	// TODO fazer com que a tela receba o evento ao ser chamada. Não faz
+	// sentido
 	// atender a um evento que não se conhece. Talvez adicionar o parametro ao
 	// construtor.
 
@@ -212,6 +214,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			ToolButton toolButton = new ToolButton(Images.INSTANCE.edit16());
 
 			slidePanel.anchorAt(occurrenceRecordsContainer, Position.LEFT);
+
 			occurrenceRecordsContainer.addToolButton(new ToolButton(Images.INSTANCE.editar16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
@@ -281,7 +284,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub	
+				// TODO Auto-generated method stub
 			}
 
 			@Override
@@ -305,7 +308,6 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 				// TODO Auto-generated method stub
 			}
 		});
-
 
 	}
 
@@ -335,6 +337,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 
 	public void setAnchorSlidePanel(Window window) {
 		slidePanel.setAnchorMoveAndClose(window);
+		editorPanel.setAnchorMoveAndClose(window);
 	}
 
 	private Widget getContactContainer() {
@@ -348,9 +351,15 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 					wContact.show();
 				}
 			}));
+			editorPanel.anchorAt(contactContainer, Position.TOP);
 			contactContainer.addToolButton(new ToolButton(Images.INSTANCE.editar16(), new Listener<BaseEvent>() {
 				@Override
 				public void handleEvent(BaseEvent be) {
+					if (editorPanel.isVisible()) {
+						editorPanel.hide();
+					} else {
+						editorPanel.show();
+					}
 				}
 			}));
 
@@ -445,7 +454,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	private ContentPanelImp getVehicleLocation() {
-		if(ctpVehicleLocation == null){
+		if (ctpVehicleLocation == null) {
 			ctpVehicleLocation = new ContentPanelImp();
 			ctpVehicleLocation.setBodyBorder(false);
 			ctpVehicleLocation.setHeaderVisible(false);
@@ -470,7 +479,8 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	private void createTemplates() {
 		contactTemplate = XTemplate.create(AttendanceWidGetTemplates.CONTACTS);
 		vehicleLocationTemplate = XTemplate.create(AttendanceWidGetTemplates.VEHICLE_LOCATION);
-//		htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(new BaseModelData())));
+		// htmlVehicleLocation.setHtml(vehicleLocationTemplate.applyTemplate(Util.getJsObject(new
+		// BaseModelData())));
 
 	}
 
@@ -714,26 +724,26 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 	}
 
 	private void updateAboutContainer(DtoAboutEvent aboutEvent) {
-		
+
 		this.txtNumeroProtocoloValue.setText(aboutEvent.getProtocol());
 		this.txtIniEventoValue.setText(aboutEvent.getStartEvent());
 		this.txtIniAtendimentoValue.setText(aboutEvent.getStartAttendance());
 		this.txtTempoDecorridoDo.setText(aboutEvent.getDuration());
 		this.txtAtendenteAtualValue.setText(aboutEvent.getOperator());
 		this.txtConclusaoDoAtendimentoValue.setText(aboutEvent.getConclusion());
-		
+
 	}
 
 	private void updateContactContainer(DtoContact contact) {
-		
+
 		this.txtNomeValue.setText(contact.getName());
 		this.txtTelefoneValue.setText(contact.getPhone());
 		this.txtIdadeValue.setText(contact.getAge());
-		
+
 	}
 
 	private void updateVehicleLocationContainer(DtoVehicleAndLocation vehicleAndLocation) {
-		
+
 		txtVeiculoValue.setText(vehicleAndLocation.getVehicle());
 		txtLinhaValue.setText(vehicleAndLocation.getBusServiceName());
 		txtEmpresaValue.setText(vehicleAndLocation.getCompanyName());
@@ -741,7 +751,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		txtLatitudeValue.setText(String.valueOf(vehicleAndLocation.getLatitude()));
 		txtLongitudeValue.setText(String.valueOf(vehicleAndLocation.getLongitude()));
 		txtProxPontoValue.setText(vehicleAndLocation.getNextStop());
-		
+
 		centerVehicleInMap(vehicleAndLocation);
 	}
 
@@ -982,6 +992,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 			}
 		});
 	}
+
 	private Image getImgFoto() {
 		if (imgFoto == null) {
 			imgFoto = new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSleT7-NZ7I8oY8_jCTeFpK1QxJRFMr3B2xV6QCYXr-0P2KICaTcQ");
@@ -989,6 +1000,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return imgFoto;
 	}
+
 	private Text getTxtNome() {
 		if (txtNome == null) {
 			txtNome = new Text("Nome:");
@@ -997,6 +1009,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtNome;
 	}
+
 	private Text getTxtTelefone() {
 		if (txtTelefone == null) {
 			txtTelefone = new Text("Telefone:");
@@ -1005,6 +1018,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtTelefone;
 	}
+
 	private Text getTxtIdade() {
 		if (txtIdade == null) {
 			txtIdade = new Text("Idade:");
@@ -1013,6 +1027,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtIdade;
 	}
+
 	private Text getTxtNomeValue() {
 		if (txtNomeValue == null) {
 			txtNomeValue = new Text("Francisco Jos\u00E9");
@@ -1020,6 +1035,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtNomeValue;
 	}
+
 	private Text getTxtTelefoneValue() {
 		if (txtTelefoneValue == null) {
 			txtTelefoneValue = new Text("(80) 8080 1234");
@@ -1027,6 +1043,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtTelefoneValue;
 	}
+
 	private Text getTxtIdadeValue() {
 		if (txtIdadeValue == null) {
 			txtIdadeValue = new Text("35 Anos");
@@ -1034,6 +1051,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtIdadeValue;
 	}
+
 	private Text getTxtVeiculo() {
 		if (txtVeiculo == null) {
 			txtVeiculo = new Text("Ve\u00EDculo:");
@@ -1042,6 +1060,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtVeiculo;
 	}
+
 	private Text getTxtVeiculoValue() {
 		if (txtVeiculoValue == null) {
 			txtVeiculoValue = new Text("3050");
@@ -1049,6 +1068,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtVeiculoValue;
 	}
+
 	private Text getTxtLinha() {
 		if (txtLinha == null) {
 			txtLinha = new Text("Linha:");
@@ -1057,6 +1077,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtLinha;
 	}
+
 	private Text getTxtLinhaValue() {
 		if (txtLinhaValue == null) {
 			txtLinhaValue = new Text("Santa Cruz");
@@ -1064,6 +1085,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtLinhaValue;
 	}
+
 	private Text getTxtEmpresa() {
 		if (txtEmpresa == null) {
 			txtEmpresa = new Text("Empresa:");
@@ -1072,6 +1094,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtEmpresa;
 	}
+
 	private Text getTxtEmpresaValue() {
 		if (txtEmpresaValue == null) {
 			txtEmpresaValue = new Text("Expresso Pegaso");
@@ -1079,6 +1102,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtEmpresaValue;
 	}
+
 	private Text getTxtEndereco() {
 		if (txtEndereco == null) {
 			txtEndereco = new Text("Endere\u00E7o:");
@@ -1087,6 +1111,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtEndereco;
 	}
+
 	private Text getTxtLatitude() {
 		if (txtLatitude == null) {
 			txtLatitude = new Text("Latitude:");
@@ -1095,6 +1120,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtLatitude;
 	}
+
 	private Text getTxtLongitude() {
 		if (txtLongitude == null) {
 			txtLongitude = new Text("Longitude:");
@@ -1103,6 +1129,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtLongitude;
 	}
+
 	private Text getTxtEnderecoValue() {
 		if (txtEnderecoValue == null) {
 			txtEnderecoValue = new Text("3050");
@@ -1110,6 +1137,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtEnderecoValue;
 	}
+
 	private Text getTxtLatitudeValue() {
 		if (txtLatitudeValue == null) {
 			txtLatitudeValue = new Text("-3.45659764673");
@@ -1117,6 +1145,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtLatitudeValue;
 	}
+
 	private Text getTxtLongitudeValue() {
 		if (txtLongitudeValue == null) {
 			txtLongitudeValue = new Text("-38.9883866709");
@@ -1124,6 +1153,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtLongitudeValue;
 	}
+
 	private Text getTxtProxPonto() {
 		if (txtProxPonto == null) {
 			txtProxPonto = new Text("Prx Ponto:");
@@ -1132,6 +1162,7 @@ public class PanelCriticalEventsAttendance extends LayoutContainer {
 		}
 		return txtProxPonto;
 	}
+
 	private Text getTxtProxPontoValue() {
 		if (txtProxPontoValue == null) {
 			txtProxPontoValue = new Text("Padaria");

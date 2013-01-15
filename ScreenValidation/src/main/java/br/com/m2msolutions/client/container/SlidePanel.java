@@ -96,7 +96,7 @@ public class SlidePanel extends ContentPanelImp {
 	}
 
 	public void show() {
-		super.show();
+//		super.show();
 		reposition();
 		if (!isAttached()) {
 			RootPanel.get().add(this);
