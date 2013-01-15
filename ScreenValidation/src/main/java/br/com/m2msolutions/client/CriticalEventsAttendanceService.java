@@ -17,6 +17,8 @@ package br.com.m2msolutions.client;
 import java.util.List;
 
 import br.com.m2msolutions.client.container.DtoPredefinedMessage;
+import br.com.m2msolutions.shared.dto.DtoContact;
+import br.com.m2msolutions.shared.dto.DtoContactParameters;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.m2msolutions.shared.dto.DtoExtraInfoEvent;
 import br.com.m2msolutions.shared.dto.DtoOperator;
@@ -41,7 +43,11 @@ public interface CriticalEventsAttendanceService extends RemoteService {
 			return instance;
 		}
 	}
-
+	
+	List<DtoContact> getContactList(DtoContactParameters dtoContactParameters);
+	
+	Boolean updateContactForAttendance(DtoContact dtoContact);
+	
 	List<DtoOperator> getOperators();
 
 	Boolean transferAttendance(DtoCriticalEvent actualEvent, DtoOperator operator);

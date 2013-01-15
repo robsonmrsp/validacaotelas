@@ -10,7 +10,7 @@ public class DtoExtraInfoEvent implements Serializable {
 	private DtoAboutEvent about;
 	private DtoVehicleAndLocation vehicleLocation;
 	private DtoContact contact;
-	private DtoRecord dtoRecord;
+	
 	private ArrayList<DtoRecord> records;
 
 	public DtoExtraInfoEvent() {
