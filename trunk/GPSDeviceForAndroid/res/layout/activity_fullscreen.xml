@@ -21,28 +21,21 @@
             android:background="@color/black_overlay"
             android:orientation="horizontal"
             tools:ignore="UselessParent" >
+
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtLatitude"
-            android:layout_width="match_parent"
+            android:id="@+id/txtServicoIniciado"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Latitude:"
-            android:textAlignment="center"
+            android:text="Serviço Iniciado:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/txtLongitude"
-            android:layout_width="match_parent"
+            android:id="@+id/txtUltimaPosicao"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Longitude:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/txtAltitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Altitude:"
+            android:text="Última Posição:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -53,29 +46,29 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/txtPrecisao"
+            android:id="@+id/txtPosicoes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Precisao:"
+            android:text="Posições Enviadas:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <Button
             android:id="@+id/btIniciar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Iniciar coleta de posição" />
+            android:text="Iniciar/Conectar Serviço" />
 
         <Button
             android:id="@+id/btFinalizar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Finlizar coleta de posição" />
+            android:text="Finlizar Serviço" />
 
         <Button
-            android:id="@+id/btEnviarDados"
+            android:id="@+id/btAtualizarDados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enviar" />
+            android:text="Atualizar Dados" />
 
     </LinearLayout>
 
