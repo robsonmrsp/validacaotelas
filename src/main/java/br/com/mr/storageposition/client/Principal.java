@@ -17,8 +17,6 @@ import com.google.gwt.user.client.ui.PopupPanel;
 
 public class Principal extends Composite {
 	private MapPanel mapPanel;
-	private Point location;
-	private LatLng geoLocation;
 
 	final private PopupPanel popupPanel = new PopupPanel(true);
 
@@ -30,7 +28,6 @@ public class Principal extends Composite {
 		createPopupsMenu();
 	}
 
-
 	private void initComponents() {
 		initWidget(getMapPanel());
 	}
@@ -41,27 +38,9 @@ public class Principal extends Composite {
 			mapPanel.addMapRightClickHandler(new MapRightClickHandler() {
 				@Override
 				public void onRightClick(MapRightClickEvent event) {
-					
+					showMenu(event.getPoint());
 				}
 			});
-
-			Geolocation geolocation = Geolocation.getIfSupported();
-			if (geolocation != null) {
-				geolocation.getCurrentPosition(new Callback<Position, PositionError>() {
-					@Override
-					public void onSuccess(Position result) {
-						mapPanel.setCenter(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
-						mapPanel.setZoomLevel(13);
-					}
-
-					@Override
-					public void onFailure(PositionError reason) {
-						System.out.println(reason.getMessage());
-					}
-				});
-			} else {
-				System.out.println("GeoLocation not available!");
-			}
 		}
 		return mapPanel;
 	}
@@ -72,14 +51,16 @@ public class Principal extends Composite {
 	}
 
 	protected void showMenu(Point point) {
-		popupPanel.setPopupPosition(point.getX(), point.getY());
-		popupPanel.show();
+		if (popupMenuBar != null) {
+			popupPanel.setPopupPosition(point.getX(), point.getY());
+			popupPanel.show();
+		}
 	}
 
 	Command showBusStopCommand = new Command() {
 		public void execute() {
 			try {
-				//TODO 
+				// TODO
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -98,6 +79,15 @@ public class Principal extends Composite {
 			popupPanel.hide();
 		}
 	};
+
+	public void setContextMenu(MenuBar popupMenuBar) {
+		this.popupMenuBar = popupMenuBar;
+		popupPanel.setStyleName("popup");
+		popupMenuBar.setVisible(true);
+		popupPanel.add(popupMenuBar);
+	}
+
+	MenuBar popupMenuBar;
 
 	private void createPopupsMenu() {
 		MenuBar popupMenuBar = new MenuBar(true);
@@ -121,6 +111,5 @@ public class Principal extends Composite {
 		popupPanel.add(popupMenuBar);
 		popupBusServicesPanel.add(html);
 	}
-
 
 }

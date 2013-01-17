@@ -17,20 +17,19 @@ import br.com.mr.storageposition.server.facade.PositionsService;
 public class PositionsServiceImpl implements PositionsService {
 
 	private static final Log LOGER = LogFactory.getLog(PositionsServiceImpl.class);
-	
+
 	@Inject
-	DaoPosition daoBusStop;
+	DaoPosition daoPosition;
 
 	public Boolean save(JsonPosition position) {
 		try {
-			
-			daoBusStop.save(new Position(position.getDeviceId(), position.getCreationDate(), position.getLatitude(), position.getLongitude(), position.getAccuracy(),
-										 position.getSpeed(), position.getAltitude() ));
-			
+			daoPosition.save(new Position(position.getDeviceId(), position.getCreationDate(), position.getLatitude(), position.getLongitude(), position.getAccuracy(), position.getSpeed(), position.getAltitude()));
 		} catch (Exception e) {
-			LOGER.error("N�o foi possivel salvar a posicao-> " + position, e);
+			LOGER.error("Nao foi possivel salvar a posicao-> " + position, e);
 			return Boolean.FALSE;
 		}
 		return Boolean.TRUE;
 	}
+	
+	
 }
