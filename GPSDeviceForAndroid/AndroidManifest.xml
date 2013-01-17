@@ -34,6 +34,14 @@
             android:name="com.awdryn.gpsdeviceforandroid.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
+        
+        <service android:name=".service.GPSStorageService">
+            <intent-filter>
+                <action android:name="GPSStorageService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+            
     </application>
 
 </manifest>
