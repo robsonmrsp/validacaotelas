@@ -1,6 +1,7 @@
 package br.com.mr.storageposition.server.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +30,9 @@ public class Position implements Serializable {
 	private Long creationDate;
 	
 	@Column
+	private Date otherCreationDateFormat;
+	
+	@Column
 	private Double latitude;
 
 	@Column
@@ -46,10 +50,11 @@ public class Position implements Serializable {
 	
 	public Position() {}
 
-	public Position(String deviceId, Long creationDate, Double latitude, Double longitude, Float accuracy, Float speed, Double altitude) {
+	public Position(String deviceId, Long creationDate, Date otherCreationDateFormat, Double latitude, Double longitude, Float accuracy, Float speed, Double altitude) {
 		super();
 		this.deviceId = deviceId;
-		this.setCreationDate(creationDate);
+		this.creationDate = creationDate;
+		this.otherCreationDateFormat = otherCreationDateFormat;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.speed = speed;
@@ -119,6 +124,14 @@ public class Position implements Serializable {
 
 	public void setAltitude(Double altitude) {
 		this.altitude = altitude;
+	}
+
+	public Date getOtherCreationDateFormat() {
+		return otherCreationDateFormat;
+	}
+
+	public void setOtherCreationDateFormat(Date otherCreationDateFormat) {
+		this.otherCreationDateFormat = otherCreationDateFormat;
 	}
 
 }

@@ -1,11 +1,6 @@
 package br.com.mr.storageposition.client;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.geolocation.client.Geolocation;
-import com.google.gwt.geolocation.client.Position;
-import com.google.gwt.geolocation.client.PositionError;
 import com.google.gwt.maps.client.event.MapRightClickHandler;
-import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.geom.Point;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
