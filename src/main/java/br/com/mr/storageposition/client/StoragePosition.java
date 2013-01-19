@@ -21,7 +21,7 @@ public class StoragePosition implements EntryPoint {
 		MenuItem imageItem = new MenuItem("Ultimas 10 posições...", true, new Command() {
 			@Override
 			public void execute() {
-				
+
 			}
 		});
 
@@ -30,7 +30,7 @@ public class StoragePosition implements EntryPoint {
 
 		popupMenuBar.addItem(alertItem);
 		popupMenuBar.addItem(imageItem);
-
+		principal.setContextMenu(popupMenuBar);
 		RootPanel.get().add(principal);
 	}
 }
