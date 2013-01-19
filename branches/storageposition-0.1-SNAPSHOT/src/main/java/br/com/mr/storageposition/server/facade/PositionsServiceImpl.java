@@ -1,6 +1,7 @@
 package br.com.mr.storageposition.server.facade;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,6 +31,18 @@ public class PositionsServiceImpl implements PositionsService {
 		}
 		return Boolean.TRUE;
 	}
-	
-	
+
+	@Override
+	public Boolean save(List<JsonPosition> positions) {
+		for (JsonPosition position : positions) {
+			try {
+				daoPosition.save(new Position(position.getDeviceId(), position.getCreationDate(), new Date(position.getCreationDate()), position.getLatitude(), position.getLongitude(), position.getAccuracy(), position.getSpeed(), position.getAltitude()));
+			} catch (Exception e) {
+				LOGER.error("Nao foi possivel salvar a posicao-> " + position, e);
+				return Boolean.FALSE;
+			}
+		}
+		return Boolean.TRUE;
+	}
+
 }
