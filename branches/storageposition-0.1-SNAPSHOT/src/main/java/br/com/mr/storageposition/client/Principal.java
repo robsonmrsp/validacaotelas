@@ -25,7 +25,7 @@ public class Principal extends Composite {
 
 	public Principal() {
 		initComponents();
-		createPopupsMenu();
+//		createPopupsMenu();
 	}
 
 	private void initComponents() {
