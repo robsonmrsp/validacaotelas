@@ -28,7 +28,7 @@ public class MapPanel extends FlowPanel {
 
 	private void initComponents() {
 		map.setScrollWheelZoomEnabled(true);
-		map.setSize(Window.getClientWidth() - 20 + "px", Window.getClientHeight() - 20 + "px");
+		map.setSize(Window.getClientWidth() - 10 + "px", Window.getClientHeight() - 10 + "px");
 		map.addControl(new SmallZoomControl());
 		Window.addResizeHandler(new ResizeHandler() {
 			@Override
@@ -40,7 +40,7 @@ public class MapPanel extends FlowPanel {
 	}
 
 	private void updateMapSize() {
-		map.setSize(Window.getClientWidth() - 20 + "px", Window.getClientHeight() - 20 + "px");
+		map.setSize(Window.getClientWidth() - 10 + "px", Window.getClientHeight() - 10 + "px");
 	}
 
 	public void addOverlay(Overlay overlay) {
