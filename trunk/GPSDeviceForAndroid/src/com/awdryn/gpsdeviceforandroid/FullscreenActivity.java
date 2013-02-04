@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +28,7 @@ import com.awdryn.gpsdeviceforandroid.util.SystemUiHider;
  *
  * @see SystemUiHider
  */
-public class FullscreenActivity extends Activity /*implements Runnable*/{
+public class FullscreenActivity extends Activity {
 
 	private boolean mBound;
 
@@ -49,7 +51,8 @@ public class FullscreenActivity extends Activity /*implements Runnable*/{
 			GPSStorageBinder binder = (GPSStorageBinder) service;
 			gpsStoregeService = binder.getService();
 			mBound = true;
-
+			
+			updateView();
 		}
 
 		@Override
@@ -65,9 +68,7 @@ public class FullscreenActivity extends Activity /*implements Runnable*/{
 
 		setContentView(R.layout.activity_fullscreen);
 		
-//		dateFormat = android.text.format.DateFormat.getTimeFormat(getApplicationContext());
-		
-//		dateFormat = new DateFormat();
+		mBound = false;
 		
 		txtVelocidade = (TextView)findViewById(R.id.txtVelocidade);
 		txtPosicoes = (TextView)findViewById(R.id.txtPosicoes);
@@ -95,7 +96,6 @@ public class FullscreenActivity extends Activity /*implements Runnable*/{
 					updateView();
 				}else{
 					startOrConnectGPSService();
-					updateView();
 				}
 			}
 		});
@@ -106,14 +106,11 @@ public class FullscreenActivity extends Activity /*implements Runnable*/{
 		Intent intent = new Intent("GPSStorageService");
 		
 		if(isGPSStorageServiceRunning()){
-			if(!mBound){
-				bindService(intent, mConnection,Context.BIND_AUTO_CREATE);
-			}
+			bindService(intent, mConnection,Context.BIND_AUTO_CREATE);
 		}else{
 			startService(intent);
 			bindService(intent, mConnection,Context.BIND_AUTO_CREATE);
 		}
-		
 	}
 
 	private void stopGPSService(){
