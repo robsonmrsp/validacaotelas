@@ -7,12 +7,14 @@ import br.com.m2msolutions.client.container.FormInquiryCriticalEventsAttendance;
 import br.com.m2msolutions.client.images.Images;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.mr.dock.client.DockDesktop;
+import br.com.mr.dock.client.SinoticDesktop;
 import br.com.mr.dock.client.menu.DockSelectionAction;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -28,6 +30,9 @@ public class ScreenValidation implements EntryPoint {
 	}
 
 	public void onModuleLoad() {
+		Window.setMargin("0px");
+//		initAppSinotic();
+		
 		final FormLogin formLogin = new FormLogin();
 		formLogin.addValidateLoginListener(new Listener<LoginEvent>() {
 
@@ -35,13 +40,19 @@ public class ScreenValidation implements EntryPoint {
 			public void handleEvent(LoginEvent be) {
 				if (be.getPassValue().equals("m2mant")) {
 					formLogin.hide();
-					initApp();
+					initAppSinotic();
 				} else {
 					formLogin.invalidate();
 				}
 			}
 		});
 		formLogin.show();
+	}
+
+	private void initAppSinotic() {
+		RootPanel rootPanel = RootPanel.get();
+		SinoticDesktop dockDesktop = new SinoticDesktop();
+		rootPanel.add(dockDesktop);
 	}
 
 	private void initApp() {
