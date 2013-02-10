@@ -20,7 +20,7 @@
 	<context:property-placeholder />
 	<context:annotation-config />
 	<context:component-scan base-package="br.com.mr.storageposition.server" />
-	
+
 	<bean
 		class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer" />
 	<bean
@@ -39,9 +39,10 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" scope="singleton">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://127.0.0.1:5432/storage_position" />
+		<property name="url"
+			value="jdbc:postgresql://127.0.0.1:5432/testeConvert" />
 		<property name="username" value="postgres" />
-		<property name="password" value="masterkey" />
+		<property name="password" value="robson78" />
 	</bean>
 
 	<tx:annotation-driven />
