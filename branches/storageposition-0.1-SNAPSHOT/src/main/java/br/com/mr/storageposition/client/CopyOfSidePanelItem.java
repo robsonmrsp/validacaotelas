@@ -14,12 +14,12 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
-public class SidePanelItem extends FocusPanel {
+public class CopyOfSidePanelItem extends FocusPanel {
 	private FlexTable flexTable;
 	private Image icon;
 	private HTML label;
 
-	public SidePanelItem() {
+	public CopyOfSidePanelItem() {
 		initComponents();
 	}
 
@@ -52,8 +52,8 @@ public class SidePanelItem extends FocusPanel {
 			});
 			flexTable.setSize("100%", "100%");
 			flexTable.setWidget(0, 0, getIcon());
-			flexTable.getCellFormatter().setHeight(0, 0, "24");
-			flexTable.getCellFormatter().setWidth(0, 0, "42");
+			flexTable.getCellFormatter().setHeight(0, 0, "32");
+			flexTable.getCellFormatter().setWidth(0, 0, "52");
 			flexTable.setWidget(0, 1, getLabel());
 			flexTable.getCellFormatter().setHeight(0, 1, "");
 			flexTable.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
@@ -66,7 +66,7 @@ public class SidePanelItem extends FocusPanel {
 
 	private Image getIcon() {
 		if (icon == null) {
-			icon = new Image("http://cdn1.iconfinder.com/data/icons/crystalproject/24x24/apps/kbackgammon_engine.png");
+			icon = new Image("http://cdn1.iconfinder.com/data/icons/fatcow/32/cog.png");
 		}
 		return icon;
 	}

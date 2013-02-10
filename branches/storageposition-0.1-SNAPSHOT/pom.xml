@@ -11,6 +11,7 @@
 		<maven.compiler.target>1.6 </maven.compiler.target>
 		<gwt.version>2.4.0</gwt.version>
 		<cxf.version>2.6.3</cxf.version>
+		<eventservice.version> 1.2.0</eventservice.version>
 		<jackson.version>1.8.6</jackson.version>
 		<spring.version>3.0.6.RELEASE</spring.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
@@ -21,6 +22,11 @@
 			<artifactId>gwt-servlet</artifactId>
 			<version>${gwt.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.novanic.gwteventservice</groupId>
+			<artifactId>gwteventservice</artifactId>
+			<version>${eventservice.version}</version>
 		</dependency>
 
 		<dependency>

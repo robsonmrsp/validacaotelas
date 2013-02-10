@@ -1,5 +1,6 @@
 package br.com.mr.storageposition.server;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
+import br.com.mr.storageposition.server.entities.Cliente;
+import br.com.mr.storageposition.server.entities.Endereco;
+import br.com.mr.storageposition.server.facade.DaoCliente;
+import br.com.mr.storageposition.server.facade.DaoEndereco;
+import br.com.mr.storageposition.server.facade.JsonCliente;
+import br.com.mr.storageposition.server.facade.JsonEndereco;
 import br.com.mr.storageposition.server.facade.PositionsService;
 
 @Path("/storage")
@@ -19,6 +28,20 @@ public class StoragePositionRS {
 
 	@Inject
 	PositionsService positionsService;
+
+	@Inject
+	EnderecosService enderecosService;
+
+	@Inject
+	DataPushService<JsonPosition> dataPushService;
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/gen")
+	public Response gen() {
+		enderecosService.generateJsons();
+		return Response.ok().entity(Boolean.TRUE).build();
+	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -76,7 +99,10 @@ public class StoragePositionRS {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/position")
 	public Response storagePosition(JsonPosition position) {
-		positionsService.save(position);
+		Boolean save = positionsService.save(position);
+		if (save) {
+			dataPushService.send(position);
+		}
 		return Response.ok().entity(Boolean.TRUE).build();
 	}
 

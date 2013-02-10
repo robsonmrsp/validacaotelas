@@ -107,7 +107,7 @@ public class Prototipo extends SimplePanel {
 	}
 	private FocusPanel getFocusPanel_3() {
 		if (focusPanel_3 == null) {
-			focusPanel_3 = new SidePanelItem();
+//			focusPanel_3 = new SidePanelItem();
 		}
 		return focusPanel_3;
 	}

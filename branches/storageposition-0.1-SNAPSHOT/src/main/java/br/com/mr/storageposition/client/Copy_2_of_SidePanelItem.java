@@ -14,12 +14,12 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
-public class SidePanelItem extends FocusPanel {
+public class Copy_2_of_SidePanelItem extends FocusPanel {
 	private FlexTable flexTable;
 	private Image icon;
 	private HTML label;
 
-	public SidePanelItem() {
+	public Copy_2_of_SidePanelItem() {
 		initComponents();
 	}
 

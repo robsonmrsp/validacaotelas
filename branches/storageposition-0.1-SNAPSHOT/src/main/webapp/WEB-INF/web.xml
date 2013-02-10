@@ -12,7 +12,7 @@
 	<welcome-file-list>
 		<welcome-file>StoragePosition.html</welcome-file>
 	</welcome-file-list>
-	
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -22,9 +22,26 @@
 		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
+	
+	<servlet>
+		<servlet-name>EventService</servlet-name>
+		<servlet-class>de.novanic.eventservice.service.EventServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EventService</servlet-name>
+		<url-pattern>/storageposition/gwteventservice</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>CXFServlet</servlet-name>
 		<url-pattern>/ws/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>MonitoringService</servlet-name>
+		<servlet-class>br.com.mr.storageposition.server.MonitoringServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MonitoringService</servlet-name>
+		<url-pattern>/storageposition/MonitoringService</url-pattern>
 	</servlet-mapping>
 </web-app>
