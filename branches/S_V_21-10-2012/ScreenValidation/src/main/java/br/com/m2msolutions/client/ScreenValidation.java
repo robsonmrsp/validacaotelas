@@ -5,14 +5,19 @@ import br.com.m2msolutions.client.container.FormCriticalEventsAttendance;
 import br.com.m2msolutions.client.container.FormCriticalEventsConfiguration;
 import br.com.m2msolutions.client.container.FormInquiryCriticalEventsAttendance;
 import br.com.m2msolutions.client.images.Images;
+import br.com.m2msolutions.client.sinotic.container.SinoticContainer;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.mr.dock.client.DockDesktop;
 import br.com.mr.dock.client.SinoticDesktop;
 import br.com.mr.dock.client.menu.DockSelectionAction;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.Component;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -21,6 +26,8 @@ import com.google.gwt.user.client.ui.RootPanel;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class ScreenValidation implements EntryPoint {
+
+	private SinoticContainer container = new SinoticContainer();
 
 	// usado apenas em testes de layout rápido
 	public void on_ModuleLoad() {
@@ -31,8 +38,13 @@ public class ScreenValidation implements EntryPoint {
 
 	public void onModuleLoad() {
 		Window.setMargin("0px");
-//		initAppSinotic();
-		
+		initAppSinotic();
+	}
+
+	public void onModuleL_oad() {
+		Window.setMargin("0px");
+		// initAppSinotic();
+
 		final FormLogin formLogin = new FormLogin();
 		formLogin.addValidateLoginListener(new Listener<LoginEvent>() {
 
@@ -41,6 +53,7 @@ public class ScreenValidation implements EntryPoint {
 				if (be.getPassValue().equals("m2mant")) {
 					formLogin.hide();
 					initAppSinotic();
+					// initApp();
 				} else {
 					formLogin.invalidate();
 				}
@@ -52,7 +65,20 @@ public class ScreenValidation implements EntryPoint {
 	private void initAppSinotic() {
 		RootPanel rootPanel = RootPanel.get();
 		SinoticDesktop dockDesktop = new SinoticDesktop();
+		dockDesktop.addWindow(container);
+		dockDesktop.addTaskButton(createShowSinotic());
 		rootPanel.add(dockDesktop);
+	}
+
+	private Component createShowSinotic() {
+		Button button = new Button("Sinotico");
+		button.addSelectionListener(new SelectionListener<ButtonEvent>() {
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				container.show();
+			}
+		});
+		return button;
 	}
 
 	private void initApp() {
