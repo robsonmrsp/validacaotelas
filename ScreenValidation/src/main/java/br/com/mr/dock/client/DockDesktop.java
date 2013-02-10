@@ -125,6 +125,6 @@ public class DockDesktop extends LayoutContainer {
 		Draggable dragger = new Draggable(window, window.getHeader());
 		dragger.setContainer(this);  
 		dragger.setUseProxy(false);		
-		principalContainer.add(window);
+//		principalContainer.add(window);
 	}
 }
