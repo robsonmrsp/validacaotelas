@@ -36,14 +36,13 @@ public class ScreenValidation implements EntryPoint {
 		attendance.show();
 	}
 
-	public void onModuleLoad() {
+	public void onModuleL_oad() {
 		Window.setMargin("0px");
 		initAppSinotic();
 	}
 
-	public void onModuleL_oad() {
+	public void onModuleLoad() {
 		Window.setMargin("0px");
-		// initAppSinotic();
 
 		final FormLogin formLogin = new FormLogin();
 		formLogin.addValidateLoginListener(new Listener<LoginEvent>() {

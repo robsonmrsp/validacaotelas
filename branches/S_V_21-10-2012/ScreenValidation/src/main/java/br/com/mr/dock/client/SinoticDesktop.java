@@ -287,7 +287,7 @@ public class SinoticDesktop extends LayoutContainer {
 			centerContainer = new LayoutContainer();
 			centerContainer.setBorders(false);
 			centerContainer.setLayout(new CenterLayout());
-			centerContainer.add(getGridShortCuts());
+//			centerContainer.add(getGridShortCuts());
 		}
 		return centerContainer;
 	}
