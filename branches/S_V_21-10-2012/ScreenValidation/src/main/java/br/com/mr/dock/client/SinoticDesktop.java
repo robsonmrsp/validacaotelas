@@ -75,7 +75,7 @@ public class SinoticDesktop extends LayoutContainer {
 	private LayoutContainer getPrincipalContainer() {
 		if (principalContainer == null) {
 			principalContainer = new LayoutContainer() {
-				
+
 				@Override
 				protected void onRender(Element parent, int index) {
 					super.onRender(parent, index);
@@ -89,7 +89,7 @@ public class SinoticDesktop extends LayoutContainer {
 
 			principalContainer.setBorders(false);
 			principalContainer.setStyleName("sinotic-desktop");
-			
+
 			principalContainer.add(getLeftContainer(), new BorderLayoutData(LayoutRegion.WEST, 55.0f));
 			principalContainer.add(getRigthContainer(), new BorderLayoutData(LayoutRegion.EAST, 55.0f));
 			principalContainer.add(getCenterContainer(), new BorderLayoutData(LayoutRegion.CENTER));
@@ -104,10 +104,10 @@ public class SinoticDesktop extends LayoutContainer {
 			sinoticTopContainer.setId("sinoticTopContainer");
 			sinoticTopContainer.setStyleName("sinotic-top-container");
 			sinoticTopContainer.setBorders(false);
-			BorderLayoutData bld_logoContainer = new BorderLayoutData(LayoutRegion.EAST, 120.0f);
-			bld_logoContainer.setMinSize(120);
-			bld_logoContainer.setMaxSize(120);
-			sinoticTopContainer.add(getLogoContainer(), bld_logoContainer);
+			BorderLayoutData eastBorderData = new BorderLayoutData(LayoutRegion.EAST, 120.0f);
+			eastBorderData.setMinSize(120);
+			eastBorderData.setMaxSize(120);
+			sinoticTopContainer.add(getLogoContainer(), eastBorderData);
 			sinoticTopContainer.add(getLayoutContainer(), new BorderLayoutData(LayoutRegion.CENTER));
 		}
 		return sinoticTopContainer;
@@ -120,12 +120,10 @@ public class SinoticDesktop extends LayoutContainer {
 			sinoticBottomContainer.setStyleName("sinotic-botton-container");
 			sinoticBottomContainer.setBorders(false);
 			sinoticBottomContainer.setLayout(new BorderLayout());
-			getBottomMenu().setLayout(new RowLayout(Orientation.HORIZONTAL));
 			sinoticBottomContainer.add(getBottomMenu(), new BorderLayoutData(LayoutRegion.CENTER));
-			getClockContainer().setLayout(new CenterLayout());
-			BorderLayoutData bld_clockContainer = new BorderLayoutData(LayoutRegion.EAST, 120.0f);
-			bld_clockContainer.setMaxSize(120);
-			sinoticBottomContainer.add(getClockContainer(), bld_clockContainer);
+			BorderLayoutData eastBorderData = new BorderLayoutData(LayoutRegion.EAST, 120.0f);
+			eastBorderData.setMaxSize(120);
+			sinoticBottomContainer.add(getClockContainer(), eastBorderData);
 		}
 		return sinoticBottomContainer;
 	}
@@ -133,14 +131,16 @@ public class SinoticDesktop extends LayoutContainer {
 	public LayoutContainer getBottomMenu() {
 		if (sinoticTaskBar == null) {
 			sinoticTaskBar = new SinoticTaskBar();
-			sinoticTaskBar.setSize("-1", "32");
+			sinoticTaskBar.setSize("-1", "500");
 			sinoticTaskBar.setId("sinoticTaskBar");
-			sinoticTaskBar.setStyleName("sinotic-task-bar");
+			sinoticTaskBar.setStyleName("sinotic-taskbar");
+			sinoticTaskBar.setLayout(new RowLayout(Orientation.HORIZONTAL));
 		}
 		return sinoticTaskBar;
 	}
 
-	public void addTaskButton(Component component) {
+	public void addTaskComponent(Component component) {
+
 		sinoticTaskBar.add(component);
 	}
 
@@ -149,12 +149,13 @@ public class SinoticDesktop extends LayoutContainer {
 		Draggable dragger = new Draggable(window, window.getHeader());
 		dragger.setContainer(this);
 		dragger.setUseProxy(false);
-//		principalContainer.add(window);
+		// principalContainer.add(window);
 	}
 
 	private LayoutContainer getClockContainer() {
 		if (clockContainer == null) {
 			clockContainer = new LayoutContainer();
+			clockContainer.setLayout(new CenterLayout());
 			clockContainer.setStyleName("sinotic-clock");
 			clockContainer.setBorders(false);
 			clockContainer.add(getClock());
@@ -287,7 +288,7 @@ public class SinoticDesktop extends LayoutContainer {
 			centerContainer = new LayoutContainer();
 			centerContainer.setBorders(false);
 			centerContainer.setLayout(new CenterLayout());
-//			centerContainer.add(getGridShortCuts());
+			// centerContainer.add(getGridShortCuts());
 		}
 		return centerContainer;
 	}
@@ -301,42 +302,49 @@ public class SinoticDesktop extends LayoutContainer {
 		}
 		return image_1;
 	}
+
 	private Image getImage_2() {
 		if (image_2 == null) {
 			image_2 = new Image("http://cdn1.iconfinder.com/data/icons/IMPRESSIONS/business/png/64/pie_chart.png");
 		}
 		return image_2;
 	}
+
 	private Image getImage_3() {
 		if (image_3 == null) {
 			image_3 = new Image("http://cdn1.iconfinder.com/data/icons/crystalproject/64x64/filesystems/Globe2.png");
 		}
 		return image_3;
 	}
+
 	private Image getImage_4() {
 		if (image_4 == null) {
 			image_4 = new Image("http://cdn1.iconfinder.com/data/icons/oxygen/64x64/apps/kchart.png");
 		}
 		return image_4;
 	}
+
 	private Image getImage_5() {
 		if (image_5 == null) {
 			image_5 = new Image("http://cdn1.iconfinder.com/data/icons/IMPRESSIONS/business/png/64/pie_chart.png");
 		}
 		return image_5;
 	}
+
 	private Image getImage_6() {
 		if (image_6 == null) {
 			image_6 = new Image("http://cdn1.iconfinder.com/data/icons/crystalproject/64x64/filesystems/Globe2.png");
 		}
 		return image_6;
 	}
+
 	private Image getImage_7() {
 		if (image_7 == null) {
 			image_7 = new Image("http://cdn1.iconfinder.com/data/icons/oxygen/64x64/apps/kchart.png");
 		}
 		return image_7;
 	}
+
 	private Image getImage_8() {
 		if (image_8 == null) {
 			image_8 = new Image("http://cdn1.iconfinder.com/data/icons/IMPRESSIONS/business/png/64/pie_chart.png");

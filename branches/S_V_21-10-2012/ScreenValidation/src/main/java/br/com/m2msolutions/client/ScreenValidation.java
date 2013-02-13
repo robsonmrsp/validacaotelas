@@ -7,6 +7,7 @@ import br.com.m2msolutions.client.container.FormInquiryCriticalEventsAttendance;
 import br.com.m2msolutions.client.images.Images;
 import br.com.m2msolutions.client.sinotic.container.BaseFieldSet;
 import br.com.m2msolutions.client.sinotic.container.BaseWindow;
+import br.com.m2msolutions.client.sinotic.container.RadioTaskBar;
 import br.com.m2msolutions.client.sinotic.container.SinoticContainer;
 import br.com.m2msolutions.client.sinotic.container.SinoticInspectorWindow;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
@@ -73,10 +74,20 @@ public class ScreenValidation implements EntryPoint {
 
 		SinoticDesktop dockDesktop = new SinoticDesktop();
 
+		dockDesktop.addWindow(container);
 		dockDesktop.addWindow(createSinoticInspector());
-		dockDesktop.addTaskButton(createShowSinotic());
+
+		dockDesktop.addTaskComponent(createRadioGroup());
+		dockDesktop.addTaskComponent(createShowSinotic());
 
 		rootPanel.add(dockDesktop);
+	}
+
+	private Component createRadioGroup() {
+		RadioTaskBar radioTaskBar = new RadioTaskBar();
+		radioTaskBar.setSize(400, 32);
+
+		return radioTaskBar;
 	}
 
 	private SinoticWindow createSinoticInspector() {
@@ -87,7 +98,7 @@ public class ScreenValidation implements EntryPoint {
 		}
 		return sinoticInspectorWindow;
 	}
-	
+
 	private BaseFieldSet getFieldSet() {
 		BaseFieldSet baseFieldSet = new BaseFieldSet();
 		baseFieldSet.setLegend("Geral");
@@ -116,7 +127,8 @@ public class ScreenValidation implements EntryPoint {
 		button.addSelectionListener(new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				sinoticInspectorWindow.show();
+				// sinoticInspectorWindow.show();
+				container.show();
 			}
 		});
 		return button;
