@@ -164,7 +164,11 @@ body {
 	background-image: url("../images/top-background.png") !important;
 }
 
-.sinotic-task-bar {
+.sinotic-taskbar label {
+	color: #fffffd !important;
+}
+
+.sinotic-taskbar {
 	border-style: solid !important;
 	border-right-style: solid;
 	border-right-width: 1px !important;
@@ -173,6 +177,7 @@ body {
 	border-top-width: 0px;
 	border-bottom-width: 0px;
 	border-top-width: 0px;
+	vertical-align: middle !important;;
 }
 
 .sinotic-clock {
@@ -395,7 +400,8 @@ body {
 	color: #231a1a;
 	font-family: Arial, Helvetica, Sans-serif !important;
 }
-.base-fieldset-content{
+
+.base-fieldset-content {
 	padding-left: 15px;
 	padding-top: 12px;
 	padding-bottom: 12px;
