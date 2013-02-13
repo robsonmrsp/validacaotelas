@@ -155,4 +155,13 @@ public interface Images extends ClientBundle {
 	@Source("br/com/m2msolutions/client/images/canvas.png")
 	ImageResource canvas();
 
+	@Source("br/com/m2msolutions/client/images/close-button.png")
+	ImageResource closeButton();
+
+	@Source("br/com/m2msolutions/client/images/restore-button.png")
+	ImageResource restoreButton();
+
+	@Source("br/com/m2msolutions/client/images/front-bus.png")
+	ImageResource frontBus();
+
 }
