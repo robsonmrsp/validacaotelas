@@ -5,10 +5,14 @@ import br.com.m2msolutions.client.container.FormCriticalEventsAttendance;
 import br.com.m2msolutions.client.container.FormCriticalEventsConfiguration;
 import br.com.m2msolutions.client.container.FormInquiryCriticalEventsAttendance;
 import br.com.m2msolutions.client.images.Images;
+import br.com.m2msolutions.client.sinotic.container.BaseFieldSet;
+import br.com.m2msolutions.client.sinotic.container.BaseWindow;
 import br.com.m2msolutions.client.sinotic.container.SinoticContainer;
+import br.com.m2msolutions.client.sinotic.container.SinoticInspectorWindow;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.mr.dock.client.DockDesktop;
 import br.com.mr.dock.client.SinoticDesktop;
+import br.com.mr.dock.client.SinoticWindow;
 import br.com.mr.dock.client.menu.DockSelectionAction;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -17,6 +21,7 @@ import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Component;
+import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
@@ -28,6 +33,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class ScreenValidation implements EntryPoint {
 
 	private SinoticContainer container = new SinoticContainer();
+	private BaseWindow container2 = new BaseWindow();
+	SinoticInspectorWindow sinoticInspectorWindow;
 
 	// usado apenas em testes de layout rápido
 	public void on_ModuleLoad() {
@@ -63,10 +70,45 @@ public class ScreenValidation implements EntryPoint {
 
 	private void initAppSinotic() {
 		RootPanel rootPanel = RootPanel.get();
+
 		SinoticDesktop dockDesktop = new SinoticDesktop();
-		dockDesktop.addWindow(container);
+
+		dockDesktop.addWindow(createSinoticInspector());
 		dockDesktop.addTaskButton(createShowSinotic());
+
 		rootPanel.add(dockDesktop);
+	}
+
+	private SinoticWindow createSinoticInspector() {
+		if (sinoticInspectorWindow == null) {
+			sinoticInspectorWindow = new SinoticInspectorWindow();
+			sinoticInspectorWindow.setResizable(true);
+			sinoticInspectorWindow.setSize(310, 570);
+		}
+		return sinoticInspectorWindow;
+	}
+	
+	private BaseFieldSet getFieldSet() {
+		BaseFieldSet baseFieldSet = new BaseFieldSet();
+		baseFieldSet.setLegend("Geral");
+		baseFieldSet.setContent(new Html(createHtmlGeral()));
+
+		return baseFieldSet;
+	}
+
+	private String createHtmlGeral() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("	<div id='general' class='text-info'>");
+		buffer.append("	Cod.:<br>");
+		buffer.append("	Veloc.:<br>");
+		buffer.append("	QT. Passag.:<br>");
+		buffer.append("	Última métrica:<br>");
+		buffer.append("	Prox. Ponto:<br>");
+		buffer.append("	%Percorrida:<br>");
+		buffer.append("	Onde:<br>");
+		buffer.append("</div>");
+
+		return buffer.toString();
 	}
 
 	private Component createShowSinotic() {
@@ -74,7 +116,7 @@ public class ScreenValidation implements EntryPoint {
 		button.addSelectionListener(new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				container.show();
+				sinoticInspectorWindow.show();
 			}
 		});
 		return button;
