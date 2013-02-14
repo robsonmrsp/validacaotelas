@@ -4,7 +4,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.google.gwt.user.client.ui.RootPanel;
 
-public abstract class SinoticPanel extends LayoutContainer{
+public abstract class SinoticWindow extends LayoutContainer{
 	public abstract Component getHeader();
 	
 	public void show() {
