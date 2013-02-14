@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.Widget;
 
 public class RightTerminalContainer extends LayoutContainer {
 	private LayoutContainer verticalTabGroup;
@@ -37,6 +38,7 @@ public class RightTerminalContainer extends LayoutContainer {
 	private LayoutContainer countContainer;
 	private Html count;
 	private LayoutContainer nameContainer;
+	private Html terminalInfo;
 
 	public RightTerminalContainer() {
 		initComponents();
@@ -246,8 +248,17 @@ public class RightTerminalContainer extends LayoutContainer {
 			countContainer.setBorders(false);
 			countContainer.setLayout(new RowLayout(Orientation.HORIZONTAL));
 			countContainer.add(getCount());
+			countContainer.add(getTerminalInfo());
 		}
 		return countContainer;
+	}
+
+	private Html getTerminalInfo() {
+		if (terminalInfo == null) {
+			terminalInfo = new Html("Informação terminal");
+			terminalInfo.setStyleName("right-info-overflow");
+		}
+		return terminalInfo;
 	}
 
 	private Html getCount() {

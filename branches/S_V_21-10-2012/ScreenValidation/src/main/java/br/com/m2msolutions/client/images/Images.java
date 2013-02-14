@@ -164,4 +164,13 @@ public interface Images extends ClientBundle {
 	@Source("br/com/m2msolutions/client/images/front-bus.png")
 	ImageResource frontBus();
 
+	@Source("br/com/m2msolutions/client/images/close-red-bt.png")
+	ImageResource closeSinotic();
+
+	@Source("br/com/m2msolutions/client/images/seta-baixo.png")
+	ImageResource setaBaixo();
+
+	@Source("br/com/m2msolutions/client/images/image-label.png")
+	ImageResource imageLabel();
+
 }
