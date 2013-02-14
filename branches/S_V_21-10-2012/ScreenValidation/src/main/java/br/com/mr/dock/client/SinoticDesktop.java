@@ -144,7 +144,7 @@ public class SinoticDesktop extends LayoutContainer {
 		sinoticTaskBar.add(component);
 	}
 
-	public void addWindow(SinoticWindow window) {
+	public void addWindow(SinoticPanel window) {
 		window.hide();
 		Draggable dragger = new Draggable(window, window.getHeader());
 		dragger.setContainer(this);

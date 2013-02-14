@@ -12,7 +12,7 @@ import br.com.m2msolutions.client.sinotic.container.SinoticInspectorWindow;
 import br.com.m2msolutions.shared.dto.DtoCriticalEvent;
 import br.com.mr.dock.client.DockDesktop;
 import br.com.mr.dock.client.SinoticDesktop;
-import br.com.mr.dock.client.SinoticWindow;
+import br.com.mr.dock.client.SinoticPanel;
 import br.com.mr.dock.client.menu.DockSelectionAction;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -86,7 +86,7 @@ public class ScreenValidation implements EntryPoint {
 		rootPanel.add(dockDesktop);
 	}
 
-	private SinoticWindow createSinoticWindow() {
+	private SinoticPanel createSinoticWindow() {
 		if (sinoticWindow == null) {
 			sinoticWindow = new SinoticContainer();
 		}
@@ -102,7 +102,7 @@ public class ScreenValidation implements EntryPoint {
 		return radioTaskBar;
 	}
 
-	private SinoticWindow createSinoticInspector() {
+	private SinoticPanel createSinoticInspector() {
 		if (sinoticInspectorWindow == null) {
 			sinoticInspectorWindow = new SinoticInspectorWindow();
 			sinoticInspectorWindow.setResizable(true);
