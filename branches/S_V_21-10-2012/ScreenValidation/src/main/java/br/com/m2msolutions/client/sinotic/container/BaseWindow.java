@@ -1,7 +1,7 @@
 package br.com.m2msolutions.client.sinotic.container;
 
 import br.com.m2msolutions.client.images.Images;
-import br.com.mr.dock.client.SinoticPanel;
+import br.com.mr.dock.client.SinoticWindow;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
@@ -23,7 +23,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 
-public class BaseWindow extends SinoticPanel {
+public class BaseWindow extends SinoticWindow {
 
 	private LayoutContainer headerContainer;
 	private LayoutContainer principal;
