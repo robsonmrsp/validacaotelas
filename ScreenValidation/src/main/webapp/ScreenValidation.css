@@ -164,11 +164,18 @@ body {
 	background-image: url("../images/top-background.png") !important;
 }
 
+.sinotic-taskbar #radioTask {
+	
+}
+
 .sinotic-taskbar label {
 	color: #fffffd !important;
+	/* 	font-weight: bold; */
+	font-size: 13pt !important;
 }
 
 .sinotic-taskbar {
+	padding-top: 5px !important;
 	border-style: solid !important;
 	border-right-style: solid;
 	border-right-width: 1px !important;
@@ -212,6 +219,42 @@ body {
 	top: -18px !important;
 	background-color: #f8c51e;
 	-moz-box-shadow: 10px 10px 5px #888888;
+	box-shadow: 1px 1px 1px #000000;
+	border-radius: 4px;
+}
+
+.left-info-overflow {
+	background-image: url("../images/bg-info-terminal.png") !important;
+	font-size: 12px;
+	height: 24px;
+	width: 500px;
+	text-align: left;
+	padding-left: 50px;
+	padding-top: 5px;
+	z-index: -1;
+	left: 50px !important;
+	color: #000000 !important;
+	vertical-align: middle;
+	top: -22px !important;
+	-moz-box-shadow: -2px 1px 1px #888888;
+	box-shadow: -2px 1px 1px #888888;
+	border-radius: 4px;
+}
+
+.right-info-overflow {
+	background-image: url("../images/bg-info-terminal.png") !important;
+	font-size: 12px;
+	height: 24px;
+	width: 500px;
+	text-align: right;
+	padding-right: 50px;
+	padding-top: 5px;
+	z-index: -1;
+	left: -480px !important;
+	color: #000000 !important;
+	vertical-align: middle;
+	top: -22px !important;
+	-moz-box-shadow: 1px 1px 1px #000000;
 	box-shadow: 1px 1px 1px #000000;
 	border-radius: 4px;
 }
@@ -362,6 +405,11 @@ body {
 	padding-left: 5px;
 }
 
+.base-window-header img {
+	top: 2px !important;
+	left: 1px !important;
+}
+
 .base-window-header {
 	-webkit-border-radius: 3px 3px 0px 0px;
 	-moz-border-radius: 3px 3px 0px 0px;
@@ -405,4 +453,35 @@ body {
 	padding-left: 15px;
 	padding-top: 12px;
 	padding-bottom: 12px;
+}
+
+.sinotic-header img {
+	cursor: pointer;
+}
+
+.sinotic-header #headerContainer {
+	cursor: move;
+	top: -25px !important;
+	background-image: url("../images/bg-header-sinotico.png") !important;
+}
+
+.sinotic-header {
+	/* 	background-image: url("../images/bg-header-sinotico.png") !important; */
+	font: 14px Arial, Helvetica, Sans-serif;
+	color: #ffffff;
+	/* 	vertical-align: middle; */
+	font-weight: bold;
+	overflow: visible !important;
+}
+
+.sinotic-footer .footer-text {
+	top: 4px !important;
+}
+
+.sinotic-footer {
+	background-image: url("../images/bg-footer-sinotico.png") !important;
+	top: 0px !important;
+	border-radius: 0px 0px 4px 4px !important;
+	font: 14px Arial, Helvetica, Sans-serif;
+	color: #ffffff;
 }

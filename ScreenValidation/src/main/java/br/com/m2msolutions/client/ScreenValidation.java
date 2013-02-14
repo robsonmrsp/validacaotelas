@@ -6,7 +6,6 @@ import br.com.m2msolutions.client.container.FormCriticalEventsConfiguration;
 import br.com.m2msolutions.client.container.FormInquiryCriticalEventsAttendance;
 import br.com.m2msolutions.client.images.Images;
 import br.com.m2msolutions.client.sinotic.container.BaseFieldSet;
-import br.com.m2msolutions.client.sinotic.container.BaseWindow;
 import br.com.m2msolutions.client.sinotic.container.RadioTaskBar;
 import br.com.m2msolutions.client.sinotic.container.SinoticContainer;
 import br.com.m2msolutions.client.sinotic.container.SinoticInspectorWindow;
@@ -33,9 +32,8 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class ScreenValidation implements EntryPoint {
 
-	private SinoticContainer container = new SinoticContainer();
-	private BaseWindow container2 = new BaseWindow();
-	SinoticInspectorWindow sinoticInspectorWindow;
+	private SinoticContainer sinoticWindow;
+	private SinoticInspectorWindow sinoticInspectorWindow;
 
 	// usado apenas em testes de layout rápido
 	public void on_ModuleLoad() {
@@ -44,9 +42,10 @@ public class ScreenValidation implements EntryPoint {
 		attendance.show();
 	}
 
-	public void onModuleL_oad() {
+	public void onModuleLoa_d() {
 		Window.setMargin("0px");
 		initAppSinotic();
+		sinoticWindow.show();
 	}
 
 	public void onModuleLoad() {
@@ -60,7 +59,7 @@ public class ScreenValidation implements EntryPoint {
 				if (be.getPassValue().equals("m2mant")) {
 					formLogin.hide();
 					initAppSinotic();
-					// initApp();
+					showAllWindows();
 				} else {
 					formLogin.invalidate();
 				}
@@ -69,23 +68,36 @@ public class ScreenValidation implements EntryPoint {
 		formLogin.show();
 	}
 
+	protected void showAllWindows() {
+		sinoticWindow.show();
+		sinoticInspectorWindow.show();
+	}
+
 	private void initAppSinotic() {
 		RootPanel rootPanel = RootPanel.get();
 
 		SinoticDesktop dockDesktop = new SinoticDesktop();
 
-		dockDesktop.addWindow(container);
+		dockDesktop.addWindow(createSinoticWindow());
 		dockDesktop.addWindow(createSinoticInspector());
 
 		dockDesktop.addTaskComponent(createRadioGroup());
-		dockDesktop.addTaskComponent(createShowSinotic());
 
 		rootPanel.add(dockDesktop);
 	}
 
+	private SinoticWindow createSinoticWindow() {
+		if (sinoticWindow == null) {
+			sinoticWindow = new SinoticContainer();
+		}
+		return sinoticWindow;
+	}
+
 	private Component createRadioGroup() {
 		RadioTaskBar radioTaskBar = new RadioTaskBar();
-		radioTaskBar.setSize(400, 32);
+
+		radioTaskBar.setId("radioTask");
+		radioTaskBar.setSize(800, 32);
 
 		return radioTaskBar;
 	}
@@ -128,7 +140,7 @@ public class ScreenValidation implements EntryPoint {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				// sinoticInspectorWindow.show();
-				container.show();
+				sinoticWindow.show();
 			}
 		});
 		return button;

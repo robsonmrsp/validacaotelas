@@ -37,6 +37,7 @@ public class LeftTerminalContainer extends LayoutContainer {
 	private LayoutContainer countContainer;
 	private Html count;
 	private LayoutContainer nameContainer;
+	private Html terminalInfo;
 
 	public LeftTerminalContainer() {
 		initComponents();
@@ -247,8 +248,18 @@ public class LeftTerminalContainer extends LayoutContainer {
 			countContainer.setBorders(false);
 			countContainer.setLayout(new RowLayout(Orientation.HORIZONTAL));
 			countContainer.add(getCount());
+
+			countContainer.add(getTerminalInfo());
 		}
 		return countContainer;
+	}
+
+	private Html getTerminalInfo() {
+		if (terminalInfo == null) {
+			terminalInfo = new Html("Informação terminal");
+			terminalInfo.setStyleName("left-info-overflow");
+		}
+		return terminalInfo;
 	}
 
 	private Html getCount() {
