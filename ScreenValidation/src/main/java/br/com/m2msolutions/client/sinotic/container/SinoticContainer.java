@@ -1,20 +1,20 @@
 package br.com.m2msolutions.client.sinotic.container;
 
 import br.com.m2msolutions.client.images.Images;
+import br.com.m2msolutions.client.sinotic.canvas.SinoticCanvas;
 import br.com.mr.dock.client.SinoticWindow;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.fx.Resizable;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.layout.AbsoluteData;
 import com.extjs.gxt.ui.client.widget.layout.AbsoluteLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
+import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 
 public class SinoticContainer extends SinoticWindow {
 	private LeftTerminalContainer terminalContainer;
@@ -22,7 +22,7 @@ public class SinoticContainer extends SinoticWindow {
 	private RightTerminalContainer rightTerminalContainer;
 	private Image image;
 	private LayoutContainer sinoticHeader;
-	private LayoutContainer sinoticCanvas;
+	private SinoticCanvas sinoticCanvas;
 	private LayoutContainer sinoticFooter;
 	private LayoutContainer headerContainer;
 	private LayoutContainer footerContainer;
@@ -94,6 +94,13 @@ public class SinoticContainer extends SinoticWindow {
 		}
 		return image;
 	}
+	
+	/*private Canvas getCanvas(){
+		
+		SinoticCanvas sinoticoCanvas = new SinoticCanvas();
+		return sinoticoCanvas.getCanvas();
+		
+	}*/
 
 	private LayoutContainer getSinoticHeader() {
 		if (sinoticHeader == null) {
@@ -110,10 +117,11 @@ public class SinoticContainer extends SinoticWindow {
 
 	private LayoutContainer getSinoticCanvas() {
 		if (sinoticCanvas == null) {
-			sinoticCanvas = new LayoutContainer();
+			sinoticCanvas = new SinoticCanvas();
 			sinoticCanvas.setId("sinoticCanvas");
-			sinoticCanvas.setLayout(new CenterLayout());
-			sinoticCanvas.add(getImage());
+//			sinoticCanvas.setLayout(new CenterLayout());
+//			sinoticCanvas.add(getImage());
+//			sinoticCanvas.add(getCanvas());
 			sinoticCanvas.setBorders(false);
 		}
 		return sinoticCanvas;

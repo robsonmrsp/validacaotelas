@@ -172,5 +172,8 @@ public interface Images extends ClientBundle {
 
 	@Source("br/com/m2msolutions/client/images/image-label.png")
 	ImageResource imageLabel();
+	
+	@Source("br/com/m2msolutions/client/images/point.png")
+	ImageResource imagePoint();
 
 }
