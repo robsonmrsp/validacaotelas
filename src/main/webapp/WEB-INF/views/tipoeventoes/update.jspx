@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_com_far_eventmanagerpanels_domain_TipoEvento" modelAttribute="tipoEvento" path="/tipoeventoes" versionField="Version" z="LLoy7GjmMPMXLoT4ZY/542rUwyc=">
+        <field:input field="nome" id="c_com_far_eventmanagerpanels_domain_TipoEvento_nome" min="3" required="true" z="jBCfPtHEcv5aS/wSHC3/mZtqbLM="/>
+    </form:update>
+</div>

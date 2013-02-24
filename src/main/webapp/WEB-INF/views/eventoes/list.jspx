@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_com_far_eventmanagerpanels_domain_Evento" items="${eventoes}" z="0wEZpVF4Hiklzw5nZc+wjrsESzE=">
+        <table:table data="${eventoes}" id="l_com_far_eventmanagerpanels_domain_Evento" path="/eventoes" z="2vKWJ25Ab2M31rhAU0mKxfj6mUk=">
+            <table:column id="c_com_far_eventmanagerpanels_domain_Evento_nome" property="nome" z="N2EM3qaX5iXDY4xe4C8fBHnd+mc="/>
+            <table:column id="c_com_far_eventmanagerpanels_domain_Evento_descricao" property="descricao" z="FXKFh53EhN5G5P7R+celW2e09yA="/>
+            <table:column id="c_com_far_eventmanagerpanels_domain_Evento_tipoEvento" property="tipoEvento" z="IEZnSZdKLEbBw6aqR3Oa6TFnVeQ="/>
+            <table:column id="c_com_far_eventmanagerpanels_domain_Evento_painel" property="painel" z="3wg98/AO5e1KQjcy7KFJawsnRj0="/>
+            <table:column date="true" dateTimePattern="${evento_datahorainicio_date_format}" id="c_com_far_eventmanagerpanels_domain_Evento_dataHoraInicio" property="dataHoraInicio" z="68FNfHAL3yyW0heWiuvViCUqdvs="/>
+            <table:column date="true" dateTimePattern="${evento_datahorafim_date_format}" id="c_com_far_eventmanagerpanels_domain_Evento_dataHoraFim" property="dataHoraFim" z="nXz2mdQkqTOWm9wPmIeTyifS9CI="/>
+        </table:table>
+    </page:list>
+</div>

@@ -1,0 +1,30 @@
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-02-16 20:53:03
+project --topLevelPackage com.far.eventManagerPanels
+jpa setup --provider HIBERNATE --database HYPERSONIC_IN_MEMORY
+entity jpa --class ~.domain.Painel --testAutomatically
+field string --fieldName nome --notNull  --sizeMin 2
+field string --fieldName codigo --notNull --sizeMin 2
+entity jpa --class ~.domain.TipoEvento --testAutomatically
+field string --fieldName nome --notNull --sizeMin 3
+entity jpa --class ~.domain.Evento --testAutomatically
+field string --fieldName nome --notNull --sizeMin 3
+field string --fieldName descricao --sizeMin 3
+field date --fieldName dataInicio --notNull --type java.util.Date --dateTimeFormatPattern dd-MM-yyyy
+field date --fieldName horaInicio --notNull --type java.util.Date --timeFormat SHORT
+field date --fieldName dataFim --notNull --type java.util.Date --dateTimeFormatPattern dd-MM-yyyy
+field date --fieldName horaFim --notNull --type java.util.Date --timeFormat SHORT
+field reference --fieldName tipoEvento --type ~.domain.TipoEvento
+field reference --fieldName painel --type ~.domain.Painel
+field string --fieldName imagemLogo --notNull --sizeMin 3
+field string --fieldName imagemPlanoFunco --notNull --sizeMin 3
+perform tests
+perform eclipse
+web mvc setup
+web mvc all --package ~.web
+exit
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-02-16 21:11:02
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-02-16 21:27:32
+dependency add --groupId postgresql --artifactId postgresql --version 9.0-801.jdbc3
+persistence setup --database POSTGRES --provider HIBERNATE --databaseName ravoni_db --userName postgres --password masterkey
+perform package
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-02-17 15:05:28
