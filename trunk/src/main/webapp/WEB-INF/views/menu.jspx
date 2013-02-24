@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" id="menu" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
+        <menu:category id="c_painel" z="md24Kg4m+9PjDU+d0hOP4tPwE6o=">
+            <menu:item id="i_painel_new" messageCode="global_menu_new" url="/painels?form" z="yNWPJ79rO6bd6xofQykIQGgfyKM="/>
+            <menu:item id="i_painel_list" messageCode="global_menu_list" url="/painels?page=1&amp;size=${empty param.size ? 10 : param.size}" z="vGeAOr+KdWfOJXmzJzPENpUQNgc="/>
+        </menu:category>
+        <menu:category id="c_tipoevento" z="/jmJ4WtO58r2sFWyNLWVY/9vSHY=">
+            <menu:item id="i_tipoevento_new" messageCode="global_menu_new" url="/tipoeventoes?form" z="Xos5uSxhGEuzbWAcvBvo1x3fd0U="/>
+            <menu:item id="i_tipoevento_list" messageCode="global_menu_list" url="/tipoeventoes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="MozN3MKlcbPSCZFp07R4pHzgX/Y="/>
+        </menu:category>
+        <menu:category id="c_evento" z="I3ePdo1PFP3Gnqs/t2tVrZ9Sb4M=">
+            <menu:item id="i_evento_new" messageCode="global_menu_new" url="/eventoes?form" z="4YYTeuSZjhbJFQxB8q05N+mjYJM="/>
+            <menu:item id="i_evento_list" messageCode="global_menu_list" url="/eventoes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="qyxuF7Gp/xvZuFJ+JkgDdQTV/MM="/>
+        </menu:category>
+    </menu:menu>
+</div>

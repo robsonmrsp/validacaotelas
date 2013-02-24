@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_com_far_eventmanagerpanels_domain_Evento" object="${evento}" path="/eventoes" z="wSB2WpNOqqLx6w7QO0BINS2WM30=">
+        <field:display field="nome" id="s_com_far_eventmanagerpanels_domain_Evento_nome" object="${evento}" z="LSjlWRUJAO7/zsU3nnexcI+Cwoc="/>
+        <field:display field="descricao" id="s_com_far_eventmanagerpanels_domain_Evento_descricao" object="${evento}" z="yZ0VG/OIXXuO6LJJ9+L9qo4n22I="/>
+        <field:display field="tipoEvento" id="s_com_far_eventmanagerpanels_domain_Evento_tipoEvento" object="${evento}" z="ue44D9o2DILfxwWycbLXU1tuaFQ="/>
+        <field:display field="painel" id="s_com_far_eventmanagerpanels_domain_Evento_painel" object="${evento}" z="1kY1sUQHLNHya2qStdOSph4iChI="/>
+        <field:display field="imagemLogo" id="s_com_far_eventmanagerpanels_domain_Evento_imagemLogo" object="${evento}" z="t7Zq3tz9wNNRbmg6wBFjRGijZvo="/>
+        <field:display date="true" dateTimePattern="${evento_datahorainicio_date_format}" field="dataHoraInicio" id="s_com_far_eventmanagerpanels_domain_Evento_dataHoraInicio" object="${evento}" z="sbJsGEm83u1GxL2Lslif20QuY74="/>
+        <field:display date="true" dateTimePattern="${evento_datahorafim_date_format}" field="dataHoraFim" id="s_com_far_eventmanagerpanels_domain_Evento_dataHoraFim" object="${evento}" z="CfUp7eLxg4cEagTtUrOylgHGI3E="/>
+        <field:display field="imagemPlanoFundo" id="s_com_far_eventmanagerpanels_domain_Evento_imagemPlanoFundo" object="${evento}" z="3MZ37cipuNjMSeqG8Mw6eb2ACsU="/>
+    </page:show>
+</div>
