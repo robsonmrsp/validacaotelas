@@ -10,10 +10,6 @@ public class PositionMessage {
     
     private float speed;
     
-    private double altitude;
-    
-    private Float accuracy;
-    
     private long creationDate;
     
 
@@ -47,22 +43,6 @@ public class PositionMessage {
 
 	public void setSpeed(float speed) {
 		this.speed = speed;
-	}
-
-	public double getAltitude() {
-		return altitude;
-	}
-
-	public void setAltitude(double altitude) {
-		this.altitude = altitude;
-	}
-
-	public Float getAccuracy() {
-		return accuracy;
-	}
-
-	public void setAccuracy(Float accuracy) {
-		this.accuracy = accuracy;
 	}
 
 	public long getCreationDate() {

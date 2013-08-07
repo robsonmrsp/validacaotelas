@@ -12,10 +12,16 @@ public class GPSServiceStartBoot extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if(!isGPSStorageServiceRunning(context)){
+		/*if(!isGPSStorageServiceRunning(context)){
 			Intent intentStorageService = new Intent("GPSStorageService");
 			context.startService(intentStorageService);
+		}*/
+		
+		if(!isGPSStorageServiceRunning(context)){ 
+			Intent intentStorageService = new Intent("PositionCollectorService");
+			context.startService(intentStorageService);
 		}
+		
 	}
 	
 	private boolean isGPSStorageServiceRunning(Context context) {

@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +30,7 @@ public class FullscreenActivity extends Activity {
 
 	private boolean mBound;
 
-	private GPSStorageService gpsStoregeService;
+//	private GPSStorageService gpsStoregeService;
 	
 	private TextView txtServicoIniciado;
 	private TextView txtUltimaPosicao;
@@ -40,11 +38,9 @@ public class FullscreenActivity extends Activity {
 	private TextView txtPosicoes;
 
 	private DecimalFormat decimalFormat = new DecimalFormat("###.##");
-	//private DateFormat dateFormat;
-	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM HH:mm:ss"); 
 
-	private ServiceConnection mConnection = new ServiceConnection() {
+	/*private ServiceConnection mConnection = new ServiceConnection() {
 
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -59,7 +55,7 @@ public class FullscreenActivity extends Activity {
 		public void onServiceDisconnected(ComponentName arg0) {
 			mBound = false;
 		}
-	};
+	};*/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +85,7 @@ public class FullscreenActivity extends Activity {
 			}
 		});
 		
-		findViewById(R.id.btAtualizarDados).setOnClickListener(new OnClickListener() {
+		/*findViewById(R.id.btAtualizarDados).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				if(mBound){
@@ -98,36 +94,44 @@ public class FullscreenActivity extends Activity {
 					startOrConnectGPSService();
 				}
 			}
-		});
+		});*/
 
 	}
 
 	private void startOrConnectGPSService(){
-		Intent intent = new Intent("GPSStorageService");
+		
+		Intent intent = new Intent("PositionCollectorService");
+		startService(intent);
+		
+		/*Intent intent = new Intent("GPSStorageService");
 		
 		if(isGPSStorageServiceRunning()){
 			bindService(intent, mConnection,Context.BIND_AUTO_CREATE);
 		}else{
 			startService(intent);
 			bindService(intent, mConnection,Context.BIND_AUTO_CREATE);
-		}
+		}*/
 	}
 
 	private void stopGPSService(){
 		
-		if(isGPSStorageServiceRunning()){
+		/*if(isGPSStorageServiceRunning()){
 			Intent intent = new Intent("GPSStorageService");
+			stopService(intent);
+		}*/
+		
+		if(isGPSStorageServiceRunning()){
+			Intent intent = new Intent("PositionCollectorService");
 			stopService(intent);
 		}
 		
 	}
 
-	private void updateView() {
-		txtServicoIniciado.setText("Serviço Iniciado:"+String.valueOf(dateFormat.format(gpsStoregeService.getCreateDate())));
-		txtUltimaPosicao.setText("Última Posição:"+String.valueOf(dateFormat.format(gpsStoregeService.getLastSendPosition())));
-		txtVelocidade.setText("Velocidade:"+decimalFormat.format(gpsStoregeService.getSpeed())+" km/h");
-		txtPosicoes.setText("Posições Enviadas:"+String.valueOf(gpsStoregeService.getTotalSentPositions()));
-	}
+//	private void updateView() {
+//		txtServicoIniciado.setText("Serviço Iniciado:"+String.valueOf(dateFormat.format(gpsStoregeService.getCreateDate())));
+//		txtUltimaPosicao.setText("Última Posição:"+String.valueOf(dateFormat.format(gpsStoregeService.getLastSendPosition())));
+//		txtPosicoes.setText("Posições Enviadas:"+String.valueOf(gpsStoregeService.getTotalSentPositions()));
+//	}
 	
 	private boolean isGPSStorageServiceRunning() {
 	    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -148,10 +152,10 @@ public class FullscreenActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		
-		if (mBound) {
+		/*if (mBound) {
 			unbindService(mConnection);
 			mBound = false;
-		}
+		}*/
 		
 	}
 
