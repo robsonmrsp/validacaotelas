@@ -14,7 +14,6 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.location.GpsStatus;
-import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
@@ -26,33 +25,27 @@ import com.awdryn.gpsdeviceforandroid.PositionMessage;
 
 
 
-public class GPSStorageService extends IntentService implements LocationListener{
-
-	public GPSStorageService() {
-		super("GPSStorageService");
-	}
+public class GPSStorageService extends IntentService{
 	
 	private String deviceId = "AWDRYN_MOBILE_001";
-	private String URL = "http://awdryn.dlinkddns.com:8989/storageposition/ws/storage/position";
+	private String URL = "http://sints.cloudvirgo.com:9080/sintsrestserver/storage/position";
 	private long INTERVAL = 20000;
 	private long INTERVAL_FOR_REST_ERROR = 90000;
 	private int REST_TEMPLATE_TIME_OUT = 10000;
 	
-	private boolean updatedPositions;
 	private boolean ativa;
 	private int totalSentPositions = 0;
-	double latPoint = 0d;
-	double lngPoint = 0d;
-	float accuracy = 0f;
-	float speed = 0f;
-	double altitude = 0d;
-	long gpsTime = 0l;
-
-	private IBinder mBinder = new GPSStorageBinder();
 	private RestTemplate restTemplate;
 	private LocationManager locationManager;
 	private Date createDate = new Date();
 	private Date lastSendPosition = new Date();
+	private IBinder mBinder = new GPSStorageBinder();
+	
+	private LocationListenerImpl locationListenerImpl = new LocationListenerImpl();
+	
+	public GPSStorageService() {
+		super("GPSStorageService");
+	}
 
 	@Override
 	public void onCreate() {
@@ -64,7 +57,6 @@ public class GPSStorageService extends IntentService implements LocationListener
 		try{
 
 			configLocationManager();
-
 			configRestTemplate();
 
 		}catch(Exception e){
@@ -76,7 +68,7 @@ public class GPSStorageService extends IntentService implements LocationListener
 
 	private void configLocationManager() throws Exception{
 		locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, locationListenerImpl);
 		locationManager.addGpsStatusListener(new GpsStatus.Listener(){
 			@Override
 			public void onGpsStatusChanged(int status) {
@@ -163,9 +155,9 @@ public class GPSStorageService extends IntentService implements LocationListener
 
 			ativa = false;
 
-			clearGPSValues();
+			locationListenerImpl.clearGPSValues();
 
-			locationManager.removeUpdates(this);
+			locationManager.removeUpdates(locationListenerImpl);
 
 			stopSelf();
 
@@ -177,16 +169,14 @@ public class GPSStorageService extends IntentService implements LocationListener
 
 	private void enviarPositionServidor() throws RestClientException{
 
-		if(updatedPositions && latPoint != 0 && lngPoint != 0){
+		if(locationListenerImpl.isUpdatedPositions() && locationListenerImpl.getLatPoint() != 0 && locationListenerImpl.getLngPoint() != 0){
 
 			PositionMessage message = new PositionMessage();
 			message.setDeviceId(this.deviceId);
-			message.setLatitude(latPoint);
-			message.setLongitude(lngPoint);
-			message.setSpeed(speed);
-			message.setAltitude(altitude);
-			message.setAccuracy(accuracy);
-			message.setCreationDate(gpsTime);
+			message.setLatitude(locationListenerImpl.getLatPoint());
+			message.setLongitude(locationListenerImpl.getLngPoint());
+			message.setSpeed(locationListenerImpl.getSpeed());
+			message.setCreationDate(locationListenerImpl.getGpsTime());
 
 			Log.d("GPSStorageService", "Tentando enviar uma Position... ");
 
@@ -194,64 +184,16 @@ public class GPSStorageService extends IntentService implements LocationListener
 			String response = restTemplate.postForObject(URL, message, String.class);
 
 			totalSentPositions++;
-			updatedPositions = false;
+			locationListenerImpl.setUpdatedPositions(false);
 			lastSendPosition = new Date();
 
 			Log.d("GPSStorageService", " Position enviada com sucesso... ");
 			Log.d("GPSStorageService", " Response = "+response);
 		}else{
-			Log.d("GPSStorageService", "Os dados não foram enviados pq o atributo updatedPositions é "+updatedPositions);
+			Log.d("GPSStorageService", "Os dados não foram enviados pq o atributo updatedPositions é "+locationListenerImpl.isUpdatedPositions());
 		}
 
 	}	
-
-	@Override
-	public void onLocationChanged(Location location) {
-
-		latPoint = location.getLatitude();
-		lngPoint = location.getLongitude();
-		accuracy = location.getAccuracy();
-		speed = (location.getSpeed() == 0)? 0f: location.getSpeed() * 3.6f;
-		altitude = location.getAltitude();
-		gpsTime = location.getTime();
-
-		updatedPositions = true;
-
-	}
-
-	@Override
-	public void onProviderDisabled(String arg0) {}
-
-	@Override
-	public void onProviderEnabled(String arg0) {}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		/*switch (status) {
-		case LocationProvider.OUT_OF_SERVICE:
-			gpsConnected = false;
-			clearGPSValues();
-			break;
-		case LocationProvider.TEMPORARILY_UNAVAILABLE:
-			gpsConnected = false;
-			clearGPSValues();
-			break;
-		case LocationProvider.AVAILABLE:
-			gpsConnected = true;
-			break;
-		default:
-		}*/
-	}
-
-
-	private void clearGPSValues() {
-		latPoint = 0d;
-		lngPoint = 0d;
-		accuracy = 0f;
-		speed = 0f;
-		altitude = 0d;
-		gpsTime = 0l;
-	}
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -262,62 +204,6 @@ public class GPSStorageService extends IntentService implements LocationListener
 		public GPSStorageService getService() {
 			return GPSStorageService.this;
 		}
-	}
-
-	public boolean isUpdatedPositions() {
-		return updatedPositions;
-	}
-
-	public void setUpdatedPositions(boolean gpsConnected) {
-		this.updatedPositions = gpsConnected;
-	}
-
-	public double getLatPoint() {
-		return latPoint;
-	}
-
-	public void setLatPoint(double latPoint) {
-		this.latPoint = latPoint;
-	}
-
-	public double getLngPoint() {
-		return lngPoint;
-	}
-
-	public void setLngPoint(double lngPoint) {
-		this.lngPoint = lngPoint;
-	}
-
-	public float getAccuracy() {
-		return accuracy;
-	}
-
-	public void setAccuracy(float accuracy) {
-		this.accuracy = accuracy;
-	}
-
-	public float getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(float speed) {
-		this.speed = speed;
-	}
-
-	public double getAltitude() {
-		return altitude;
-	}
-
-	public void setAltitude(double altitude) {
-		this.altitude = altitude;
-	}
-
-	public long getGpsTime() {
-		return gpsTime;
-	}
-
-	public void setGpsTime(long gpsTime) {
-		this.gpsTime = gpsTime;
 	}
 
 	public int getTotalSentPositions() {
